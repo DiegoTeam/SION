@@ -1,10 +1,11 @@
 import React, {useEffect} from 'react';
 import {View} from 'react-native';
+//Libraries
 import SplashScreen from 'react-native-splash-screen';
 import {Text} from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
 
-const Home = () => {
+const Home = ({navigation}) => {
   useEffect(() => {
     SplashScreen.hide();
   }, []);
@@ -14,7 +15,7 @@ const Home = () => {
       <ActionButton
         buttonColor="#3B666F"
         onPress={() => {
-          console.log('hi');
+          navigation.navigate('CreateHome');
         }}
       />
     </View>
