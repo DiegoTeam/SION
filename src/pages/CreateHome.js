@@ -1,8 +1,11 @@
 import React, {useState} from 'react';
 import {View} from 'react-native';
 //Libraries
-import {Button, Input, CheckBox} from 'react-native-elements';
+import {Button, Input, CheckBox, Overlay, Text} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+//Utils
+import formatMoney from '../utils/formatMoney';
+import AsyncStorageAPI from '../utils/AsyncStorageAPI';
 
 const CreateHome = ({navigation}) => {
   const [name, setName] = useState('');
@@ -12,6 +15,7 @@ const CreateHome = ({navigation}) => {
   const [checked, setChecked] = useState(false);
   const [homes, setHomes] = useState(1);
   const [errorHomes, setErrorHomes] = useState('');
+  const [isVisible, setVisible] = useState(false);
   return (
     <View style={{flex: 1, justifyContent: 'center', marginHorizontal: 20}}>
       <Input
@@ -102,12 +106,89 @@ const CreateHome = ({navigation}) => {
               setErrorHomes('DEBE INGRESAR MAS DE 1 HOGAR');
             }
           } else {
-            //TODO guardar en data
-            console.log('ALL OK');
+            setVisible(true);
           }
         }}
         buttonStyle={{backgroundColor: '#3B666F'}}
       />
+      <Overlay
+        isVisible={isVisible}
+        borderRadius={10}
+        animationType={'fade'}
+        width={300}
+        height={400}>
+        <>
+          <Text style={{fontSize: 20, textAlign: 'center', marginBottom: 20}}>
+            Se creara un proyecto con los siguientes valores
+          </Text>
+          <Input
+            value={name}
+            label="Representante del proyecto"
+            leftIcon={<Icon name="person" size={24} color="black" />}
+            containerStyle={{marginBottom: 20}}
+            disabled={true}
+          />
+          <Input
+            value={document}
+            label="Cedula del representante"
+            leftIcon={<Icon name="apps" size={24} color="black" />}
+            containerStyle={{marginBottom: 20}}
+            disabled={true}
+          />
+          <Input
+            value={formatMoney.format(homes * 800000).toString()}
+            label="Presupuesto del proyecto"
+            leftIcon={<Icon name="monetization-on" size={24} color="black" />}
+            containerStyle={{marginBottom: 20}}
+            disabled={true}
+          />
+          <View
+            style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
+            <Button
+              icon={<Icon name="check" size={15} color="white" />}
+              title="Aceptar"
+              onPress={async () => {
+                const data = {
+                  id: 0,
+                  project_manager: name,
+                  document: document,
+                  homes: homes,
+                  budget: 800000 * homes,
+                  budget_used: 0,
+                  data: [],
+                };
+                if (await AsyncStorageAPI.isNull('projectsData')) {
+                  data.id = 1;
+                  const newData = [];
+                  newData.push(data);
+                  await AsyncStorageAPI.setData('projectsData', newData);
+                  setVisible(false);
+                  navigation.navigate('Home');
+                } else {
+                  const oldData = await AsyncStorageAPI.getData('projectsData');
+                  const lastElementId = await AsyncStorageAPI.lastElementId(
+                    'projectsData',
+                  );
+                  data.id = lastElementId + 1;
+                  oldData.push(data);
+                  await AsyncStorageAPI.setData('projectsData', oldData);
+                  setVisible(false);
+                  navigation.navigate('Home');
+                }
+              }}
+              buttonStyle={{backgroundColor: 'green'}}
+            />
+            <Button
+              icon={<Icon name="clear" size={15} color="white" />}
+              title="Cancelar"
+              onPress={() => {
+                setVisible(false);
+              }}
+              buttonStyle={{backgroundColor: 'red'}}
+            />
+          </View>
+        </>
+      </Overlay>
     </View>
   );
 };
