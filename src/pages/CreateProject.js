@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import formatMoney from '../utils/formatMoney';
 import AsyncStorageAPI from '../utils/AsyncStorageAPI';
 
-const CreateHome = ({navigation}) => {
+const CreateProject = ({navigation}) => {
   const [name, setName] = useState('');
   const [errorName, setErrorName] = useState('');
   const [document, setDocument] = useState('');
@@ -186,6 +186,16 @@ const CreateHome = ({navigation}) => {
               }}
               buttonStyle={{backgroundColor: 'red'}}
             />
+            //TODO remove
+            <Button
+              icon={<Icon name="clear" size={15} color="white" />}
+              title="delete all"
+              onPress={() => {
+                console.log('delete all');
+                AsyncStorageAPI.setData('projectsData', null);
+              }}
+              buttonStyle={{backgroundColor: 'red'}}
+            />
           </View>
         </>
       </Overlay>
@@ -193,4 +203,4 @@ const CreateHome = ({navigation}) => {
   );
 };
 
-export default CreateHome;
+export default CreateProject;
