@@ -12,18 +12,14 @@ const Supplies = ({route, navigation}) => {
   const [data, setData] = useState(route.params.data);
   useEffect(() => {
     navigation.setOptions({title: 'Insumos'});
+    console.log(data);
   });
   const renderItem = ({item}) => (
     <ListItem
-      title={item.project_manager}
-      subtitle={'$' + formatMoney.format(item.budget)}
-      rightTitle={'$' + formatMoney.format(item.budget_used)}
-      leftIcon={{name: 'person'}}
+      title={item.nombre}
+      rightTitle={'$' + formatMoney.format(item.precio * item.count)}
+      subtitle={'$' + formatMoney.format(item.precio) + ' x ' + item.count}
       bottomDivider
-      chevron
-      onPress={() => {
-        navigation.navigate('ProjectDetail', item);
-      }}
     />
   );
   return (
@@ -41,7 +37,7 @@ const Supplies = ({route, navigation}) => {
       <ActionButton
         buttonColor="#3B666F"
         onPress={() => {
-          navigation.navigate('CreateProject');
+          navigation.navigate('AddSupplies', route.params);
         }}
       />
     </>

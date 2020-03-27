@@ -16,6 +16,7 @@ const CreateProject = ({navigation}) => {
   const [homes, setHomes] = useState(1);
   const [errorHomes, setErrorHomes] = useState('');
   const [isVisible, setVisible] = useState(false);
+  const budget_base = 800000;
   return (
     <View style={{flex: 1, justifyContent: 'center', marginHorizontal: 20}}>
       <Input
@@ -136,7 +137,7 @@ const CreateProject = ({navigation}) => {
             disabled={true}
           />
           <Input
-            value={formatMoney.format(homes * 800000).toString()}
+            value={formatMoney.format(homes * budget_base).toString()}
             label="Presupuesto del proyecto"
             leftIcon={<Icon name="monetization-on" size={24} color="black" />}
             containerStyle={{marginBottom: 20}}
@@ -153,25 +154,24 @@ const CreateProject = ({navigation}) => {
                   project_manager: name,
                   document: document,
                   homes: homes,
-                  budget: 800000 * homes,
+                  budget: budget_base * homes,
                   budget_used: 0,
+                  budget_available: budget_base * homes,
                   data: [],
                 };
-                if (await AsyncStorageAPI.isNull('projectsData')) {
+                if (await AsyncStorageAPI.isNull()) {
                   data.id = 1;
                   const newData = [];
                   newData.push(data);
-                  await AsyncStorageAPI.setData('projectsData', newData);
+                  await AsyncStorageAPI.setData(newData);
                   setVisible(false);
                   navigation.navigate('Home');
                 } else {
-                  const oldData = await AsyncStorageAPI.getData('projectsData');
-                  const lastElementId = await AsyncStorageAPI.lastElementId(
-                    'projectsData',
-                  );
+                  const oldData = await AsyncStorageAPI.getData();
+                  const lastElementId = await AsyncStorageAPI.lastElementId();
                   data.id = lastElementId + 1;
                   oldData.push(data);
-                  await AsyncStorageAPI.setData('projectsData', oldData);
+                  await AsyncStorageAPI.setData(oldData);
                   setVisible(false);
                   navigation.navigate('Home');
                 }
@@ -183,16 +183,6 @@ const CreateProject = ({navigation}) => {
               title="Cancelar"
               onPress={() => {
                 setVisible(false);
-              }}
-              buttonStyle={{backgroundColor: 'red'}}
-            />
-            //TODO remove
-            <Button
-              icon={<Icon name="clear" size={15} color="white" />}
-              title="delete all"
-              onPress={() => {
-                console.log('delete all');
-                AsyncStorageAPI.setData('projectsData', null);
               }}
               buttonStyle={{backgroundColor: 'red'}}
             />

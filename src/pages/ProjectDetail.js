@@ -14,13 +14,13 @@ const ProjectDetail = ({route, navigation}) => {
   });
   return (
     <>
-      <View style={{flex: 1, justifyContent: 'center', marginHorizontal: 20}}>
+      <View style={{marginHorizontal: 20}}>
         <Input
           value={data.project_manager}
           label="Representante del proyecto"
           leftIcon={<Icon name="person" size={24} color="black" />}
           errorStyle={{color: 'red'}}
-          containerStyle={{marginBottom: 20}}
+          containerStyle={{marginBottom: 20, marginTop: 20}}
           disabled={true}
         />
         <Input
@@ -48,6 +48,13 @@ const ProjectDetail = ({route, navigation}) => {
         <Input
           value={formatMoney.format(data.budget_used).toString()}
           label="Presupuesto gastado"
+          leftIcon={<Icon name="monetization-on" size={24} color="black" />}
+          containerStyle={{marginBottom: 20}}
+          disabled={true}
+        />
+        <Input
+          value={formatMoney.format(data.budget_available).toString()}
+          label="Presupuesto disponible"
           leftIcon={<Icon name="monetization-on" size={24} color="black" />}
           containerStyle={{marginBottom: 20}}
           disabled={true}
