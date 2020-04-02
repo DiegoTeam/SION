@@ -17,10 +17,9 @@ import AsyncStorageAPI from '../utils/AsyncStorageAPI';
 import Empty from '../components/Empty';
 //Data
 import insumosProductivos from '../data/insumosProductivos';
-import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const AddSupplies = ({route, navigation}) => {
+const AddSupplies_IP = ({route, navigation}) => {
   const [data, setData] = useState(insumosProductivos.data);
   const [search, setSearch] = useState('');
   const [selectedItem, setSelectedItem] = useState(insumosProductivos.data[1]);
@@ -216,4 +215,4 @@ const AddSupplies = ({route, navigation}) => {
   );
 };
 
-export default AddSupplies;
+export default AddSupplies_IP;

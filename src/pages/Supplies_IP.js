@@ -8,11 +8,10 @@ import formatMoney from '../utils/formatMoney';
 //Components
 import Empty from '../components/Empty';
 
-const Supplies = ({route, navigation}) => {
+const Supplies_IP = ({route, navigation}) => {
   const [data, setData] = useState(route.params.data);
   useEffect(() => {
     navigation.setOptions({title: 'Insumos'});
-    console.log(data);
   });
   const renderItem = ({item}) => (
     <ListItem
@@ -37,11 +36,11 @@ const Supplies = ({route, navigation}) => {
       <ActionButton
         buttonColor="#3B666F"
         onPress={() => {
-          navigation.navigate('AddSupplies', route.params);
+          navigation.navigate('AddSupplies_IP', route.params);
         }}
       />
     </>
   );
 };
 
-export default Supplies;
+export default Supplies_IP;

@@ -42,9 +42,7 @@ const Home = ({navigation}) => {
         keyExtractor={item => item.id.toString()}
         data={data}
         renderItem={renderItem}
-        ListEmptyComponent={
-          <Empty text="No hay proyectos creados." />
-        }
+        ListEmptyComponent={<Empty text="No hay proyectos creados." />}
       />
       <ActionButton
         buttonColor="#3B666F"

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View} from 'react-native';
+import {View, Picker} from 'react-native';
 //Libraries
 import {Button, Input, CheckBox, Overlay, Text} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -16,6 +16,7 @@ const CreateProject = ({navigation}) => {
   const [homes, setHomes] = useState(1);
   const [errorHomes, setErrorHomes] = useState('');
   const [isVisible, setVisible] = useState(false);
+  const [selectedValue, setSelectedValue] = useState('Productivo');
   const budget_base = 800000;
   return (
     <View style={{flex: 1, justifyContent: 'center', marginHorizontal: 20}}>
@@ -48,6 +49,31 @@ const CreateProject = ({navigation}) => {
         errorMessage={errorDocument}
         containerStyle={{marginBottom: 20}}
       />
+      <View
+        style={{
+          marginBottom: 20,
+          backgroundColor: 'white',
+          borderRadius: 5,
+          margin: 10,
+        }}>
+        <Text
+          style={{
+            marginLeft: 10,
+            marginTop: 10,
+            fontWeight: 'bold',
+            fontSize: 15,
+            color: '#88959E',
+          }}>
+          Tipo de proyecto:
+        </Text>
+        <Picker
+          selectedValue={selectedValue}
+          style={{marginLeft: 10}}
+          onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}>
+          <Picker.Item label="Productivo" value="Productivo" />
+          <Picker.Item label="Alimentario" value="Alimentario" />
+        </Picker>
+      </View>
       <CheckBox
         center
         title="Proyecto colectivo"
@@ -117,7 +143,7 @@ const CreateProject = ({navigation}) => {
         borderRadius={10}
         animationType={'fade'}
         width={300}
-        height={400}>
+        height={500}>
         <>
           <Text style={{fontSize: 20, textAlign: 'center', marginBottom: 20}}>
             Se creara un proyecto con los siguientes valores
@@ -137,6 +163,13 @@ const CreateProject = ({navigation}) => {
             disabled={true}
           />
           <Input
+            value={selectedValue}
+            label="Tipo del proyecto"
+            leftIcon={<Icon name="card-travel" size={24} color="black" />}
+            containerStyle={{marginBottom: 20}}
+            disabled={true}
+          />
+          <Input
             value={formatMoney.format(homes * budget_base).toString()}
             label="Presupuesto del proyecto"
             leftIcon={<Icon name="monetization-on" size={24} color="black" />}
@@ -152,6 +185,7 @@ const CreateProject = ({navigation}) => {
                 const data = {
                   id: 0,
                   project_manager: name,
+                  project_type: selectedValue,
                   document: document,
                   homes: homes,
                   budget: budget_base * homes,

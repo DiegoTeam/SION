@@ -31,6 +31,14 @@ const ProjectDetail = ({route, navigation}) => {
           disabled={true}
         />
         <Input
+          value={data.project_type}
+          label="Tipo de proyecto"
+          leftIcon={<Icon name="card-travel" size={24} color="black" />}
+          keyboardType="number-pad"
+          containerStyle={{marginBottom: 20}}
+          disabled={true}
+        />
+        <Input
           value={data.homes.toString()}
           label="Numero de hogares"
           leftIcon={<Icon name="home" size={24} color="black" />}
@@ -64,7 +72,12 @@ const ProjectDetail = ({route, navigation}) => {
           title=" Ver insumos"
           buttonStyle={{backgroundColor: '#3B666F'}}
           onPress={() => {
-            navigation.navigate('Supplies', data);
+            if (data.project_type === 'Alimentario') {
+              navigation.navigate('Supplies_IA', data);
+            }
+            if (data.project_type === 'Productivo') {
+              navigation.navigate('Supplies_IP', data);
+            }
           }}
         />
       </View>
