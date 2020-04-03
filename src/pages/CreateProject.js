@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Picker} from 'react-native';
 //Libraries
 import {Button, Input, CheckBox, Overlay, Text} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import NumberFormat from 'react-number-format';
 //Utils
-import formatMoney from '../utils/formatMoney';
 import AsyncStorageAPI from '../utils/AsyncStorageAPI';
 
 const CreateProject = ({navigation}) => {
@@ -18,6 +18,9 @@ const CreateProject = ({navigation}) => {
   const [isVisible, setVisible] = useState(false);
   const [selectedValue, setSelectedValue] = useState('Productivo');
   const budget_base = 800000;
+  useEffect(() => {
+    navigation.setOptions({title: 'Crear proyecto'});
+  });
   return (
     <View style={{flex: 1, justifyContent: 'center', marginHorizontal: 20}}>
       <Input
@@ -169,12 +172,22 @@ const CreateProject = ({navigation}) => {
             containerStyle={{marginBottom: 20}}
             disabled={true}
           />
-          <Input
-            value={formatMoney.format(homes * budget_base).toString()}
-            label="Presupuesto del proyecto"
-            leftIcon={<Icon name="monetization-on" size={24} color="black" />}
-            containerStyle={{marginBottom: 20}}
-            disabled={true}
+          <NumberFormat
+            renderText={text => (
+              <Input
+                value={text}
+                label="Tipo del proyecto"
+                leftIcon={
+                  <Icon name="monetization-on" size={24} color="black" />
+                }
+                containerStyle={{marginBottom: 20}}
+                disabled={true}
+              />
+            )}
+            value={homes * budget_base}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'$'}
           />
           <View
             style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
@@ -191,7 +204,7 @@ const CreateProject = ({navigation}) => {
                   budget: budget_base * homes,
                   budget_used: 0,
                   budget_available: budget_base * homes,
-                  data: [],
+                  supplies: [],
                 };
                 if (await AsyncStorageAPI.isNull()) {
                   data.id = 1;
@@ -199,7 +212,7 @@ const CreateProject = ({navigation}) => {
                   newData.push(data);
                   await AsyncStorageAPI.setData(newData);
                   setVisible(false);
-                  navigation.navigate('Home');
+                  navigation.navigate('Projects');
                 } else {
                   const oldData = await AsyncStorageAPI.getData();
                   const lastElementId = await AsyncStorageAPI.lastElementId();
@@ -207,7 +220,7 @@ const CreateProject = ({navigation}) => {
                   oldData.push(data);
                   await AsyncStorageAPI.setData(oldData);
                   setVisible(false);
-                  navigation.navigate('Home');
+                  navigation.navigate('Projects');
                 }
               }}
               buttonStyle={{backgroundColor: 'green'}}

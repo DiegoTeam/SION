@@ -1,14 +1,38 @@
 import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
+import {View, Alert} from 'react-native';
 //Libraries
-import {Button, Input} from 'react-native-elements';
+import {Input} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import ActionButton from 'react-native-action-button';
+import {FloatingAction} from 'react-native-floating-action';
 //Utils
-import formatMoney from '../utils/formatMoney';
+import NumberFormat from 'react-number-format';
+import AsyncStorageAPI from '../utils/AsyncStorageAPI';
 
 const ProjectDetail = ({route, navigation}) => {
   const [data, setData] = useState(route.params);
+  const actions = [
+    {
+      text: 'Ver Insumos',
+      color: '#3B666F',
+      icon: <Icon name="remove-red-eye" size={24} color="white" />,
+      name: 'see_supplies',
+      position: 1,
+    },
+    {
+      text: 'Editar proyecto',
+      color: '#3B666F',
+      icon: <Icon name="edit" size={24} color="white" />,
+      name: 'edit_project',
+      position: 2,
+    },
+    {
+      text: 'Eliminar proyecto',
+      color: '#CB3737',
+      icon: <Icon name="delete" size={24} color="white" />,
+      name: 'delete_project',
+      position: 3,
+    },
+  ];
   useEffect(() => {
     navigation.setOptions({title: data.project_manager});
   });
@@ -46,49 +70,82 @@ const ProjectDetail = ({route, navigation}) => {
           containerStyle={{marginBottom: 20}}
           disabled={true}
         />
-        <Input
-          value={formatMoney.format(data.budget).toString()}
-          label="Presupuesto del proyecto"
-          leftIcon={<Icon name="monetization-on" size={24} color="black" />}
-          containerStyle={{marginBottom: 20}}
-          disabled={true}
+        <NumberFormat
+          renderText={text => (
+            <Input
+              value={text}
+              label="Presupuesto del proyecto"
+              leftIcon={<Icon name="monetization-on" size={24} color="black" />}
+              containerStyle={{marginBottom: 20}}
+              disabled={true}
+            />
+          )}
+          value={data.budget}
+          displayType={'text'}
+          thousandSeparator={true}
+          prefix={'$'}
         />
-        <Input
-          value={formatMoney.format(data.budget_used).toString()}
-          label="Presupuesto gastado"
-          leftIcon={<Icon name="monetization-on" size={24} color="black" />}
-          containerStyle={{marginBottom: 20}}
-          disabled={true}
+        <NumberFormat
+          renderText={text => (
+            <Input
+              value={text}
+              label="Presupuesto gastado"
+              leftIcon={<Icon name="monetization-on" size={24} color="black" />}
+              containerStyle={{marginBottom: 20}}
+              disabled={true}
+            />
+          )}
+          value={data.budget_used}
+          displayType={'text'}
+          thousandSeparator={true}
+          prefix={'$'}
         />
-        <Input
-          value={formatMoney.format(data.budget_available).toString()}
-          label="Presupuesto disponible"
-          leftIcon={<Icon name="monetization-on" size={24} color="black" />}
-          containerStyle={{marginBottom: 20}}
-          disabled={true}
-        />
-        <Button
-          icon={<Icon name="remove-red-eye" size={15} color="white" />}
-          title=" Ver insumos"
-          buttonStyle={{backgroundColor: '#3B666F'}}
-          onPress={() => {
-            if (data.project_type === 'Alimentario') {
-              navigation.navigate('Supplies_IA', data);
-            }
-            if (data.project_type === 'Productivo') {
-              navigation.navigate('Supplies_IP', data);
-            }
-          }}
+        <NumberFormat
+          renderText={text => (
+            <Input
+              value={text}
+              label="Presupuesto disponible"
+              leftIcon={<Icon name="monetization-on" size={24} color="black" />}
+              containerStyle={{marginBottom: 20}}
+              disabled={true}
+            />
+          )}
+          value={data.budget_available}
+          displayType={'text'}
+          thousandSeparator={true}
+          prefix={'$'}
         />
       </View>
-      <ActionButton
-        renderIcon={() => {
-          return <Icon name="build" size={15} color="white" />;
-        }}
-        buttonColor="#3B666F"
-        onPress={() => {
-          console.log('config');
-          //TODO configurar boton
+      <FloatingAction
+        actions={actions}
+        color="#3B666F"
+        onPressItem={name => {
+          if (name === 'edit_project') {
+            navigation.navigate('EditProject', data);
+          }
+          if (name === 'delete_project') {
+            Alert.alert(
+              'ALERTA',
+              'Esta seguro de eliminar este proyecto?',
+              [
+                {
+                  text: 'Cancelar',
+                  style: 'cancel',
+                },
+                {
+                  text: 'Eliminar',
+                  onPress: async () => {
+                    await AsyncStorageAPI.deleteElement(data.id);
+                    navigation.navigate('Projects');
+                  },
+                },
+              ],
+              {cancelable: false},
+            );
+          }
+          if (name === 'see_supplies') {
+            navigation.navigate('Supplies', data);
+          }
         }}
       />
     </>
