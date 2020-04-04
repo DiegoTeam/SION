@@ -262,7 +262,7 @@ const EditProject = ({route, navigation}) => {
                     budget: budget_base * homes,
                     budget_used: data.budget_used,
                     budget_available: budget_base * homes - data.budget_used,
-                    supplies: data.projects,
+                    supplies: data.supplies,
                   };
                   await AsyncStorageAPI.updateElement(data.id, newData);
                 }

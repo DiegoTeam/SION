@@ -24,8 +24,13 @@ const AddSupplies = ({navigation, route}) => {
   useEffect(() => {
     navigation.setOptions({title: 'Agregar insumos'});
   });
-  const isDisabled = price => {
-    return price > route.params.budget_available;
+  const isDisabled = item => {
+    for (let i = 0; i < route.params.supplies.length; i++) {
+      if (route.params.supplies[i].id === item.id) {
+        return true;
+      }
+    }
+    return item.price > route.params.budget_available;
   };
   const renderItem = ({item}) => (
     <ListItem
@@ -40,7 +45,7 @@ const AddSupplies = ({navigation, route}) => {
         />
       }
       disabledStyle={{backgroundColor: '#A8A8A8'}}
-      disabled={isDisabled(item.price)}
+      disabled={isDisabled(item)}
       onPress={() => {
         Alert.alert(
           'ALERTA',

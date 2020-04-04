@@ -9,6 +9,7 @@ import ProjectDetail from './ProjectDetail';
 import EditProject from './EditProject';
 import Supplies from './Supplies';
 import AddSupplies from './AddSupplies';
+import EditSupplies from './EditSupplies';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,7 @@ const App = () => {
         <Stack.Screen name="EditProject" component={EditProject} />
         <Stack.Screen name="Supplies" component={Supplies} />
         <Stack.Screen name="AddSupplies" component={AddSupplies} />
+        <Stack.Screen name="EditSupplies" component={EditSupplies} />
       </Stack.Navigator>
     </NavigationContainer>
   );

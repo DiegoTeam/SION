@@ -42,7 +42,7 @@ const Projects = ({navigation}) => {
       title={item.project_manager}
       subtitle={
         <NumberFormat
-          value={item.budget}
+          value={item.budget_available}
           renderText={value => <Text>{value}</Text>}
           thousandSeparator={true}
           displayType={'text'}

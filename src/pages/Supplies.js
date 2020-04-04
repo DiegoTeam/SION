@@ -11,8 +11,6 @@ import {
 } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import NumberFormat from 'react-number-format';
-//Utils
-import AsyncStorageAPI from '../utils/AsyncStorageAPI';
 //Components
 import Empty from '../components/Empty';
 import {FloatingAction} from 'react-native-floating-action';
@@ -30,7 +28,6 @@ const Supplies = ({navigation, route}) => {
   ];
   useState(() => {
     navigation.setOptions({title: 'Insumos'});
-    console.log(data);
   });
   const renderItem = ({item}) => (
     <ListItem
@@ -50,7 +47,10 @@ const Supplies = ({navigation, route}) => {
         containerStyle: {marginTop: -20},
       }}
       onPress={() => {
-        console.log(item);
+        navigation.navigate('EditSupplies', {
+          data: route.params,
+          supple: item,
+        });
         //TODO ir a detalle del suministro
       }}
     />
