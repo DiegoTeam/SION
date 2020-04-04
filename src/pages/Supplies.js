@@ -1,14 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {View, FlatList} from 'react-native';
 //Libraries
-import {
-  Button,
-  Input,
-  CheckBox,
-  Overlay,
-  Text,
-  ListItem,
-} from 'react-native-elements';
+import {Text, ListItem} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import NumberFormat from 'react-number-format';
 //Components

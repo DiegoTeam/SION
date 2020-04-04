@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {Picker, View, Alert} from 'react-native';
 //Libraries
 import {Button, Input, Overlay, Text} from 'react-native-elements';
@@ -154,7 +154,7 @@ const EditProject = ({route, navigation}) => {
                 Alert.alert(
                   'ALERTA',
                   'El nuevo presupuesto es menor al presupuesto ya utilizado en este proyecto',
-                  [{text: 'OK'}],
+                  [{text: 'Aceptar'}],
                   {cancelable: false},
                 );
               } else {
@@ -168,7 +168,7 @@ const EditProject = ({route, navigation}) => {
                         onPress: () => setVisible(true),
                       },
                       {
-                        text: 'Cancel',
+                        text: 'Cancelar',
                         style: 'cancel',
                       },
                     ],
@@ -233,8 +233,15 @@ const EditProject = ({route, navigation}) => {
             thousandSeparator={true}
             prefix={'$'}
           />
-          <View
-            style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+            <Button
+              icon={<Icon name="clear" size={15} color="white" />}
+              title="Cancelar"
+              onPress={() => {
+                setVisible(false);
+              }}
+              buttonStyle={{backgroundColor: 'red'}}
+            />
             <Button
               icon={<Icon name="save" size={15} color="white" />}
               title="Guardar"
@@ -270,14 +277,6 @@ const EditProject = ({route, navigation}) => {
                 navigation.navigate('Projects');
               }}
               buttonStyle={{backgroundColor: 'green'}}
-            />
-            <Button
-              icon={<Icon name="clear" size={15} color="white" />}
-              title="Cancelar"
-              onPress={() => {
-                setVisible(false);
-              }}
-              buttonStyle={{backgroundColor: 'red'}}
             />
           </View>
         </>

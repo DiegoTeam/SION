@@ -189,8 +189,15 @@ const CreateProject = ({navigation}) => {
             thousandSeparator={true}
             prefix={'$'}
           />
-          <View
-            style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+            <Button
+              icon={<Icon name="clear" size={15} color="white" />}
+              title="Cancelar"
+              onPress={() => {
+                setVisible(false);
+              }}
+              buttonStyle={{backgroundColor: 'red'}}
+            />
             <Button
               icon={<Icon name="check" size={15} color="white" />}
               title="Aceptar"
@@ -224,14 +231,6 @@ const CreateProject = ({navigation}) => {
                 }
               }}
               buttonStyle={{backgroundColor: 'green'}}
-            />
-            <Button
-              icon={<Icon name="clear" size={15} color="white" />}
-              title="Cancelar"
-              onPress={() => {
-                setVisible(false);
-              }}
-              buttonStyle={{backgroundColor: 'red'}}
             />
           </View>
         </>

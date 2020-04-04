@@ -11,12 +11,12 @@ const EditSupplies = ({navigation, route}) => {
   const [deductDisable, setDeductDisable] = useState(() => {
     return count === 1;
   });
-  const budgetAvableWithoutSupple =
+  const budgetAvailableWithoutSupple =
     route.params.data.budget_available +
     route.params.supple.price * route.params.supple.count;
   useEffect(() => {
     navigation.setOptions({title: 'Editar insumo'});
-  }, [navigation, route.params]);
+  }, [navigation]);
   return (
     <View style={{flex: 1, justifyContent: 'center', marginHorizontal: 20}}>
       <Text
@@ -148,62 +148,101 @@ const EditSupplies = ({navigation, route}) => {
             {text}
           </Text>
         )}
-        value={budgetAvableWithoutSupple - route.params.supple.price * count}
+        value={budgetAvailableWithoutSupple - route.params.supple.price * count}
         displayType={'text'}
         thousandSeparator={true}
         prefix={'$'}
       />
-      <Button
-        icon={<Icon name="save" size={15} color="white" />}
-        title=" Guardar"
-        onPress={() => {
-          if (count === route.params.supple.count) {
+      <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+        <Button
+          icon={<Icon name="clear" size={15} color="white" />}
+          title=" Eliminar"
+          onPress={() => {
             Alert.alert(
               'ALERTA',
-              'La cantidad del insumo no ha cambiado',
-              [{text: 'OK'}],
-              {cancelable: false},
+              'Esta seguro de eliminar este insumo?',
+              [
+                {
+                  text: 'Cancelar',
+                  style: 'cancel',
+                },
+                {
+                  text: 'Eliminar',
+                  onPress: async () => {
+                    const data = route.params.data;
+                    data.budget_available = budgetAvailableWithoutSupple;
+                    data.budget_used = data.budget - data.budget_available;
+                    for (let i = 0; i < data.supplies.length; i++) {
+                      if (data.supplies[i].id === route.params.supple.id) {
+                        data.supplies.splice(i, 1);
+                      }
+                    }
+                    await AsyncStorageAPI.updateElement(data.id, data);
+                    navigation.navigate('Projects');
+                    //TODO regresar a la pagina de insumos
+                  },
+                },
+              ],
+              {cancelable: true},
             );
-          } else {
-            if (route.params.supple.price * count > budgetAvableWithoutSupple) {
+          }}
+          buttonStyle={{backgroundColor: 'red'}}
+        />
+        <Button
+          icon={<Icon name="save" size={15} color="white" />}
+          title=" Guardar"
+          onPress={() => {
+            if (count === route.params.supple.count) {
               Alert.alert(
                 'ALERTA',
-                'Este insumo supera el presupuesto disponible para este proyecto',
-                [{text: 'OK'}],
+                'La cantidad del insumo no ha cambiado',
+                [{text: 'Aceptar'}],
                 {cancelable: false},
               );
             } else {
-              Alert.alert(
-                'ALERTA',
-                'Desea guardar este insumo?',
-                [
-                  {text: 'Cancelar'},
-                  {
-                    text: 'Guardar',
-                    onPress: async () => {
-                      const data = route.params.data;
-                      data.budget_available =
-                        budgetAvableWithoutSupple -
-                        route.params.supple.price * count;
-                      data.budget_used = data.budget - data.budget_available;
-                      for (let i = 0; i < data.supplies.length; i++) {
-                        if (data.supplies[i].id === route.params.supple.id) {
-                          data.supplies[i].count = count;
+              if (
+                route.params.supple.price * count >
+                budgetAvailableWithoutSupple
+              ) {
+                Alert.alert(
+                  'ALERTA',
+                  'Este insumo supera el presupuesto disponible para este proyecto',
+                  [{text: 'Aceptar'}],
+                  {cancelable: false},
+                );
+              } else {
+                Alert.alert(
+                  'ALERTA',
+                  'Desea guardar este insumo?',
+                  [
+                    {text: 'Cancelar'},
+                    {
+                      text: 'Guardar',
+                      onPress: async () => {
+                        const data = route.params.data;
+                        data.budget_available =
+                          budgetAvailableWithoutSupple -
+                          route.params.supple.price * count;
+                        data.budget_used = data.budget - data.budget_available;
+                        for (let i = 0; i < data.supplies.length; i++) {
+                          if (data.supplies[i].id === route.params.supple.id) {
+                            data.supplies[i].count = count;
+                          }
                         }
-                      }
-                      await AsyncStorageAPI.updateElement(data.id, data);
-                      navigation.navigate('Projects');
-                      //TODO regresar a la pagina de insumos
+                        await AsyncStorageAPI.updateElement(data.id, data);
+                        navigation.navigate('Projects');
+                        //TODO regresar a la pagina de insumos
+                      },
                     },
-                  },
-                ],
-                {cancelable: false},
-              );
+                  ],
+                  {cancelable: false},
+                );
+              }
             }
-          }
-        }}
-        buttonStyle={{backgroundColor: '#3B666F'}}
-      />
+          }}
+          buttonStyle={{backgroundColor: '#3B666F'}}
+        />
+      </View>
     </View>
   );
 };
