@@ -21,9 +21,6 @@ const AddSupplies = ({navigation, route}) => {
   });
   const [suppliesFiltered, setSuppliesFiltered] = useState(supplies);
   const [search, setSearch] = useState('');
-  useEffect(() => {
-    navigation.setOptions({title: 'Agregar insumos'});
-  });
   const isDisabled = item => {
     for (let i = 0; i < route.params.supplies.length; i++) {
       if (route.params.supplies[i].id === item.id) {
@@ -49,7 +46,7 @@ const AddSupplies = ({navigation, route}) => {
       onPress={() => {
         Alert.alert(
           'ALERTA',
-          'Desea algregar este insumo a su proyecto?',
+          'Desea agregar este insumo a su proyecto?',
           [
             {
               text: 'Cancel',
@@ -59,8 +56,7 @@ const AddSupplies = ({navigation, route}) => {
               text: 'Agregar',
               onPress: async () => {
                 await AsyncStorageAPI.addToData(route.params.id, item);
-                navigation.navigate('Projects');
-                //TODO regresar a insumos en vez de a proyectos
+                navigation.navigate('Supplies', route.params.id);
               },
             },
           ],
@@ -81,9 +77,14 @@ const AddSupplies = ({navigation, route}) => {
   return (
     <View>
       <SearchBar
-        placeholder="Busca un insumo"
+        placeholder="Buscar un insumo"
         onChangeText={onSearchChange}
         value={search}
+        containerStyle={{
+          backgroundColor: '#3B666F',
+          borderTopWidth: 0,
+          borderBottomWidth: 0,
+        }}
       />
       <FlatList
         keyExtractor={item => item.id.toString()}

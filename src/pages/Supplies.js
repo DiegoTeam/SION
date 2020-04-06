@@ -1,15 +1,20 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, FlatList} from 'react-native';
 //Libraries
 import {Text, ListItem} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import NumberFormat from 'react-number-format';
+import {FloatingAction} from 'react-native-floating-action';
 //Components
 import Empty from '../components/Empty';
-import {FloatingAction} from 'react-native-floating-action';
+import Loading from '../components/Loading';
+//Utils
+import AsyncStorageAPI from '../utils/AsyncStorageAPI';
 
 const Supplies = ({navigation, route}) => {
-  const [data, setData] = useState(route.params.supplies);
+  const [data, setData] = useState([]);
+  const [supples, setSupples] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const actions = [
     {
       text: 'Agregar insumos',
@@ -19,12 +24,26 @@ const Supplies = ({navigation, route}) => {
       position: 1,
     },
   ];
-  useState(() => {
-    navigation.setOptions({title: 'Insumos'});
-  });
+  useEffect(() => {
+    async function fetchData() {
+      setIsLoading(true);
+      const response = await AsyncStorageAPI.getProject(route.params);
+      setData(response);
+      setSupples(response.supplies);
+      setIsLoading(false);
+    }
+    fetchData();
+    return navigation.addListener('focus', () => {
+      fetchData();
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigation]);
   const renderItem = ({item}) => (
     <ListItem
       title={item.name}
+      underlayColor={'#f2f2f2'}
+      activeOpacity={0.5}
+      containerStyle={{borderRadius: 25, marginBottom: 5}}
       subtitle={
         <NumberFormat
           value={item.price * item.count}
@@ -34,37 +53,40 @@ const Supplies = ({navigation, route}) => {
           prefix={'$'}
         />
       }
-      bottomDivider
       badge={{
         value: item.count,
         containerStyle: {marginTop: -20},
+        textStyle: {fontSize: 15},
       }}
       onPress={() => {
         navigation.navigate('EditSupplies', {
-          data: route.params,
+          data: data,
           supple: item,
         });
-        //TODO ir a detalle del suministro
       }}
     />
   );
-  return (
-    <View style={{flex: 1, backgroundColor: '#f2f2f2'}}>
-      <FlatList
-        keyExtractor={item => item.id.toString()}
-        data={data}
-        renderItem={renderItem}
-        ListEmptyComponent={<Empty text="No hay insumos agregados." />}
-      />
+  return isLoading ? (
+    <Loading />
+  ) : (
+    <>
+      <View style={{flex: 1, margin: 5}}>
+        <FlatList
+          keyExtractor={item => item.id.toString()}
+          data={supples}
+          renderItem={renderItem}
+          ListEmptyComponent={<Empty text="No hay insumos agregados." />}
+        />
+      </View>
       <FloatingAction
         actions={actions}
         color="#3B666F"
         onPressItem={async name => {
-          navigation.navigate('AddSupplies', route.params);
+          navigation.navigate('AddSupplies', data);
           //TODO opciones de ordenado y filtro
         }}
       />
-    </View>
+    </>
   );
 };
 

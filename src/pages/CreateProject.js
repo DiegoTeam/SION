@@ -1,7 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {View, Picker} from 'react-native';
 //Libraries
-import {Button, Input, CheckBox, Overlay, Text} from 'react-native-elements';
+import {
+  Input,
+  CheckBox,
+  Overlay,
+  Text,
+  Icon as IconRNE,
+} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import NumberFormat from 'react-number-format';
 //Utils
@@ -18,189 +24,259 @@ const CreateProject = ({navigation}) => {
   const [isVisible, setVisible] = useState(false);
   const [selectedValue, setSelectedValue] = useState('Productivo');
   const budget_base = 800000;
-  useEffect(() => {
-    navigation.setOptions({title: 'Crear proyecto'});
-  });
+
   return (
-    <View style={{flex: 1, justifyContent: 'center', marginHorizontal: 20}}>
-      <Input
-        value={name}
-        label="Representante del proyecto"
-        leftIcon={<Icon name="person" size={24} color="black" />}
-        onChangeText={text => {
-          if (errorName !== '') {
-            setErrorName('');
-          }
-          setName(text);
-        }}
-        errorStyle={{color: 'red'}}
-        errorMessage={errorName}
-        containerStyle={{marginBottom: 20}}
-      />
-      <Input
-        value={document}
-        label="Cedula del representante"
-        leftIcon={<Icon name="apps" size={24} color="black" />}
-        keyboardType="numeric"
-        onChangeText={text => {
-          if (errorDocument !== '') {
-            setErrorDocument('');
-          }
-          setDocument(text.replace(/[,.-]/g, '').trim());
-        }}
-        errorStyle={{color: 'red'}}
-        errorMessage={errorDocument}
-        containerStyle={{marginBottom: 20}}
-      />
-      <View
-        style={{
-          marginBottom: 20,
-          backgroundColor: 'white',
-          borderRadius: 5,
-          margin: 10,
-        }}>
-        <Text
-          style={{
-            marginLeft: 10,
-            marginTop: 10,
-            fontWeight: 'bold',
-            fontSize: 15,
-            color: '#88959E',
-          }}>
-          Tipo de proyecto:
-        </Text>
-        <Picker
-          selectedValue={selectedValue}
-          style={{marginLeft: 10}}
-          onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}>
-          <Picker.Item label="Productivo" value="Productivo" />
-          <Picker.Item label="Alimentario" value="Alimentario" />
-        </Picker>
-      </View>
-      <CheckBox
-        center
-        title="Proyecto colectivo"
-        iconType="MaterialIcons"
-        checkedColor="#3B666F"
-        checkedIcon="check-box"
-        uncheckedIcon="check-box-outline-blank"
-        checked={checked}
-        onPress={() => {
-          setChecked(!checked);
-          setHomes(1);
-          if (errorHomes !== '') {
-            setErrorHomes('');
-          }
-        }}
-        containerStyle={{marginBottom: 20}}
-      />
-      {checked && (
+    <>
+      <View style={{flex: 1, justifyContent: 'center', marginHorizontal: 20}}>
         <Input
-          value={homes.toString()}
-          label="Numero de hogares"
-          leftIcon={<Icon name="home" size={24} color="black" />}
-          keyboardType="number-pad"
+          value={name}
+          label="Representante del proyecto"
+          leftIcon={<Icon name="person" size={24} color="black" />}
           onChangeText={text => {
-            const new_text = text.replace(/[,.-]/g, '').trim();
+            if (errorName !== '') {
+              setErrorName('');
+            }
+            setName(text);
+          }}
+          errorStyle={{color: '#DC3545'}}
+          errorMessage={errorName}
+          containerStyle={{marginBottom: 20}}
+        />
+        <Input
+          value={document}
+          label="Cedula del representante"
+          leftIcon={<Icon name="apps" size={24} color="black" />}
+          keyboardType="numeric"
+          onChangeText={text => {
+            if (errorDocument !== '') {
+              setErrorDocument('');
+            }
+            setDocument(text.replace(/[,.-]/g, '').trim());
+          }}
+          errorStyle={{color: '#DC3545'}}
+          errorMessage={errorDocument}
+          containerStyle={{marginBottom: 20}}
+        />
+        <View
+          style={{
+            marginBottom: 20,
+            backgroundColor: 'white',
+            borderRadius: 5,
+            margin: 10,
+          }}>
+          <Text
+            style={{
+              marginLeft: 10,
+              marginTop: 10,
+              fontWeight: 'bold',
+              fontSize: 15,
+              color: '#88959E',
+            }}>
+            Tipo de proyecto:
+          </Text>
+          <Picker
+            selectedValue={selectedValue}
+            style={{marginLeft: 10}}
+            onValueChange={(itemValue, itemIndex) =>
+              setSelectedValue(itemValue)
+            }>
+            <Picker.Item label="Productivo" value="Productivo" />
+            <Picker.Item label="Alimentario" value="Alimentario" />
+          </Picker>
+        </View>
+        <CheckBox
+          center
+          title="Proyecto colectivo"
+          iconType="MaterialIcons"
+          checkedColor="#3B666F"
+          checkedIcon="check-box"
+          uncheckedIcon="check-box-outline-blank"
+          checked={checked}
+          onPress={() => {
+            setChecked(!checked);
+            setHomes(1);
             if (errorHomes !== '') {
               setErrorHomes('');
             }
-            setHomes(new_text);
           }}
-          errorStyle={{color: 'red'}}
-          errorMessage={errorHomes}
           containerStyle={{marginBottom: 20}}
         />
-      )}
-      <Button
-        icon={<Icon name="save" size={15} color="white" />}
-        title="Guardar"
-        onPress={() => {
-          if (
-            name === '' ||
-            document === '' ||
-            homes === '' ||
-            homes === '0' ||
-            (homes === 1 && checked)
-          ) {
-            if (name === '') {
-              setErrorName('INGRESE UN VALOR VALIDO');
+        {checked && (
+          <Input
+            value={homes.toString()}
+            label="Numero de hogares"
+            leftIcon={<Icon name="home" size={24} color="black" />}
+            keyboardType="number-pad"
+            onChangeText={text => {
+              const new_text = text.replace(/[,.-]/g, '').trim();
+              if (errorHomes !== '') {
+                setErrorHomes('');
+              }
+              setHomes(new_text);
+            }}
+            errorStyle={{color: '#DC3545'}}
+            errorMessage={errorHomes}
+            containerStyle={{marginBottom: 20}}
+          />
+        )}
+        <IconRNE
+          containerStyle={{alignSelf: 'center'}}
+          raised
+          reverse
+          name="save"
+          type="MaterialIcons"
+          color="#3B666F"
+          size={20}
+          onPress={() => {
+            if (
+              name === '' ||
+              document === '' ||
+              homes === '' ||
+              homes === '0' ||
+              (homes === 1 && checked)
+            ) {
+              if (name === '') {
+                setErrorName('INGRESE UN VALOR VALIDO');
+              }
+              if (document === '') {
+                setErrorDocument('INGRESE UN VALOR VALIDO');
+              }
+              if (homes === '' || homes === '0') {
+                setErrorHomes('INGRESE UN VALOR VALIDO');
+              }
+              if (homes === 1 && checked) {
+                setErrorHomes('DEBE INGRESAR MAS DE 1 HOGAR');
+              }
+            } else {
+              setVisible(true);
             }
-            if (document === '') {
-              setErrorDocument('INGRESE UN VALOR VALIDO');
-            }
-            if (homes === '' || homes === '0') {
-              setErrorHomes('INGRESE UN VALOR VALIDO');
-            }
-            if (homes === 1 && checked) {
-              setErrorHomes('DEBE INGRESAR MAS DE 1 HOGAR');
-            }
-          } else {
-            setVisible(true);
-          }
-        }}
-        buttonStyle={{backgroundColor: '#3B666F'}}
-      />
+          }}
+        />
+      </View>
       <Overlay
         isVisible={isVisible}
         borderRadius={10}
         animationType={'fade'}
-        width={300}
-        height={500}>
-        <>
+        width={320}
+        height={'auto'}>
+        <View style={{justifyContent: 'center'}}>
           <Text style={{fontSize: 20, textAlign: 'center', marginBottom: 20}}>
             Se creara un proyecto con los siguientes valores
           </Text>
-          <Input
-            value={name}
-            label="Representante del proyecto"
-            leftIcon={<Icon name="person" size={24} color="black" />}
-            containerStyle={{marginBottom: 20}}
-            disabled={true}
-          />
-          <Input
-            value={document}
-            label="Cedula del representante"
-            leftIcon={<Icon name="apps" size={24} color="black" />}
-            containerStyle={{marginBottom: 20}}
-            disabled={true}
-          />
-          <Input
-            value={selectedValue}
-            label="Tipo del proyecto"
-            leftIcon={<Icon name="card-travel" size={24} color="black" />}
-            containerStyle={{marginBottom: 20}}
-            disabled={true}
-          />
+          <Text
+            style={{
+              marginLeft: 10,
+              marginTop: 10,
+              fontWeight: 'bold',
+              fontSize: 17,
+              color: '#88959E',
+            }}>
+            Representante:
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginLeft: 10,
+              marginTop: 10,
+              alignItems: 'center',
+            }}>
+            <Icon name="person" size={30} color="black" />
+            <Text style={{fontSize: 17, marginLeft: 15}}>{name}</Text>
+          </View>
+          <Text
+            style={{
+              marginLeft: 10,
+              marginTop: 10,
+              fontWeight: 'bold',
+              fontSize: 17,
+              color: '#88959E',
+            }}>
+            Cedula:
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginLeft: 10,
+              marginTop: 10,
+              alignItems: 'center',
+            }}>
+            <Icon name="apps" size={30} color="black" />
+            <Text style={{fontSize: 17, marginLeft: 15}}>{document}</Text>
+          </View>
+          <Text
+            style={{
+              marginLeft: 10,
+              marginTop: 10,
+              fontWeight: 'bold',
+              fontSize: 17,
+              color: '#88959E',
+            }}>
+            Tipo:
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginLeft: 10,
+              marginTop: 10,
+              alignItems: 'center',
+            }}>
+            <Icon name="card-travel" size={30} color="black" />
+            <Text style={{fontSize: 17, marginLeft: 15}}>{selectedValue}</Text>
+          </View>
           <NumberFormat
             renderText={text => (
-              <Input
-                value={text}
-                label="Tipo del proyecto"
-                leftIcon={
-                  <Icon name="monetization-on" size={24} color="black" />
-                }
-                containerStyle={{marginBottom: 20}}
-                disabled={true}
-              />
+              <>
+                <Text
+                  style={{
+                    marginLeft: 10,
+                    marginTop: 10,
+                    fontWeight: 'bold',
+                    fontSize: 17,
+                    color: '#88959E',
+                  }}>
+                  Presupuesto:
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginLeft: 10,
+                    marginTop: 10,
+                    alignItems: 'center',
+                  }}>
+                  <Icon name="monetization-on" size={30} color="black" />
+                  <Text style={{fontSize: 17, marginLeft: 15}}>{text}</Text>
+                </View>
+              </>
             )}
             value={homes * budget_base}
             displayType={'text'}
             thousandSeparator={true}
             prefix={'$'}
           />
-          <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-            <Button
-              icon={<Icon name="clear" size={15} color="white" />}
-              title="Cancelar"
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              marginVertical: 15,
+            }}>
+            <IconRNE
+              raised
+              reverse
+              name="clear"
+              type="MaterialIcons"
+              color="#DC3545"
+              size={20}
               onPress={() => {
                 setVisible(false);
               }}
-              buttonStyle={{backgroundColor: 'red'}}
             />
-            <Button
-              icon={<Icon name="check" size={15} color="white" />}
-              title="Aceptar"
+            <IconRNE
+              raised
+              reverse
+              name="check"
+              type="MaterialIcons"
+              color="#28A745"
+              size={20}
               onPress={async () => {
                 const data = {
                   id: 0,
@@ -230,12 +306,11 @@ const CreateProject = ({navigation}) => {
                   navigation.navigate('Projects');
                 }
               }}
-              buttonStyle={{backgroundColor: 'green'}}
             />
           </View>
-        </>
+        </View>
       </Overlay>
-    </View>
+    </>
   );
 };
 

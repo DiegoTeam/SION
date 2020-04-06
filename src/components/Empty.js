@@ -14,6 +14,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
   },
+  container: {
+    marginTop: 300,
+  },
 });
 
 export default Empty;

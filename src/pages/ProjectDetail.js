@@ -1,15 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import {View, Alert} from 'react-native';
 //Libraries
-import {Input} from 'react-native-elements';
+import {Text} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {FloatingAction} from 'react-native-floating-action';
 //Utils
 import NumberFormat from 'react-number-format';
 import AsyncStorageAPI from '../utils/AsyncStorageAPI';
+//Components
+import Loading from '../components/Loading';
 
 const ProjectDetail = ({route, navigation}) => {
-  const [data, setData] = useState(route.params);
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const actions = [
     {
       text: 'Ver Insumos',
@@ -27,58 +30,139 @@ const ProjectDetail = ({route, navigation}) => {
     },
     {
       text: 'Eliminar proyecto',
-      color: '#CB3737',
+      color: '#DC3545',
       icon: <Icon name="delete" size={24} color="white" />,
       name: 'delete_project',
       position: 3,
     },
   ];
   useEffect(() => {
-    navigation.setOptions({title: data.project_manager});
-  });
-  return (
+    async function fetchData() {
+      setIsLoading(true);
+      const response = await AsyncStorageAPI.getProject(route.params);
+      setData(response);
+      setIsLoading(false);
+    }
+    fetchData();
+    return navigation.addListener('focus', () => {
+      fetchData();
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigation]);
+
+  return isLoading ? (
+    <Loading />
+  ) : (
     <>
-      <View style={{marginHorizontal: 20}}>
-        <Input
-          value={data.project_manager}
-          label="Representante del proyecto"
-          leftIcon={<Icon name="person" size={24} color="black" />}
-          errorStyle={{color: 'red'}}
-          containerStyle={{marginBottom: 20, marginTop: 20}}
-          disabled={true}
-        />
-        <Input
-          value={data.document}
-          label="Cedula del representante"
-          leftIcon={<Icon name="apps" size={24} color="black" />}
-          containerStyle={{marginBottom: 20}}
-          disabled={true}
-        />
-        <Input
-          value={data.project_type}
-          label="Tipo de proyecto"
-          leftIcon={<Icon name="card-travel" size={24} color="black" />}
-          keyboardType="number-pad"
-          containerStyle={{marginBottom: 20}}
-          disabled={true}
-        />
-        <Input
-          value={data.homes.toString()}
-          label="Numero de hogares"
-          leftIcon={<Icon name="home" size={24} color="black" />}
-          keyboardType="number-pad"
-          containerStyle={{marginBottom: 20}}
-          disabled={true}
-        />
+      <View style={{marginHorizontal: 20, marginTop: 20}}>
+        <Text
+          style={{
+            marginLeft: 10,
+            marginTop: 10,
+            fontWeight: 'bold',
+            fontSize: 17,
+            color: '#88959E',
+          }}>
+          Representante:
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginLeft: 10,
+            marginTop: 10,
+            alignItems: 'center',
+          }}>
+          <Icon name="person" size={30} color="black" />
+          <Text style={{fontSize: 17, marginLeft: 15}}>
+            {data.project_manager}
+          </Text>
+        </View>
+        <Text
+          style={{
+            marginLeft: 10,
+            marginTop: 10,
+            fontWeight: 'bold',
+            fontSize: 17,
+            color: '#88959E',
+          }}>
+          Cedula:
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginLeft: 10,
+            marginTop: 10,
+            alignItems: 'center',
+          }}>
+          <Icon name="apps" size={30} color="black" />
+          <Text style={{fontSize: 17, marginLeft: 15}}>{data.document}</Text>
+        </View>
+        <Text
+          style={{
+            marginLeft: 10,
+            marginTop: 10,
+            fontWeight: 'bold',
+            fontSize: 17,
+            color: '#88959E',
+          }}>
+          Tipo:
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginLeft: 10,
+            marginTop: 10,
+            alignItems: 'center',
+          }}>
+          <Icon name="card-travel" size={30} color="black" />
+          <Text style={{fontSize: 17, marginLeft: 15}}>
+            {data.project_type}
+          </Text>
+        </View>
+        <Text
+          style={{
+            marginLeft: 10,
+            marginTop: 10,
+            fontWeight: 'bold',
+            fontSize: 17,
+            color: '#88959E',
+          }}>
+          Numero de hogares:
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginLeft: 10,
+            marginTop: 10,
+            alignItems: 'center',
+          }}>
+          <Icon name="home" size={30} color="black" />
+          <Text style={{fontSize: 17, marginLeft: 15}}>{data.homes}</Text>
+        </View>
         <NumberFormat
           renderText={text => (
-            <Input
-              value={text}
-              label="Presupuesto del proyecto"
-              leftIcon={<Icon name="monetization-on" size={24} color="black" />}
-              containerStyle={{marginBottom: 20}}
-              disabled={true}
-            />
+            <>
+              <Text
+                style={{
+                  marginLeft: 10,
+                  marginTop: 10,
+                  fontWeight: 'bold',
+                  fontSize: 17,
+                  color: '#88959E',
+                }}>
+                Presupuesto:
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginLeft: 10,
+                  marginTop: 10,
+                  alignItems: 'center',
+                }}>
+                <Icon name="monetization-on" size={30} color="black" />
+                <Text style={{fontSize: 17, marginLeft: 15}}>{text}</Text>
+              </View>
+            </>
           )}
           value={data.budget}
           displayType={'text'}
@@ -87,13 +171,28 @@ const ProjectDetail = ({route, navigation}) => {
         />
         <NumberFormat
           renderText={text => (
-            <Input
-              value={text}
-              label="Presupuesto gastado"
-              leftIcon={<Icon name="monetization-on" size={24} color="black" />}
-              containerStyle={{marginBottom: 20}}
-              disabled={true}
-            />
+            <>
+              <Text
+                style={{
+                  marginLeft: 10,
+                  marginTop: 10,
+                  fontWeight: 'bold',
+                  fontSize: 17,
+                  color: '#88959E',
+                }}>
+                Presupuesto gastado:
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginLeft: 10,
+                  marginTop: 10,
+                  alignItems: 'center',
+                }}>
+                <Icon name="monetization-on" size={30} color="black" />
+                <Text style={{fontSize: 17, marginLeft: 15}}>{text}</Text>
+              </View>
+            </>
           )}
           value={data.budget_used}
           displayType={'text'}
@@ -102,13 +201,28 @@ const ProjectDetail = ({route, navigation}) => {
         />
         <NumberFormat
           renderText={text => (
-            <Input
-              value={text}
-              label="Presupuesto disponible"
-              leftIcon={<Icon name="monetization-on" size={24} color="black" />}
-              containerStyle={{marginBottom: 20}}
-              disabled={true}
-            />
+            <>
+              <Text
+                style={{
+                  marginLeft: 10,
+                  marginTop: 10,
+                  fontWeight: 'bold',
+                  fontSize: 17,
+                  color: '#88959E',
+                }}>
+                Presupuesto disponible:
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginLeft: 10,
+                  marginTop: 10,
+                  alignItems: 'center',
+                }}>
+                <Icon name="monetization-on" size={30} color="black" />
+                <Text style={{fontSize: 17, marginLeft: 15}}>{text}</Text>
+              </View>
+            </>
           )}
           value={data.budget_available}
           displayType={'text'}
@@ -138,13 +252,14 @@ const ProjectDetail = ({route, navigation}) => {
                     await AsyncStorageAPI.deleteElement(data.id);
                     navigation.navigate('Projects');
                   },
+                  style: 'OK',
                 },
               ],
               {cancelable: false},
             );
           }
           if (name === 'see_supplies') {
-            navigation.navigate('Supplies', data);
+            navigation.navigate('Supplies', data.id);
           }
         }}
       />

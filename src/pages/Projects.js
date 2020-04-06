@@ -10,9 +10,11 @@ import NumberFormat from 'react-number-format';
 import AsyncStorageAPI from '../utils/AsyncStorageAPI';
 //Components
 import Empty from '../components/Empty';
+import Loading from '../components/Loading';
 
 const Projects = ({navigation}) => {
   const [data, setData] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const actions = [
     {
       text: 'Crear proyecto',
@@ -25,31 +27,23 @@ const Projects = ({navigation}) => {
   useEffect(() => {
     SplashScreen.hide();
     const getData = async () => {
+      setIsLoading(true);
       const response = await AsyncStorageAPI.getData('projectsData');
       setData(response);
+      setIsLoading(false);
     };
     return navigation.addListener('focus', () => {
       getData();
     });
   }, [navigation]);
-  useEffect(() => {
-    navigation.setOptions({title: 'Proyectos'});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const renderItem = ({item}) => (
     <ListItem
+      underlayColor={'#f2f2f2'}
+      activeOpacity={0.5}
+      containerStyle={{borderRadius: 50, marginBottom: 5}}
       title={item.project_manager}
       subtitle={
-        <NumberFormat
-          value={item.budget_available}
-          renderText={value => <Text>{value}</Text>}
-          thousandSeparator={true}
-          displayType={'text'}
-          prefix={'$'}
-        />
-      }
-      rightTitle={
         <NumberFormat
           value={item.budget_used}
           renderText={value => <Text>{value}</Text>}
@@ -59,21 +53,24 @@ const Projects = ({navigation}) => {
         />
       }
       leftIcon={{name: 'person'}}
-      bottomDivider
       chevron
       onPress={() => {
-        navigation.navigate('ProjectDetail', item);
+        navigation.navigate('ProjectDetail', item.id);
       }}
     />
   );
-  return (
-    <View style={{flex: 1, backgroundColor: '#f2f2f2'}}>
-      <FlatList
-        keyExtractor={item => item.id.toString()}
-        data={data}
-        renderItem={renderItem}
-        ListEmptyComponent={<Empty text="No hay proyectos creados." />}
-      />
+  return isLoading ? (
+    <Loading />
+  ) : (
+    <>
+      <View style={{backgroundColor: '#f2f2f2', margin: 5}}>
+        <FlatList
+          keyExtractor={item => item.id.toString()}
+          data={data}
+          renderItem={renderItem}
+          ListEmptyComponent={<Empty text="No hay proyectos creados." />}
+        />
+      </View>
       <FloatingAction
         actions={actions}
         color="#3B666F"
@@ -82,7 +79,7 @@ const Projects = ({navigation}) => {
           //TODO opciones de ordenado y filtro
         }}
       />
-    </View>
+    </>
   );
 };
 
