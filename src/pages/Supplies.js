@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {View, FlatList, ActivityIndicator} from 'react-native';
+import {View, FlatList} from 'react-native';
 //Libraries
 import {Text, ListItem} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import NumberFormat from 'react-number-format';
+import {FloatingAction} from 'react-native-floating-action';
 //Components
 import Empty from '../components/Empty';
-import {FloatingAction} from 'react-native-floating-action';
+import Loading from '../components/Loading';
+//Utils
 import AsyncStorageAPI from '../utils/AsyncStorageAPI';
 
 const Supplies = ({navigation, route}) => {
@@ -23,7 +25,6 @@ const Supplies = ({navigation, route}) => {
     },
   ];
   useEffect(() => {
-    navigation.setOptions({title: 'Insumos'});
     async function fetchData() {
       setIsLoading(true);
       const response = await AsyncStorageAPI.getProject(route.params);
@@ -40,6 +41,9 @@ const Supplies = ({navigation, route}) => {
   const renderItem = ({item}) => (
     <ListItem
       title={item.name}
+      underlayColor={'#f2f2f2'}
+      activeOpacity={0.5}
+      containerStyle={{borderRadius: 25, marginBottom: 5}}
       subtitle={
         <NumberFormat
           value={item.price * item.count}
@@ -49,33 +53,31 @@ const Supplies = ({navigation, route}) => {
           prefix={'$'}
         />
       }
-      bottomDivider
       badge={{
         value: item.count,
         containerStyle: {marginTop: -20},
+        textStyle: {fontSize: 15},
       }}
       onPress={() => {
         navigation.navigate('EditSupplies', {
           data: data,
           supple: item,
         });
-        //TODO ir a detalle del suministro
       }}
     />
   );
   return isLoading ? (
-    <View>
-      {/*TODO crear indicardor de carga*/}
-      <ActivityIndicator size="large" color="#0000ff" />
-    </View>
+    <Loading />
   ) : (
-    <View style={{flex: 1, backgroundColor: '#f2f2f2'}}>
-      <FlatList
-        keyExtractor={item => item.id.toString()}
-        data={supples}
-        renderItem={renderItem}
-        ListEmptyComponent={<Empty text="No hay insumos agregados." />}
-      />
+    <>
+      <View style={{flex: 1, margin: 5}}>
+        <FlatList
+          keyExtractor={item => item.id.toString()}
+          data={supples}
+          renderItem={renderItem}
+          ListEmptyComponent={<Empty text="No hay insumos agregados." />}
+        />
+      </View>
       <FloatingAction
         actions={actions}
         color="#3B666F"
@@ -84,7 +86,7 @@ const Supplies = ({navigation, route}) => {
           //TODO opciones de ordenado y filtro
         }}
       />
-    </View>
+    </>
   );
 };
 

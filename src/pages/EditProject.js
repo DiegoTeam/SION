@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {Picker, View, Alert, ActivityIndicator} from 'react-native';
+import React, {useState} from 'react';
+import {Picker, View, Alert} from 'react-native';
 //Libraries
-import {Button, Input, Overlay, Text} from 'react-native-elements';
+import {Input, Overlay, Text, Icon as IconRNE} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 //Utils
 import NumberFormat from 'react-number-format';
@@ -19,9 +19,7 @@ const EditProject = ({route, navigation}) => {
   const [isVisible, setVisible] = useState(false);
   const [selectedValue, setSelectedValue] = useState(data.project_type);
   const budget_base = 800000;
-  useEffect(() => {
-    navigation.setOptions({title: 'EDITAR: ' + data.project_manager});
-  });
+
   return (
     <>
       <View style={{flex: 1, justifyContent: 'center', marginHorizontal: 20}}>
@@ -127,9 +125,14 @@ const EditProject = ({route, navigation}) => {
           thousandSeparator={true}
           prefix={'$'}
         />
-        <Button
-          icon={<Icon name="save" size={15} color="white" />}
-          title="Guardar"
+        <IconRNE
+          containerStyle={{alignSelf: 'center'}}
+          raised
+          reverse
+          name="save"
+          type="MaterialIcons"
+          color="#3B666F"
+          size={20}
           onPress={() => {
             if (
               name === '' ||
@@ -183,7 +186,6 @@ const EditProject = ({route, navigation}) => {
               }
             }
           }}
-          buttonStyle={{backgroundColor: '#3B666F'}}
         />
       </View>
       <Overlay
@@ -191,61 +193,125 @@ const EditProject = ({route, navigation}) => {
         borderRadius={10}
         animationType={'fade'}
         width={300}
-        height={500}>
-        <>
+        height={'auto'}>
+        <View style={{justifyContent: 'center'}}>
           <Text style={{fontSize: 20, textAlign: 'center', marginBottom: 20}}>
             Se editara el proyecto con los siguientes valores
           </Text>
-          <Input
-            value={name}
-            label="Representante del proyecto"
-            leftIcon={<Icon name="person" size={24} color="black" />}
-            containerStyle={{marginBottom: 20}}
-            disabled={true}
-          />
-          <Input
-            value={document}
-            label="Cedula del representante"
-            leftIcon={<Icon name="apps" size={24} color="black" />}
-            containerStyle={{marginBottom: 20}}
-            disabled={true}
-          />
-          <Input
-            value={selectedValue}
-            label="Tipo del proyecto"
-            leftIcon={<Icon name="card-travel" size={24} color="black" />}
-            containerStyle={{marginBottom: 20}}
-            disabled={true}
-          />
+          <Text
+            style={{
+              marginLeft: 10,
+              marginTop: 10,
+              fontWeight: 'bold',
+              fontSize: 17,
+              color: '#88959E',
+            }}>
+            Representante:
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginLeft: 10,
+              marginTop: 10,
+              alignItems: 'center',
+            }}>
+            <Icon name="person" size={30} color="black" />
+            <Text style={{fontSize: 17, marginLeft: 15}}>{name}</Text>
+          </View>
+          <Text
+            style={{
+              marginLeft: 10,
+              marginTop: 10,
+              fontWeight: 'bold',
+              fontSize: 17,
+              color: '#88959E',
+            }}>
+            Cedula:
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginLeft: 10,
+              marginTop: 10,
+              alignItems: 'center',
+            }}>
+            <Icon name="apps" size={30} color="black" />
+            <Text style={{fontSize: 17, marginLeft: 15}}>{document}</Text>
+          </View>
+          <Text
+            style={{
+              marginLeft: 10,
+              marginTop: 10,
+              fontWeight: 'bold',
+              fontSize: 17,
+              color: '#88959E',
+            }}>
+            Tipo:
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginLeft: 10,
+              marginTop: 10,
+              alignItems: 'center',
+            }}>
+            <Icon name="card-travel" size={30} color="black" />
+            <Text style={{fontSize: 17, marginLeft: 15}}>{selectedValue}</Text>
+          </View>
           <NumberFormat
             renderText={text => (
-              <Input
-                value={text}
-                label="Nuevo presupuesto"
-                leftIcon={
-                  <Icon name="monetization-on" size={24} color="black" />
-                }
-                containerStyle={{marginBottom: 20}}
-                disabled={true}
-              />
+              <>
+                <Text
+                  style={{
+                    marginLeft: 10,
+                    marginTop: 10,
+                    fontWeight: 'bold',
+                    fontSize: 17,
+                    color: '#88959E',
+                  }}>
+                  Presupuesto:
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginLeft: 10,
+                    marginTop: 10,
+                    alignItems: 'center',
+                  }}>
+                  <Icon name="monetization-on" size={30} color="black" />
+                  <Text style={{fontSize: 17, marginLeft: 15}}>{text}</Text>
+                </View>
+              </>
             )}
             value={homes * budget_base}
             displayType={'text'}
             thousandSeparator={true}
             prefix={'$'}
           />
-          <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-            <Button
-              icon={<Icon name="clear" size={15} color="white" />}
-              title="Cancelar"
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              marginVertical: 15,
+            }}>
+            <IconRNE
+              raised
+              reverse
+              name="clear"
+              type="MaterialIcons"
+              color="#DC3545"
+              size={20}
               onPress={() => {
                 setVisible(false);
               }}
-              buttonStyle={{backgroundColor: 'red'}}
             />
-            <Button
-              icon={<Icon name="save" size={15} color="white" />}
-              title="Guardar"
+            <IconRNE
+              raised
+              reverse
+              name="save"
+              type="MaterialIcons"
+              color="#28A745"
+              size={20}
               onPress={async () => {
                 if (data.project_type !== selectedValue) {
                   const newData = {
@@ -277,10 +343,9 @@ const EditProject = ({route, navigation}) => {
                 setVisible(false);
                 navigation.navigate('ProjectDetail', data.id);
               }}
-              buttonStyle={{backgroundColor: 'green'}}
             />
           </View>
-        </>
+        </View>
       </Overlay>
     </>
   );

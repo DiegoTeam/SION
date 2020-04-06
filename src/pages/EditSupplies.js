@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {View, Alert} from 'react-native';
 //Libraries
-import {Button, Text, Icon} from 'react-native-elements';
+import {Text, Icon as IconRNE} from 'react-native-elements';
 import NumberFormat from 'react-number-format';
 //Utils
 import AsyncStorageAPI from '../utils/AsyncStorageAPI';
@@ -14,9 +14,6 @@ const EditSupplies = ({navigation, route}) => {
   const budgetAvailableWithoutSupple =
     route.params.data.budget_available +
     route.params.supple.price * route.params.supple.count;
-  useEffect(() => {
-    navigation.setOptions({title: 'Editar insumo'});
-  }, [navigation]);
   return (
     <View style={{flex: 1, justifyContent: 'center', marginHorizontal: 20}}>
       <Text
@@ -69,7 +66,7 @@ const EditSupplies = ({navigation, route}) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Icon
+        <IconRNE
           raised
           reverse
           name="remove"
@@ -85,7 +82,7 @@ const EditSupplies = ({navigation, route}) => {
           }}
         />
         <Text h3>{count}</Text>
-        <Icon
+        <IconRNE
           raised
           reverse
           name="add"
@@ -153,10 +150,19 @@ const EditSupplies = ({navigation, route}) => {
         thousandSeparator={true}
         prefix={'$'}
       />
-      <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-        <Button
-          icon={<Icon name="clear" size={15} color="white" />}
-          title=" Eliminar"
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          marginVertical: 15,
+        }}>
+        <IconRNE
+          raised
+          reverse
+          name="clear"
+          type="MaterialIcons"
+          color="#DC3545"
+          size={20}
           onPress={() => {
             Alert.alert(
               'ALERTA',
@@ -185,11 +191,14 @@ const EditSupplies = ({navigation, route}) => {
               {cancelable: true},
             );
           }}
-          buttonStyle={{backgroundColor: 'red'}}
         />
-        <Button
-          icon={<Icon name="save" size={15} color="white" />}
-          title=" Guardar"
+        <IconRNE
+          raised
+          reverse
+          name="save"
+          type="MaterialIcons"
+          color="#3B666F"
+          size={20}
           onPress={() => {
             if (count === route.params.supple.count) {
               Alert.alert(
@@ -238,7 +247,6 @@ const EditSupplies = ({navigation, route}) => {
               }
             }
           }}
-          buttonStyle={{backgroundColor: '#3B666F'}}
         />
       </View>
     </View>
