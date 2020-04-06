@@ -178,8 +178,7 @@ const EditSupplies = ({navigation, route}) => {
                       }
                     }
                     await AsyncStorageAPI.updateElement(data.id, data);
-                    navigation.navigate('Projects');
-                    //TODO regresar a la pagina de insumos
+                    navigation.navigate('Supplies', route.params.id);
                   },
                 },
               ],
@@ -230,8 +229,7 @@ const EditSupplies = ({navigation, route}) => {
                           }
                         }
                         await AsyncStorageAPI.updateElement(data.id, data);
-                        navigation.navigate('Projects');
-                        //TODO regresar a la pagina de insumos
+                        navigation.navigate('Supplies', route.params.id);
                       },
                     },
                   ],

@@ -59,8 +59,7 @@ const AddSupplies = ({navigation, route}) => {
               text: 'Agregar',
               onPress: async () => {
                 await AsyncStorageAPI.addToData(route.params.id, item);
-                navigation.navigate('Projects');
-                //TODO regresar a insumos en vez de a proyectos
+                navigation.navigate('Supplies', route.params.id);
               },
             },
           ],

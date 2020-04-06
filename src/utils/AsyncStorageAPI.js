@@ -60,6 +60,12 @@ class AsyncStorageAPI {
     }
     this.setData(data);
   }
+
+  async getProject(id) {
+    const data = await this.getData(key);
+    const element = data.filter(element => element.id === id);
+    return element[0];
+  }
 }
 
 export default new AsyncStorageAPI();

@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Picker, View, Alert} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Picker, View, Alert, ActivityIndicator} from 'react-native';
 //Libraries
 import {Button, Input, Overlay, Text} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import NumberFormat from 'react-number-format';
 import AsyncStorageAPI from '../utils/AsyncStorageAPI';
 
+//TODO integrar API
 const EditProject = ({route, navigation}) => {
   const [data, setData] = useState(route.params);
   const [name, setName] = useState(data.project_manager);
@@ -18,7 +19,7 @@ const EditProject = ({route, navigation}) => {
   const [isVisible, setVisible] = useState(false);
   const [selectedValue, setSelectedValue] = useState(data.project_type);
   const budget_base = 800000;
-  useState(() => {
+  useEffect(() => {
     navigation.setOptions({title: 'EDITAR: ' + data.project_manager});
   });
   return (
@@ -274,7 +275,7 @@ const EditProject = ({route, navigation}) => {
                   await AsyncStorageAPI.updateElement(data.id, newData);
                 }
                 setVisible(false);
-                navigation.navigate('Projects');
+                navigation.navigate('ProjectDetail', data.id);
               }}
               buttonStyle={{backgroundColor: 'green'}}
             />

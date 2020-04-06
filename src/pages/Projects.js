@@ -62,7 +62,7 @@ const Projects = ({navigation}) => {
       bottomDivider
       chevron
       onPress={() => {
-        navigation.navigate('ProjectDetail', item);
+        navigation.navigate('ProjectDetail', item.id);
       }}
     />
   );
