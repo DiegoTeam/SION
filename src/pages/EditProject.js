@@ -18,14 +18,25 @@ const EditProject = ({route, navigation}) => {
   const [errorHomes, setErrorHomes] = useState('');
   const [isVisible, setVisible] = useState(false);
   const [selectedValue, setSelectedValue] = useState(data.project_type);
-  const budget_base = 800000;
+  const budget_base_a = 800000;
+  const budget_base_p = 1750000;
+  const budget_base_f = 180000;
+  const [budgetBase, setBudgetBase] = useState(() => {
+    if (selectedValue === 'Productivo') {
+      return budget_base_p;
+    } else if (selectedValue === 'Alimentario') {
+      return budget_base_a;
+    } else if (selectedValue === 'Fortalecimiento') {
+      return budget_base_f;
+    }
+  });
 
   return (
     <>
       <View style={{flex: 1, justifyContent: 'center', marginHorizontal: 20}}>
         <Input
           value={name}
-          label="Representante del proyecto"
+          label="Jefe del hogar"
           leftIcon={<Icon name="person" size={24} color="black" />}
           onChangeText={text => {
             if (errorName !== '') {
@@ -39,7 +50,7 @@ const EditProject = ({route, navigation}) => {
         />
         <Input
           value={document}
-          label="Cedula del representante"
+          label="Cedula"
           leftIcon={<Icon name="apps" size={24} color="black" />}
           keyboardType="numeric"
           onChangeText={text => {
@@ -72,11 +83,19 @@ const EditProject = ({route, navigation}) => {
           <Picker
             selectedValue={selectedValue}
             style={{marginLeft: 10}}
-            onValueChange={(itemValue, itemIndex) =>
-              setSelectedValue(itemValue)
-            }>
+            onValueChange={(itemValue, itemIndex) => {
+              setSelectedValue(itemValue);
+              if (itemValue === 'Productivo') {
+                setBudgetBase(budget_base_p);
+              } else if (itemValue === 'Alimentario') {
+                setBudgetBase(budget_base_a);
+              } else if (itemValue === 'Fortalecimiento') {
+                setBudgetBase(budget_base_f);
+              }
+            }}>
             <Picker.Item label="Productivo" value="Productivo" />
             <Picker.Item label="Alimentario" value="Alimentario" />
+            <Picker.Item label="Fortalecimiento" value="Fortalecimiento" />
           </Picker>
         </View>
         <Input
@@ -120,7 +139,7 @@ const EditProject = ({route, navigation}) => {
               disabled={true}
             />
           )}
-          value={homes * budget_base}
+          value={homes * budgetBase}
           displayType={'text'}
           thousandSeparator={true}
           prefix={'$'}
@@ -150,7 +169,7 @@ const EditProject = ({route, navigation}) => {
                 setErrorHomes('INGRESE UN VALOR VALIDO');
               }
             } else {
-              const new_budget = budget_base * homes;
+              const new_budget = budgetBase * homes;
               if (
                 data.budget_used > new_budget &&
                 data.project_type === selectedValue
@@ -206,7 +225,7 @@ const EditProject = ({route, navigation}) => {
               fontSize: 17,
               color: '#88959E',
             }}>
-            Representante:
+            Jefe del hogar:
           </Text>
           <View
             style={{
@@ -283,7 +302,7 @@ const EditProject = ({route, navigation}) => {
                 </View>
               </>
             )}
-            value={homes * budget_base}
+            value={homes * budgetBase}
             displayType={'text'}
             thousandSeparator={true}
             prefix={'$'}
@@ -316,26 +335,28 @@ const EditProject = ({route, navigation}) => {
                 if (data.project_type !== selectedValue) {
                   const newData = {
                     id: data.id,
+                    isSynchronized: false,
                     project_manager: name,
-                    project_type: selectedValue,
                     document: document,
+                    project_type: selectedValue,
                     homes: homes,
-                    budget: budget_base * homes,
+                    budget: budgetBase * homes,
                     budget_used: 0,
-                    budget_available: budget_base * homes,
+                    budget_available: budgetBase * homes,
                     supplies: [],
                   };
                   await AsyncStorageAPI.updateElement(data.id, newData);
                 } else {
                   const newData = {
                     id: data.id,
+                    isSynchronized: false,
                     project_manager: name,
-                    project_type: selectedValue,
                     document: document,
+                    project_type: selectedValue,
                     homes: homes,
-                    budget: budget_base * homes,
+                    budget: budgetBase * homes,
                     budget_used: data.budget_used,
-                    budget_available: budget_base * homes - data.budget_used,
+                    budget_available: budgetBase * homes - data.budget_used,
                     supplies: data.supplies,
                   };
                   await AsyncStorageAPI.updateElement(data.id, newData);

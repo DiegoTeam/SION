@@ -1,16 +1,15 @@
 import React, {useState} from 'react';
 import {View, Alert} from 'react-native';
 //Libraries
-import {Text, Icon as IconRNE} from 'react-native-elements';
+import {Text, Icon as IconRNE, Input} from 'react-native-elements';
 import NumberFormat from 'react-number-format';
 //Utils
 import AsyncStorageAPI from '../utils/AsyncStorageAPI';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const EditSupplies = ({navigation, route}) => {
   const [count, setCount] = useState(route.params.supple.count);
-  const [deductDisable, setDeductDisable] = useState(() => {
-    return count === 1;
-  });
+  const [errorCount, setErrorCount] = useState('');
   const budgetAvailableWithoutSupple =
     route.params.data.budget_available +
     route.params.supple.price * route.params.supple.count;
@@ -50,53 +49,21 @@ const EditSupplies = ({navigation, route}) => {
         thousandSeparator={true}
         prefix={'$'}
       />
-      <Text
-        style={{
-          marginLeft: 10,
-          marginTop: 10,
-          fontWeight: 'bold',
-          fontSize: 17,
-          color: '#88959E',
-        }}>
-        Cantidad:
-      </Text>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <IconRNE
-          raised
-          reverse
-          name="remove"
-          type="MaterialIcons"
-          color="#3B666F"
-          size={13}
-          disabled={deductDisable}
-          onPress={() => {
-            if (count === 2) {
-              setDeductDisable(true);
-            }
-            setCount(count - 1);
-          }}
-        />
-        <Text h3>{count}</Text>
-        <IconRNE
-          raised
-          reverse
-          name="add"
-          type="MaterialIcons"
-          color="#3B666F"
-          size={13}
-          onPress={() => {
-            if (count === 1) {
-              setDeductDisable(false);
-            }
-            setCount(count + 1);
-          }}
-        />
-      </View>
+      <Input
+        value={count.toString()}
+        label="Cantidad"
+        keyboardType="number-pad"
+        onChangeText={text => {
+          const new_text = text.replace(/[,.-]/g, '').trim();
+          if (errorCount !== '') {
+            setErrorCount('');
+          }
+          setCount(new_text);
+        }}
+        errorStyle={{color: '#dc3545'}}
+        errorMessage={errorCount}
+        containerStyle={{marginTop: 10}}
+      />
       <Text
         style={{
           marginLeft: 10,
@@ -178,6 +145,7 @@ const EditSupplies = ({navigation, route}) => {
                     const data = route.params.data;
                     data.budget_available = budgetAvailableWithoutSupple;
                     data.budget_used = data.budget - data.budget_available;
+                    data.isSynchronized = false;
                     for (let i = 0; i < data.supplies.length; i++) {
                       if (data.supplies[i].id === route.params.supple.id) {
                         data.supplies.splice(i, 1);
@@ -200,50 +168,58 @@ const EditSupplies = ({navigation, route}) => {
           color="#3B666F"
           size={20}
           onPress={() => {
-            if (count === route.params.supple.count) {
-              Alert.alert(
-                'ALERTA',
-                'La cantidad del insumo no ha cambiado',
-                [{text: 'Aceptar'}],
-                {cancelable: false},
-              );
+            if (count === '0' || count === '') {
+              setErrorCount('INGRESE UNA CANTIDAD VALIDA');
             } else {
-              if (
-                route.params.supple.price * count >
-                budgetAvailableWithoutSupple
-              ) {
+              if (count === route.params.supple.count) {
                 Alert.alert(
                   'ALERTA',
-                  'Este insumo supera el presupuesto disponible para este proyecto',
+                  'La cantidad del insumo no ha cambiado',
                   [{text: 'Aceptar'}],
                   {cancelable: false},
                 );
               } else {
-                Alert.alert(
-                  'ALERTA',
-                  'Desea guardar este insumo?',
-                  [
-                    {text: 'Cancelar'},
-                    {
-                      text: 'Guardar',
-                      onPress: async () => {
-                        const data = route.params.data;
-                        data.budget_available =
-                          budgetAvailableWithoutSupple -
-                          route.params.supple.price * count;
-                        data.budget_used = data.budget - data.budget_available;
-                        for (let i = 0; i < data.supplies.length; i++) {
-                          if (data.supplies[i].id === route.params.supple.id) {
-                            data.supplies[i].count = count;
+                if (
+                  route.params.supple.price * count >
+                  budgetAvailableWithoutSupple
+                ) {
+                  Alert.alert(
+                    'ALERTA',
+                    'Este insumo supera el presupuesto disponible para este proyecto',
+                    [{text: 'Aceptar'}],
+                    {cancelable: false},
+                  );
+                } else {
+                  Alert.alert(
+                    'ALERTA',
+                    'Desea guardar este insumo?',
+                    [
+                      {text: 'Cancelar'},
+                      {
+                        text: 'Guardar',
+                        onPress: async () => {
+                          const data = route.params.data;
+                          data.budget_available =
+                            budgetAvailableWithoutSupple -
+                            route.params.supple.price * count;
+                          data.budget_used =
+                            data.budget - data.budget_available;
+                          data.isSynchronized = false;
+                          for (let i = 0; i < data.supplies.length; i++) {
+                            if (
+                              data.supplies[i].id === route.params.supple.id
+                            ) {
+                              data.supplies[i].count = count;
+                            }
                           }
-                        }
-                        await AsyncStorageAPI.updateElement(data.id, data);
-                        navigation.navigate('Supplies', route.params.id);
+                          await AsyncStorageAPI.updateElement(data.id, data);
+                          navigation.navigate('Supplies', route.params.id);
+                        },
                       },
-                    },
-                  ],
-                  {cancelable: false},
-                );
+                    ],
+                    {cancelable: false},
+                  );
+                }
               }
             }
           }}

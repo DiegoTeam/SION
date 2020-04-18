@@ -7,6 +7,7 @@ import {FloatingAction} from 'react-native-floating-action';
 //Utils
 import NumberFormat from 'react-number-format';
 import AsyncStorageAPI from '../utils/AsyncStorageAPI';
+import ProjectData from '../utils/ProjectData';
 //Components
 import Loading from '../components/Loading';
 
@@ -29,11 +30,18 @@ const ProjectDetail = ({route, navigation}) => {
       position: 2,
     },
     {
+      text: 'Sincronizar proyecto',
+      color: '#3B666F',
+      icon: <Icon name="backup" size={24} color="white" />,
+      name: 'synchronize_project',
+      position: 3,
+    },
+    {
       text: 'Eliminar proyecto',
       color: '#DC3545',
       icon: <Icon name="delete" size={24} color="white" />,
       name: 'delete_project',
-      position: 3,
+      position: 4,
     },
   ];
   useEffect(() => {
@@ -63,7 +71,7 @@ const ProjectDetail = ({route, navigation}) => {
             fontSize: 17,
             color: '#88959E',
           }}>
-          Representante:
+          Jefe del hogar:
         </Text>
         <View
           style={{
@@ -229,6 +237,24 @@ const ProjectDetail = ({route, navigation}) => {
           thousandSeparator={true}
           prefix={'$'}
         />
+        <View
+          style={{
+            flexDirection: 'row',
+            marginLeft: 10,
+            marginTop: 10,
+            alignItems: 'center',
+          }}>
+          <Icon
+            name="backup"
+            size={30}
+            color={data.isSynchronized ? '#28A745' : '#DC3545'}
+          />
+          <Text style={{fontSize: 17, marginLeft: 15}}>
+            {data.isSynchronized
+              ? 'Proyecto sincronizado'
+              : 'Proyecto no sincronizado'}
+          </Text>
+        </View>
       </View>
       <FloatingAction
         actions={actions}
@@ -260,6 +286,52 @@ const ProjectDetail = ({route, navigation}) => {
           }
           if (name === 'see_supplies') {
             navigation.navigate('Supplies', data.id);
+          }
+          if (name === 'synchronize_project') {
+            if (data.isSynchronized) {
+              Alert.alert(
+                'ALERTA',
+                'Este proyecto ya esta sincronizado',
+                [
+                  {
+                    text: 'Aceptar',
+                    style: 'OK',
+                  },
+                ],
+                {cancelable: false},
+              );
+            } else {
+              Alert.alert(
+                'ALERTA',
+                'Esta seguro de sincronizar este proyecto?',
+                [
+                  {
+                    text: 'Cancelar',
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'Sincronizar',
+                    onPress: async () => {
+                      const userData = await AsyncStorageAPI.getUserData();
+                      const projectData = {
+                        json: {
+                          data: data,
+                          nombre: userData.name,
+                          documento: userData.document,
+                        },
+                      };
+                      await ProjectData.post(projectData);
+                      const newData = data;
+                      newData.isSynchronized = true;
+                      await AsyncStorageAPI.updateElement(newData.id, newData);
+                      navigation.navigate('ProjectDetail', newData.id);
+                    },
+                    style: 'OK',
+                  },
+                ],
+                {cancelable: false},
+              );
+            }
           }
         }}
       />
