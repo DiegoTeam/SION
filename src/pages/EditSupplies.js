@@ -145,6 +145,7 @@ const EditSupplies = ({navigation, route}) => {
                     const data = route.params.data;
                     data.budget_available = budgetAvailableWithoutSupple;
                     data.budget_used = data.budget - data.budget_available;
+                    data.isSynchronized = false;
                     for (let i = 0; i < data.supplies.length; i++) {
                       if (data.supplies[i].id === route.params.supple.id) {
                         data.supplies.splice(i, 1);
@@ -203,6 +204,7 @@ const EditSupplies = ({navigation, route}) => {
                             route.params.supple.price * count;
                           data.budget_used =
                             data.budget - data.budget_available;
+                          data.isSynchronized = false;
                           for (let i = 0; i < data.supplies.length; i++) {
                             if (
                               data.supplies[i].id === route.params.supple.id

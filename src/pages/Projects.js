@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, FlatList} from 'react-native';
 //Libraries
-import SplashScreen from 'react-native-splash-screen';
 import {FloatingAction} from 'react-native-floating-action';
 import {ListItem, Text} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -25,7 +24,6 @@ const Projects = ({navigation}) => {
     },
   ];
   useEffect(() => {
-    SplashScreen.hide();
     const getData = async () => {
       setIsLoading(true);
       const response = await AsyncStorageAPI.getData('projectsData');
@@ -36,6 +34,14 @@ const Projects = ({navigation}) => {
       getData();
     });
   }, [navigation]);
+
+  const setIcon = item => {
+    if (item.isSynchronized) {
+      return {name: 'backup', color: '#28A745'};
+    } else {
+      return {name: 'backup', color: '#DC3545'};
+    }
+  };
 
   const renderItem = ({item}) => (
     <ListItem
@@ -52,7 +58,7 @@ const Projects = ({navigation}) => {
           prefix={'$'}
         />
       }
-      leftIcon={{name: 'person'}}
+      leftIcon={setIcon(item)}
       chevron
       onPress={() => {
         navigation.navigate('ProjectDetail', item.id);

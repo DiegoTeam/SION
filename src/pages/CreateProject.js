@@ -291,9 +291,10 @@ const CreateProject = ({navigation}) => {
               onPress={async () => {
                 const data = {
                   id: 0,
+                  isSynchronized: false,
                   project_manager: name,
-                  project_type: selectedValue,
                   document: document,
+                  project_type: selectedValue,
                   homes: homes,
                   budget: budgetBase * homes,
                   budget_used: 0,

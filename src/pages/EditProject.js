@@ -335,9 +335,10 @@ const EditProject = ({route, navigation}) => {
                 if (data.project_type !== selectedValue) {
                   const newData = {
                     id: data.id,
+                    isSynchronized: false,
                     project_manager: name,
-                    project_type: selectedValue,
                     document: document,
+                    project_type: selectedValue,
                     homes: homes,
                     budget: budgetBase * homes,
                     budget_used: 0,
@@ -348,9 +349,10 @@ const EditProject = ({route, navigation}) => {
                 } else {
                   const newData = {
                     id: data.id,
+                    isSynchronized: false,
                     project_manager: name,
-                    project_type: selectedValue,
                     document: document,
+                    project_type: selectedValue,
                     homes: homes,
                     budget: budgetBase * homes,
                     budget_used: data.budget_used,
