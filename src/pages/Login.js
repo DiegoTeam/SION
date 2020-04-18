@@ -58,7 +58,7 @@ const Login = ({navigation}) => {
         }}>
         <Input
           value={name}
-          label="Nombre"
+          label="Nombre del gestor"
           leftIcon={<Icon name="person" size={24} color="black" />}
           onChangeText={text => {
             if (errorName !== '') {
@@ -73,7 +73,7 @@ const Login = ({navigation}) => {
         />
         <Input
           value={document}
-          label="Cedula"
+          label="Cedula del gestor"
           leftIcon={<Icon name="apps" size={24} color="black" />}
           keyboardType="numeric"
           onChangeText={text => {
