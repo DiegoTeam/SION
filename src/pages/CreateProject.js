@@ -23,14 +23,17 @@ const CreateProject = ({navigation}) => {
   const [errorHomes, setErrorHomes] = useState('');
   const [isVisible, setVisible] = useState(false);
   const [selectedValue, setSelectedValue] = useState('Productivo');
-  const budget_base = 800000;
+  const budget_base_a = 800000;
+  const budget_base_p = 1750000;
+  const budget_base_f = 180000;
+  const [budgetBase, setBudgetBase] = useState(budget_base_p);
 
   return (
     <>
       <View style={{flex: 1, justifyContent: 'center', marginHorizontal: 20}}>
         <Input
           value={name}
-          label="Representante del proyecto"
+          label="Jefe del hogar"
           leftIcon={<Icon name="person" size={24} color="black" />}
           onChangeText={text => {
             if (errorName !== '') {
@@ -44,7 +47,7 @@ const CreateProject = ({navigation}) => {
         />
         <Input
           value={document}
-          label="Cedula del representante"
+          label="Cedula"
           leftIcon={<Icon name="apps" size={24} color="black" />}
           keyboardType="numeric"
           onChangeText={text => {
@@ -77,11 +80,19 @@ const CreateProject = ({navigation}) => {
           <Picker
             selectedValue={selectedValue}
             style={{marginLeft: 10}}
-            onValueChange={(itemValue, itemIndex) =>
-              setSelectedValue(itemValue)
-            }>
+            onValueChange={(itemValue, itemIndex) => {
+              setSelectedValue(itemValue);
+              if (itemValue === 'Productivo') {
+                setBudgetBase(budget_base_p);
+              } else if (itemValue === 'Alimentario') {
+                setBudgetBase(budget_base_a);
+              } else if (itemValue === 'Fortalecimiento') {
+                setBudgetBase(budget_base_f);
+              }
+            }}>
             <Picker.Item label="Productivo" value="Productivo" />
             <Picker.Item label="Alimentario" value="Alimentario" />
+            <Picker.Item label="Fortalecimiento" value="Fortalecimiento" />
           </Picker>
         </View>
         <CheckBox
@@ -114,7 +125,7 @@ const CreateProject = ({navigation}) => {
               }
               setHomes(new_text);
             }}
-            errorStyle={{color: '#DC3545'}}
+            errorStyle={{color: '#dc3545'}}
             errorMessage={errorHomes}
             containerStyle={{marginBottom: 20}}
           />
@@ -136,16 +147,16 @@ const CreateProject = ({navigation}) => {
               (homes === 1 && checked)
             ) {
               if (name === '') {
-                setErrorName('INGRESE UN VALOR VALIDO');
+                setErrorName('INGRESE UN NOMBRE');
               }
               if (document === '') {
-                setErrorDocument('INGRESE UN VALOR VALIDO');
+                setErrorDocument('INGRESE UNA CEDULA');
               }
               if (homes === '' || homes === '0') {
-                setErrorHomes('INGRESE UN VALOR VALIDO');
+                setErrorHomes('INGRESE UN NUMERO VALIDO DE HOGARES');
               }
               if (homes === 1 && checked) {
-                setErrorHomes('DEBE INGRESAR MAS DE 1 HOGAR');
+                setErrorHomes('DEBE INGRESAR MAS DE UN HOGAR');
               }
             } else {
               setVisible(true);
@@ -171,7 +182,7 @@ const CreateProject = ({navigation}) => {
               fontSize: 17,
               color: '#88959E',
             }}>
-            Representante:
+            Jefe del hogar:
           </Text>
           <View
             style={{
@@ -248,7 +259,7 @@ const CreateProject = ({navigation}) => {
                 </View>
               </>
             )}
-            value={homes * budget_base}
+            value={homes * budgetBase}
             displayType={'text'}
             thousandSeparator={true}
             prefix={'$'}
@@ -284,9 +295,9 @@ const CreateProject = ({navigation}) => {
                   project_type: selectedValue,
                   document: document,
                   homes: homes,
-                  budget: budget_base * homes,
+                  budget: budgetBase * homes,
                   budget_used: 0,
-                  budget_available: budget_base * homes,
+                  budget_available: budgetBase * homes,
                   supplies: [],
                 };
                 if (await AsyncStorageAPI.isNull()) {

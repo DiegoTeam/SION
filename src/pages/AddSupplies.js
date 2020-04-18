@@ -15,8 +15,10 @@ const AddSupplies = ({navigation, route}) => {
   const [supplies, setSupplies] = useState(() => {
     if (route.params.project_type === 'Productivo') {
       return data.insumos_productivos;
-    } else {
+    } else if (route.params.project_type === 'Alimentario') {
       return data.insumos_alimentarios;
+    } else if (route.params.project_type === 'Fortalecimiento') {
+      return data.insumos_comunitarios;
     }
   });
   const [suppliesFiltered, setSuppliesFiltered] = useState(supplies);

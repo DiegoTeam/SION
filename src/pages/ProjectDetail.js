@@ -63,7 +63,7 @@ const ProjectDetail = ({route, navigation}) => {
             fontSize: 17,
             color: '#88959E',
           }}>
-          Representante:
+          Jefe del hogar:
         </Text>
         <View
           style={{
