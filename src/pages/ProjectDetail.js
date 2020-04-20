@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {View, Alert} from 'react-native';
+import {View, Alert, FlatList, ScrollView} from 'react-native';
 //Libraries
-import {Text} from 'react-native-elements';
+import {Icon as IconRNE, ListItem, Text} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {FloatingAction} from 'react-native-floating-action';
 //Utils
@@ -12,7 +12,7 @@ import ProjectData from '../utils/ProjectData';
 import Loading from '../components/Loading';
 
 const ProjectDetail = ({route, navigation}) => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({managers: [{}]});
   const [isLoading, setIsLoading] = useState(false);
   const actions = [
     {
@@ -44,6 +44,7 @@ const ProjectDetail = ({route, navigation}) => {
       position: 4,
     },
   ];
+
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
@@ -62,206 +63,201 @@ const ProjectDetail = ({route, navigation}) => {
     <Loading />
   ) : (
     <>
-      <View style={{marginHorizontal: 20, marginTop: 20}}>
-        <Text
-          style={{
-            marginLeft: 10,
-            marginTop: 10,
-            fontWeight: 'bold',
-            fontSize: 17,
-            color: '#88959E',
-          }}>
-          Jefe del hogar:
-        </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginLeft: 10,
-            marginTop: 10,
-            alignItems: 'center',
-          }}>
-          <Icon name="person" size={30} color="black" />
-          <Text style={{fontSize: 17, marginLeft: 15}}>
-            {data.project_manager}
+      <ScrollView>
+        <View style={{marginHorizontal: 20, marginTop: 20}}>
+          <Text
+            style={{
+              marginLeft: 10,
+              marginTop: 10,
+              marginBottom: 10,
+              fontWeight: 'bold',
+              fontSize: 17,
+              color: '#88959E',
+            }}>
+            Integrantes:
           </Text>
-        </View>
-        <Text
-          style={{
-            marginLeft: 10,
-            marginTop: 10,
-            fontWeight: 'bold',
-            fontSize: 17,
-            color: '#88959E',
-          }}>
-          Cedula:
-        </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginLeft: 10,
-            marginTop: 10,
-            alignItems: 'center',
-          }}>
-          <Icon name="apps" size={30} color="black" />
-          <Text style={{fontSize: 17, marginLeft: 15}}>{data.document}</Text>
-        </View>
-        <Text
-          style={{
-            marginLeft: 10,
-            marginTop: 10,
-            fontWeight: 'bold',
-            fontSize: 17,
-            color: '#88959E',
-          }}>
-          Tipo:
-        </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginLeft: 10,
-            marginTop: 10,
-            alignItems: 'center',
-          }}>
-          <Icon name="card-travel" size={30} color="black" />
-          <Text style={{fontSize: 17, marginLeft: 15}}>
-            {data.project_type}
+          {data.managers.map((item, i) => (
+            <ListItem
+              key={i}
+              title={item.name}
+              subtitle={item.document}
+              bottomDivider
+              leftIcon={
+                <IconRNE
+                  containerStyle={{alignSelf: 'center'}}
+                  raised
+                  reverse
+                  name="person"
+                  type="MaterialIcons"
+                  color="#3B666F"
+                  size={10}
+                />
+              }
+            />
+          ))}
+          <Text
+            style={{
+              marginLeft: 10,
+              marginTop: 10,
+              fontWeight: 'bold',
+              fontSize: 17,
+              color: '#88959E',
+            }}>
+            Tipo:
           </Text>
-        </View>
-        <Text
-          style={{
-            marginLeft: 10,
-            marginTop: 10,
-            fontWeight: 'bold',
-            fontSize: 17,
-            color: '#88959E',
-          }}>
-          Numero de hogares:
-        </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginLeft: 10,
-            marginTop: 10,
-            alignItems: 'center',
-          }}>
-          <Icon name="home" size={30} color="black" />
-          <Text style={{fontSize: 17, marginLeft: 15}}>{data.homes}</Text>
-        </View>
-        <NumberFormat
-          renderText={text => (
-            <>
-              <Text
-                style={{
-                  marginLeft: 10,
-                  marginTop: 10,
-                  fontWeight: 'bold',
-                  fontSize: 17,
-                  color: '#88959E',
-                }}>
-                Presupuesto:
-              </Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginLeft: 10,
-                  marginTop: 10,
-                  alignItems: 'center',
-                }}>
-                <Icon name="monetization-on" size={30} color="black" />
-                <Text style={{fontSize: 17, marginLeft: 15}}>{text}</Text>
-              </View>
-            </>
-          )}
-          value={data.budget}
-          displayType={'text'}
-          thousandSeparator={true}
-          prefix={'$'}
-        />
-        <NumberFormat
-          renderText={text => (
-            <>
-              <Text
-                style={{
-                  marginLeft: 10,
-                  marginTop: 10,
-                  fontWeight: 'bold',
-                  fontSize: 17,
-                  color: '#88959E',
-                }}>
-                Presupuesto gastado:
-              </Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginLeft: 10,
-                  marginTop: 10,
-                  alignItems: 'center',
-                }}>
-                <Icon name="monetization-on" size={30} color="black" />
-                <Text style={{fontSize: 17, marginLeft: 15}}>{text}</Text>
-              </View>
-            </>
-          )}
-          value={data.budget_used}
-          displayType={'text'}
-          thousandSeparator={true}
-          prefix={'$'}
-        />
-        <NumberFormat
-          renderText={text => (
-            <>
-              <Text
-                style={{
-                  marginLeft: 10,
-                  marginTop: 10,
-                  fontWeight: 'bold',
-                  fontSize: 17,
-                  color: '#88959E',
-                }}>
-                Presupuesto disponible:
-              </Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginLeft: 10,
-                  marginTop: 10,
-                  alignItems: 'center',
-                }}>
-                <Icon name="monetization-on" size={30} color="black" />
-                <Text style={{fontSize: 17, marginLeft: 15}}>{text}</Text>
-              </View>
-            </>
-          )}
-          value={data.budget_available}
-          displayType={'text'}
-          thousandSeparator={true}
-          prefix={'$'}
-        />
-        <View
-          style={{
-            flexDirection: 'row',
-            marginLeft: 10,
-            marginTop: 10,
-            alignItems: 'center',
-          }}>
-          <Icon
-            name="backup"
-            size={30}
-            color={data.isSynchronized ? '#28A745' : '#DC3545'}
+          <View
+            style={{
+              flexDirection: 'row',
+              marginLeft: 10,
+              marginTop: 10,
+              alignItems: 'center',
+            }}>
+            <Icon name="card-travel" size={30} color="black" />
+            <Text style={{fontSize: 17, marginLeft: 15}}>
+              {data.project_type}
+            </Text>
+          </View>
+          <Text
+            style={{
+              marginLeft: 10,
+              marginTop: 10,
+              fontWeight: 'bold',
+              fontSize: 17,
+              color: '#88959E',
+            }}>
+            Numero de hogares:
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginLeft: 10,
+              marginTop: 10,
+              alignItems: 'center',
+            }}>
+            <Icon name="home" size={30} color="black" />
+            <Text style={{fontSize: 17, marginLeft: 15}}>{data.homes}</Text>
+          </View>
+          <NumberFormat
+            renderText={text => (
+              <>
+                <Text
+                  style={{
+                    marginLeft: 10,
+                    marginTop: 10,
+                    fontWeight: 'bold',
+                    fontSize: 17,
+                    color: '#88959E',
+                  }}>
+                  Presupuesto:
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginLeft: 10,
+                    marginTop: 10,
+                    alignItems: 'center',
+                  }}>
+                  <Icon name="monetization-on" size={30} color="black" />
+                  <Text style={{fontSize: 17, marginLeft: 15}}>{text}</Text>
+                </View>
+              </>
+            )}
+            value={data.budget}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'$'}
           />
-          <Text style={{fontSize: 17, marginLeft: 15}}>
-            {data.isSynchronized
-              ? 'Proyecto sincronizado'
-              : 'Proyecto no sincronizado'}
-          </Text>
+          <NumberFormat
+            renderText={text => (
+              <>
+                <Text
+                  style={{
+                    marginLeft: 10,
+                    marginTop: 10,
+                    fontWeight: 'bold',
+                    fontSize: 17,
+                    color: '#88959E',
+                  }}>
+                  Presupuesto gastado:
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginLeft: 10,
+                    marginTop: 10,
+                    alignItems: 'center',
+                  }}>
+                  <Icon name="monetization-on" size={30} color="black" />
+                  <Text style={{fontSize: 17, marginLeft: 15}}>{text}</Text>
+                </View>
+              </>
+            )}
+            value={data.budget_used}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'$'}
+          />
+          <NumberFormat
+            renderText={text => (
+              <>
+                <Text
+                  style={{
+                    marginLeft: 10,
+                    marginTop: 10,
+                    fontWeight: 'bold',
+                    fontSize: 17,
+                    color: '#88959E',
+                  }}>
+                  Presupuesto disponible:
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginLeft: 10,
+                    marginTop: 10,
+                    alignItems: 'center',
+                  }}>
+                  <Icon name="monetization-on" size={30} color="black" />
+                  <Text style={{fontSize: 17, marginLeft: 15}}>{text}</Text>
+                </View>
+              </>
+            )}
+            value={data.budget_available}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'$'}
+          />
+          <View
+            style={{
+              flexDirection: 'row',
+              marginLeft: 10,
+              marginTop: 10,
+              marginBottom: 20,
+              alignItems: 'center',
+            }}>
+            <Icon
+              name="backup"
+              size={30}
+              color={data.isSynchronized ? '#28A745' : '#DC3545'}
+            />
+            <Text style={{fontSize: 17, marginLeft: 15}}>
+              {data.isSynchronized
+                ? 'Proyecto sincronizado'
+                : 'Proyecto no sincronizado'}
+            </Text>
+          </View>
         </View>
-      </View>
+      </ScrollView>
       <FloatingAction
         actions={actions}
         color="#3B666F"
         onPressItem={name => {
           if (name === 'edit_project') {
-            navigation.navigate('EditProject', data);
+            navigation.navigate('EditProject', {
+              homes: data.managers,
+              selectedValue: data.project_type,
+              data: data,
+            });
           }
           if (name === 'delete_project') {
             Alert.alert(
