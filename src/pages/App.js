@@ -7,6 +7,7 @@ import SplashScreen from 'react-native-splash-screen';
 import Login from './Login';
 import Projects from './Projects';
 import CreateProject from './CreateProject';
+import AddHomes from './AddHome';
 import ProjectDetail from './ProjectDetail';
 import EditProject from './EditProject';
 import Supplies from './Supplies';
@@ -49,6 +50,21 @@ const App = () => {
           component={CreateProject}
           options={{
             title: 'Crear proyecto',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#3B666F',
+            },
+            headerTintColor: 'white',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+        <Stack.Screen
+          name="AddHomes"
+          component={AddHomes}
+          options={{
+            title: 'Agregar Hogar',
             headerTitleAlign: 'center',
             headerStyle: {
               backgroundColor: '#3B666F',

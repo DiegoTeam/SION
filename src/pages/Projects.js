@@ -48,7 +48,8 @@ const Projects = ({navigation}) => {
       underlayColor={'#f2f2f2'}
       activeOpacity={0.5}
       containerStyle={{borderRadius: 50, marginBottom: 5}}
-      title={item.project_manager}
+      //TODO cambiar titulo para proyectos comunitarios
+      title={item.managers[0].name}
       subtitle={
         <NumberFormat
           value={item.budget_used}
@@ -81,7 +82,10 @@ const Projects = ({navigation}) => {
         actions={actions}
         color="#3B666F"
         onPressItem={async name => {
-          navigation.navigate('CreateProject');
+          navigation.navigate('CreateProject', {
+            homes: [],
+            selectedValue: 'Productivo',
+          });
           //TODO opciones de ordenado y filtro
         }}
       />
