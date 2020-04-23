@@ -68,30 +68,7 @@ const AddHomes = ({navigation, route}) => {
               );
             } else {
               const allData = await AsyncStorageAPI.getData();
-              let find = false;
-              for (let i = 0; i < allData.length; i++) {
-                for (let j = 0; j < allData[i].managers.length; j++) {
-                  if (
-                    allData[i].managers[j].document === document &&
-                    allData[i].project_type === route.params.selectedValue
-                  ) {
-                    if (allData[i].homes === 1 && homes.length + 1 === 1) {
-                      find = true;
-                    }
-                    if (allData[i].homes > 1 && homes.length + 1 > 1) {
-                      find = true;
-                    }
-                  }
-                }
-              }
-              if (find) {
-                Alert.alert(
-                  'Alerta',
-                  'Esta cedula ya esta ingresada en un proyecto con las mismas caracteriasticas',
-                  [{text: 'Acaptar'}],
-                  {cancelable: false},
-                );
-              } else {
+              if (allData === null) {
                 homes.push({
                   name: name,
                   document: document,
@@ -100,6 +77,40 @@ const AddHomes = ({navigation, route}) => {
                   homes: homes,
                   selectedValue: route.params.selectedValue,
                 });
+              } else {
+                let find = false;
+                for (let i = 0; i < allData.length; i++) {
+                  for (let j = 0; j < allData[i].managers.length; j++) {
+                    if (
+                      allData[i].managers[j].document === document &&
+                      allData[i].project_type === route.params.selectedValue
+                    ) {
+                      if (allData[i].homes === 1 && homes.length + 1 === 1) {
+                        find = true;
+                      }
+                      if (allData[i].homes > 1 && homes.length + 1 > 1) {
+                        find = true;
+                      }
+                    }
+                  }
+                }
+                if (find) {
+                  Alert.alert(
+                    'Alerta',
+                    'Esta cedula ya esta ingresada en un proyecto con las mismas caracteriasticas',
+                    [{text: 'Acaptar'}],
+                    {cancelable: false},
+                  );
+                } else {
+                  homes.push({
+                    name: name,
+                    document: document,
+                  });
+                  navigation.navigate(route.params.route, {
+                    homes: homes,
+                    selectedValue: route.params.selectedValue,
+                  });
+                }
               }
             }
           }
