@@ -292,7 +292,7 @@ const ProjectDetail = ({route, navigation}) => {
               fontSize: 17,
               color: '#88959E',
             }}>
-            Codigo:
+            Código:
           </Text>
           <Text
             style={{
