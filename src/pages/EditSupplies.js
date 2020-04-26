@@ -5,7 +5,6 @@ import {Text, Icon as IconRNE, Input} from 'react-native-elements';
 import NumberFormat from 'react-number-format';
 //Utils
 import AsyncStorageAPI from '../utils/AsyncStorageAPI';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const EditSupplies = ({navigation, route}) => {
   const [count, setCount] = useState(route.params.supple.count);

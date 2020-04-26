@@ -48,8 +48,7 @@ const Projects = ({navigation}) => {
       underlayColor={'#f2f2f2'}
       activeOpacity={0.5}
       containerStyle={{borderRadius: 50, marginBottom: 5}}
-      //TODO cambiar titulo para proyectos comunitarios
-      title={item.managers[0].name}
+      title={item.projectName}
       subtitle={
         <NumberFormat
           value={item.budget_used}
