@@ -238,7 +238,9 @@ const EditProject = ({navigation, route}) => {
                 justifyContent: 'space-around',
                 marginBottom: 10,
               }}>
-              <Text style={{fontSize: 17}}>{moment(createdAt).format('DD/MM/YYYY')}</Text>
+              <Text style={{fontSize: 17}}>
+                {moment(createdAt).format('DD/MM/YYYY')}
+              </Text>
               <IconRNE
                 containerStyle={{alignSelf: 'center'}}
                 raised
