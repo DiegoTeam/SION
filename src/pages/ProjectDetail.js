@@ -43,13 +43,13 @@ const ProjectDetail = ({route, navigation}) => {
       name: 'synchronize_project',
       position: 3,
     },
-    {
-      text: 'Eliminar proyecto',
-      color: '#DC3545',
-      icon: <Icon name="delete" size={24} color="white" />,
-      name: 'delete_project',
-      position: 4,
-    },
+    // {
+    //   text: 'Eliminar proyecto',
+    //   color: '#DC3545',
+    //   icon: <Icon name="delete" size={24} color="white" />,
+    //   name: 'delete_project',
+    //   position: 4,
+    // },
   ];
 
   useEffect(() => {
@@ -394,15 +394,27 @@ const ProjectDetail = ({route, navigation}) => {
             }}>
             Duración:
           </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.duration}
-          </Text>
+          {data.duration === '1' ? (
+            <Text
+              style={{
+                marginLeft: 30,
+                marginBottom: 10,
+                fontWeight: 'bold',
+                fontSize: 17,
+              }}>
+              {data.duration} Mes
+            </Text>
+          ) : (
+            <Text
+              style={{
+                marginLeft: 30,
+                marginBottom: 10,
+                fontWeight: 'bold',
+                fontSize: 17,
+              }}>
+              {data.duration} Meses
+            </Text>
+          )}
           <Text
             style={{
               marginLeft: 10,
