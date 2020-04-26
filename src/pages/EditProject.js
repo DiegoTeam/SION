@@ -127,94 +127,6 @@ const EditProject = ({navigation, route}) => {
               <Picker.Item label="Fortalecimiento" value="Fortalecimiento" />
             </Picker>
           </View>
-          <Input
-            value={agreement}
-            label="Convenio"
-            onChangeText={text => {
-              setAgreement(text);
-            }}
-            errorStyle={{color: '#DC3545'}}
-            errorMessage={error}
-            containerStyle={{marginBottom: 20}}
-          />
-          <Input
-            value={projectCode}
-            label="Codigo del proyecto"
-            keyboardType="numeric"
-            onChangeText={text => {
-              setProjectCode(text.replace(/[,.-]/g, '').trim());
-            }}
-            errorStyle={{color: '#DC3545'}}
-            errorMessage={error}
-            containerStyle={{marginBottom: 20}}
-          />
-          <View
-            style={{
-              marginBottom: 10,
-              backgroundColor: 'white',
-              borderRadius: 5,
-              marginHorizontal: 10,
-            }}>
-            <Text
-              style={{
-                marginLeft: 10,
-                marginTop: 10,
-                fontWeight: 'bold',
-                fontSize: 15,
-                color: '#88959E',
-              }}>
-              Fecha de elaboración:
-            </Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-around',
-                marginBottom: 10,
-              }}>
-              <Text h4>{moment(createdAt).format('DD/MM/YYYY')}</Text>
-              <IconRNE
-                containerStyle={{alignSelf: 'center'}}
-                raised
-                reverse
-                name="date-range"
-                type="MaterialIcons"
-                color="#3B666F"
-                size={15}
-                onPress={() => {
-                  setShowDate(true);
-                }}
-              />
-            </View>
-            {showDate && (
-              <DateTimePicker
-                value={createdAt}
-                mode="default"
-                display="default"
-                onChange={onChange}
-              />
-            )}
-          </View>
-          <Input
-            value={legalRepresentative}
-            label="Representante legal"
-            onChangeText={text => {
-              setLegalRepresentative(text);
-            }}
-            errorStyle={{color: '#DC3545'}}
-            errorMessage={error}
-            containerStyle={{marginBottom: 20}}
-          />
-          <Input
-            value={projectName}
-            label="Nombre del projecto"
-            onChangeText={text => {
-              setProjectName(text);
-            }}
-            errorStyle={{color: '#DC3545'}}
-            errorMessage={error}
-            containerStyle={{marginBottom: 20}}
-          />
           <View
             style={{
               flexDirection: 'row',
@@ -281,40 +193,22 @@ const EditProject = ({navigation, route}) => {
               <ListItem title={'No hay hogares agregados a este proyecto'} />
             )}
           </View>
-          <View
-            style={{
-              marginBottom: 10,
-              backgroundColor: 'white',
-              borderRadius: 5,
-              marginHorizontal: 10,
-            }}>
-            <Text
-              style={{
-                marginLeft: 10,
-                marginTop: 10,
-                fontWeight: 'bold',
-                fontSize: 15,
-                color: '#88959E',
-              }}>
-              Linea:
-            </Text>
-            <Picker
-              selectedValue={line}
-              style={{marginLeft: 10}}
-              onValueChange={(itemValue, itemIndex) => {
-                setLine(itemValue);
-              }}>
-              <Picker.Item label="Comercial" value="Comercial" />
-              <Picker.Item label="Agropecuario" value="Agropecuario" />
-              <Picker.Item label="Comunitaria" value="Comunitaria" />
-              <Picker.Item label="Otros" value="Otros" />
-            </Picker>
-          </View>
           <Input
-            value={duration}
-            label="Duración"
+            value={agreement}
+            label="Convenio:"
             onChangeText={text => {
-              setDuration(text);
+              setAgreement(text);
+            }}
+            errorStyle={{color: '#DC3545'}}
+            errorMessage={error}
+            containerStyle={{marginBottom: 20}}
+            editable={false}
+          />
+          <Input
+            value={projectCode}
+            label="Código del proyecto:"
+            onChangeText={text => {
+              setProjectCode(text);
             }}
             errorStyle={{color: '#DC3545'}}
             errorMessage={error}
@@ -335,23 +229,112 @@ const EditProject = ({navigation, route}) => {
                 fontSize: 15,
                 color: '#88959E',
               }}>
-              Ubicación del proyecto:
+              Fecha de elaboración:
+            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-around',
+                marginBottom: 10,
+              }}>
+              <Text style={{fontSize: 17}}>{moment(createdAt).format('DD/MM/YYYY')}</Text>
+              <IconRNE
+                containerStyle={{alignSelf: 'center'}}
+                raised
+                reverse
+                name="date-range"
+                type="MaterialIcons"
+                color="#3B666F"
+                size={15}
+                onPress={() => {
+                  setShowDate(true);
+                }}
+              />
+            </View>
+            {showDate && (
+              <DateTimePicker
+                value={createdAt}
+                mode="default"
+                display="default"
+                onChange={onChange}
+              />
+            )}
+          </View>
+          <Input
+            value={legalRepresentative}
+            label="Nombre representante legal/Gobernador:"
+            onChangeText={text => {
+              setLegalRepresentative(text);
+            }}
+            errorStyle={{color: '#DC3545'}}
+            errorMessage={error}
+            containerStyle={{marginBottom: 20}}
+          />
+          <Input
+            value={projectName}
+            label="Nombre del proyecto:"
+            onChangeText={text => {
+              setProjectName(text);
+            }}
+            errorStyle={{color: '#DC3545'}}
+            errorMessage={error}
+            containerStyle={{marginBottom: 20}}
+          />
+          <Input
+            value={line}
+            label="Linea:"
+            onChangeText={text => {
+              setLine(text);
+            }}
+            errorStyle={{color: '#DC3545'}}
+            errorMessage={error}
+            containerStyle={{marginBottom: 20}}
+          />
+          <View
+            style={{
+              marginBottom: 10,
+              backgroundColor: 'white',
+              borderRadius: 5,
+              marginHorizontal: 10,
+            }}>
+            <Text
+              style={{
+                marginLeft: 10,
+                marginTop: 10,
+                fontWeight: 'bold',
+                fontSize: 15,
+                color: '#88959E',
+              }}>
+              Duración:
             </Text>
             <Picker
-              selectedValue={projectLocation}
+              selectedValue={duration}
               style={{marginLeft: 10}}
               onValueChange={(itemValue, itemIndex) => {
-                setProjectLocation(itemValue);
+                setDuration(itemValue);
               }}>
-              <Picker.Item label="Vereda" value="Vereda" />
-              <Picker.Item label="Corregimiento" value="Corregimiento" />
-              <Picker.Item label="Asentamiento" value="Asentamiento" />
-              <Picker.Item label="Otro" value="Otro" />
+              <Picker.Item label="1 mes" value="1" />
+              <Picker.Item label="2 meses" value="2" />
+              <Picker.Item label="3 meses" value="3" />
+              <Picker.Item label="4 meses" value="4" />
+              <Picker.Item label="5 meses" value="5" />
+              <Picker.Item label="6 meses" value="6" />
             </Picker>
           </View>
           <Input
+            value={projectLocation}
+            label="Ubicación del proyecto:"
+            onChangeText={text => {
+              setProjectLocation(text);
+            }}
+            errorStyle={{color: '#DC3545'}}
+            errorMessage={error}
+            containerStyle={{marginBottom: 20}}
+          />
+          <Input
             value={productService}
-            label="Producto/Servicio"
+            label="Producto/Servicio:"
             onChangeText={text => {
               setProductService(text);
             }}
@@ -361,7 +344,7 @@ const EditProject = ({navigation, route}) => {
           />
           <Input
             value={problem}
-            label="Problema"
+            label="Problema:"
             onChangeText={text => {
               setProblem(text);
             }}
@@ -371,7 +354,7 @@ const EditProject = ({navigation, route}) => {
           />
           <Input
             value={justification}
-            label="Justificación"
+            label="Justificación:"
             onChangeText={text => {
               setJustification(text);
             }}
@@ -381,7 +364,7 @@ const EditProject = ({navigation, route}) => {
           />
           <Input
             value={criterion}
-            label="Criterios Socioculturales y técnicos"
+            label="Criterios Socioculturales y técnicos:"
             onChangeText={text => {
               setCriterion(text);
             }}
@@ -391,7 +374,7 @@ const EditProject = ({navigation, route}) => {
           />
           <Input
             value={objective}
-            label="Objetivo genral"
+            label="Objetivo general:"
             onChangeText={text => {
               setObjective(text);
             }}
@@ -401,7 +384,7 @@ const EditProject = ({navigation, route}) => {
           />
           <Input
             value={objective1}
-            label="Objetivo especifico 1"
+            label="Objetivo especifico #1:"
             onChangeText={text => {
               setObjective1(text);
             }}
@@ -411,7 +394,7 @@ const EditProject = ({navigation, route}) => {
           />
           <Input
             value={objective2}
-            label="Objetivo especifico 2"
+            label="Objetivo especifico #2:"
             onChangeText={text => {
               setObjective2(text);
             }}
@@ -419,7 +402,7 @@ const EditProject = ({navigation, route}) => {
           />
           <Input
             value={objective3}
-            label="Objetivo especifico 3"
+            label="Objetivo especifico #3:"
             onChangeText={text => {
               setObjective3(text);
             }}
@@ -427,7 +410,7 @@ const EditProject = ({navigation, route}) => {
           />
           <Input
             value={environmentalManagement}
-            label="Conservación y manejo ambiental"
+            label="Conservación y manejo ambiental:"
             onChangeText={text => {
               setEnvironmentalManagement(text);
             }}
@@ -437,7 +420,7 @@ const EditProject = ({navigation, route}) => {
           />
           <Input
             value={sustainability}
-            label="Sustentabilidad"
+            label="Sustentabilidad:"
             onChangeText={text => {
               setSustainability(text);
             }}
@@ -447,7 +430,7 @@ const EditProject = ({navigation, route}) => {
           />
           <Input
             value={risks}
-            label="Riesgos y acciones de tratamiento"
+            label="Riesgos y acciones de tratamiento:"
             onChangeText={text => {
               setRisks(text);
             }}
@@ -469,7 +452,7 @@ const EditProject = ({navigation, route}) => {
           {/*TODO anexo*/}
           <Input
             value={nameRepresentativeCommittee}
-            label="Nombre del representante del consejo/cabildo"
+            label="Nombre del representante del consejo/cabildo:"
             onChangeText={text => {
               setNameRepresentativeCommittee(text);
             }}
@@ -479,7 +462,7 @@ const EditProject = ({navigation, route}) => {
           />
           <Input
             value={documentRepresentativeCommittee}
-            label="Cedula"
+            label="Cedula del representante del consejo/cabildo:"
             keyboardType="numeric"
             onChangeText={text => {
               setDocumentRepresentativeCommittee(
@@ -492,7 +475,7 @@ const EditProject = ({navigation, route}) => {
           />
           <Input
             value={nameRepresentativeCouncil}
-            label="Nombre del representante del comité de control social"
+            label="Nombre del representante del comité de control social:"
             onChangeText={text => {
               setNameRepresentativeCouncil(text);
             }}
@@ -502,7 +485,7 @@ const EditProject = ({navigation, route}) => {
           />
           <Input
             value={documentRepresentativeCouncil}
-            label="Cedula"
+            label="Cedula del representante del comité de control social:"
             keyboardType="numeric"
             onChangeText={text => {
               setDocumentRepresentativeCouncil(
@@ -515,7 +498,7 @@ const EditProject = ({navigation, route}) => {
           />
           <Input
             value={nameOfficial}
-            label="Funcionario entidad implementadora"
+            label="Nombre funcionario entidad implementadora"
             onChangeText={text => {
               setNameOfficial(text);
             }}
@@ -525,7 +508,7 @@ const EditProject = ({navigation, route}) => {
           />
           <Input
             value={documentOfficial}
-            label="Cedula"
+            label="Cedula funcionario entidad implementadora:"
             keyboardType="numeric"
             onChangeText={text => {
               setDocumentOfficial(text.replace(/[,.-]/g, '').trim());
@@ -572,7 +555,7 @@ const EditProject = ({navigation, route}) => {
                 if (homes.length === 0) {
                   Alert.alert(
                     'Alerta',
-                    'Debe agregar almenos un hogar para este proyecto',
+                    'Debe agregar al menos un hogar para este proyecto',
                     [{text: 'Aceptar'}],
                     {cancelable: false},
                   );
@@ -604,11 +587,11 @@ const EditProject = ({navigation, route}) => {
                 ) {
                   Alert.alert(
                     'Alerta',
-                    'Todos los campos deben ser rellenados',
+                    'Hay campos obligatorios sin diligenciar',
                     [{text: 'Aceptar'}],
                     {cancelable: false},
                   );
-                  setError('* CAMPOS OBLIGATORIOS');
+                  setError('* Campo obligatorio');
                 }
               } else {
                 const new_budget = budgetBase * homes.length;

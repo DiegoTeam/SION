@@ -14,7 +14,7 @@ const AddHomes = ({navigation, route}) => {
     <View style={{flex: 1, justifyContent: 'center', marginHorizontal: 20}}>
       <Input
         value={name}
-        label="Jefe del hogar"
+        label="Nombre jefe del hogar"
         leftIcon={<Icon name="person" size={24} color="black" />}
         onChangeText={text => {
           if (errorName !== '') {
