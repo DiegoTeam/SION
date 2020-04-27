@@ -5,8 +5,9 @@ import {FloatingAction} from 'react-native-floating-action';
 import {ListItem, Text} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import NumberFormat from 'react-number-format';
+import {useNetInfo} from '@react-native-community/netinfo';
 //Utils
-import AsyncStorageAPI from '../utils/AsyncStorageAPI';
+import ProjectData from '../utils/ProjectData';
 //Components
 import Empty from '../components/Empty';
 import Loading from '../components/Loading';
@@ -14,6 +15,8 @@ import Loading from '../components/Loading';
 const Projects = ({navigation}) => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const netInfo = useNetInfo();
+
   const actions = [
     {
       text: 'Crear proyecto',
@@ -23,10 +26,11 @@ const Projects = ({navigation}) => {
       position: 1,
     },
   ];
+
   useEffect(() => {
     const getData = async () => {
       setIsLoading(true);
-      const response = await AsyncStorageAPI.getData('projectsData');
+      const response = await ProjectData.getProjects(netInfo.isConnected);
       setData(response);
       setIsLoading(false);
     };

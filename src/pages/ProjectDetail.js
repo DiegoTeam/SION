@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, Alert, ScrollView} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, ScrollView, View} from 'react-native';
 //Libraries
 import {Icon as IconRNE, ListItem, Text} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -910,6 +910,7 @@ const ProjectDetail = ({route, navigation}) => {
                     text: 'Sincronizar',
                     onPress: async () => {
                       const userData = await AsyncStorageAPI.getUserData();
+                      data.isSynchronized = true;
                       const projectData = {
                         json: {
                           data: data,
@@ -917,11 +918,9 @@ const ProjectDetail = ({route, navigation}) => {
                           documento: userData.document,
                         },
                       };
-                      await ProjectData.post(projectData);
-                      const newData = data;
-                      newData.isSynchronized = true;
-                      await AsyncStorageAPI.updateElement(newData.id, newData);
-                      navigation.navigate('ProjectDetail', newData.id);
+                      await ProjectData.synchronizeProject(projectData);
+                      await AsyncStorageAPI.updateElement(data.id, data);
+                      navigation.navigate('ProjectDetail', data.id);
                     },
                     style: 'OK',
                   },

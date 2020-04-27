@@ -145,7 +145,7 @@ const EditProject = ({navigation, route}) => {
                 navigation.navigate('AddHomes', {
                   selectedValue: selectedValue,
                   homes: homes,
-                  route: 'CreateProject',
+                  route: 'EditProject',
                 });
               }}
             />
@@ -723,6 +723,7 @@ const EditProject = ({navigation, route}) => {
                 if (data.project_type !== selectedValue) {
                   const newData = {
                     id: data.id,
+                    creationDate: data.creationDate,
                     isSynchronized: false,
                     managers: homes,
                     project_type: selectedValue,
@@ -766,6 +767,7 @@ const EditProject = ({navigation, route}) => {
                 } else {
                   const newData = {
                     id: data.id,
+                    creationDate: data.creationDate,
                     isSynchronized: false,
                     managers: homes,
                     project_type: selectedValue,

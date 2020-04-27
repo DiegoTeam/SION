@@ -680,6 +680,7 @@ const CreateProject = ({navigation, route}) => {
               onPress={async () => {
                 const data = {
                   id: 0,
+                  creationDate: moment(),
                   isSynchronized: false,
                   managers: homes,
                   project_type: selectedValue,
