@@ -42,11 +42,11 @@ const Login = ({navigation}) => {
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'center',
-        backgroundColor: '#3B666F',
+        backgroundColor: '#025930',
       }}>
       <Image
         source={logo}
-        style={{width: 150, height: 100, alignSelf: 'center'}}
+        style={{width: 200, height: 100, alignSelf: 'center'}}
         resizeMode="contain"
       />
       <View
@@ -93,7 +93,7 @@ const Login = ({navigation}) => {
           reverse
           name="arrow-forward"
           type="MaterialIcons"
-          color="#3B666F"
+          color="#025930"
           size={20}
           onPress={async () => {
             Keyboard.dismiss();

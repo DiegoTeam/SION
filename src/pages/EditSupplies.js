@@ -164,7 +164,7 @@ const EditSupplies = ({navigation, route}) => {
           reverse
           name="save"
           type="MaterialIcons"
-          color="#3B666F"
+          color="#025930"
           size={20}
           onPress={() => {
             if (count === '0' || count === '') {

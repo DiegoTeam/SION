@@ -20,7 +20,7 @@ const Projects = ({navigation}) => {
   const actions = [
     {
       text: 'Crear proyecto',
-      color: '#3B666F',
+      color: '#025930',
       icon: <Icon name="add-circle" size={24} color="white" />,
       name: 'bt_create_project',
       position: 1,
@@ -83,7 +83,7 @@ const Projects = ({navigation}) => {
       </View>
       <FloatingAction
         actions={actions}
-        color="#3B666F"
+        color="#025930"
         onPressItem={async name => {
           navigation.navigate('CreateProject', {
             homes: [],

@@ -47,7 +47,7 @@ const AddHomes = ({navigation, route}) => {
         reverse
         name="add"
         type="MaterialIcons"
-        color="#3B666F"
+        color="#025930"
         size={20}
         onPress={async () => {
           if (name === '' || document === '') {

@@ -24,21 +24,21 @@ const ProjectDetail = ({route, navigation}) => {
   const actions = [
     {
       text: 'Ver Insumos',
-      color: '#3B666F',
+      color: '#025930',
       icon: <Icon name="remove-red-eye" size={24} color="white" />,
       name: 'see_supplies',
       position: 1,
     },
     {
       text: 'Editar proyecto',
-      color: '#3B666F',
+      color: '#025930',
       icon: <Icon name="edit" size={24} color="white" />,
       name: 'edit_project',
       position: 2,
     },
     {
       text: 'Sincronizar proyecto',
-      color: '#3B666F',
+      color: '#025930',
       icon: <Icon name="backup" size={24} color="white" />,
       name: 'synchronize_project',
       position: 3,
@@ -96,7 +96,7 @@ const ProjectDetail = ({route, navigation}) => {
                   reverse
                   name="person"
                   type="MaterialIcons"
-                  color="#3B666F"
+                  color="#025930"
                   size={10}
                 />
               }
@@ -851,7 +851,7 @@ const ProjectDetail = ({route, navigation}) => {
       </ScrollView>
       <FloatingAction
         actions={actions}
-        color="#3B666F"
+        color="#025930"
         onPressItem={name => {
           if (name === 'edit_project') {
             navigation.navigate('EditProject', {

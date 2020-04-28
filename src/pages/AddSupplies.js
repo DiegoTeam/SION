@@ -83,7 +83,7 @@ const AddSupplies = ({navigation, route}) => {
         onChangeText={onSearchChange}
         value={search}
         containerStyle={{
-          backgroundColor: '#3B666F',
+          backgroundColor: '#025930',
           borderTopWidth: 0,
           borderBottomWidth: 0,
         }}

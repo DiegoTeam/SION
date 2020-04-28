@@ -37,7 +37,7 @@ const App = () => {
             headerLeft: null,
             headerTitleAlign: 'center',
             headerStyle: {
-              backgroundColor: '#3B666F',
+              backgroundColor: '#025930',
             },
             headerTintColor: 'white',
             headerTitleStyle: {
@@ -52,7 +52,7 @@ const App = () => {
             title: 'Crear proyecto',
             headerTitleAlign: 'center',
             headerStyle: {
-              backgroundColor: '#3B666F',
+              backgroundColor: '#025930',
             },
             headerTintColor: 'white',
             headerTitleStyle: {
@@ -67,7 +67,7 @@ const App = () => {
             title: 'Agregar Hogar',
             headerTitleAlign: 'center',
             headerStyle: {
-              backgroundColor: '#3B666F',
+              backgroundColor: '#025930',
             },
             headerTintColor: 'white',
             headerTitleStyle: {
@@ -82,7 +82,7 @@ const App = () => {
             title: 'Detalles del proyecto',
             headerTitleAlign: 'center',
             headerStyle: {
-              backgroundColor: '#3B666F',
+              backgroundColor: '#025930',
             },
             headerTintColor: 'white',
             headerTitleStyle: {
@@ -97,7 +97,7 @@ const App = () => {
             title: 'Editar proyecto',
             headerTitleAlign: 'center',
             headerStyle: {
-              backgroundColor: '#3B666F',
+              backgroundColor: '#025930',
             },
             headerTintColor: 'white',
             headerTitleStyle: {
@@ -112,7 +112,7 @@ const App = () => {
             title: 'Insumos',
             headerTitleAlign: 'center',
             headerStyle: {
-              backgroundColor: '#3B666F',
+              backgroundColor: '#025930',
             },
             headerTintColor: 'white',
             headerTitleStyle: {
@@ -127,7 +127,7 @@ const App = () => {
             title: 'Agregar insumo',
             headerTitleAlign: 'center',
             headerStyle: {
-              backgroundColor: '#3B666F',
+              backgroundColor: '#025930',
             },
             headerTintColor: 'white',
             headerTitleStyle: {
@@ -142,7 +142,7 @@ const App = () => {
             title: 'Editar insumo',
             headerTitleAlign: 'center',
             headerStyle: {
-              backgroundColor: '#3B666F',
+              backgroundColor: '#025930',
             },
             headerTintColor: 'white',
             headerTitleStyle: {

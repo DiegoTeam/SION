@@ -3,7 +3,7 @@ import axios from 'axios';
 //Utils
 import AsyncStorageAPI from './AsyncStorageAPI';
 
-const baseApi = 'http://iracaz1.com/rest/v1.0/fest_2019';
+const baseApi = 'https://opmas.co/rest/v1.0/fest_2019';
 class ProjectData {
   async synchronizeProject(data) {
     try {

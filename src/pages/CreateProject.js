@@ -21,7 +21,7 @@ const CreateProject = ({navigation, route}) => {
   const [selectedValue, setSelectedValue] = useState(
     route.params.selectedValue,
   );
-  const [agreement, setAgreement] = useState('213-19');
+  const [agreement, setAgreement] = useState('187-2019');
   const [error, setError] = useState('');
   const [projectCode, setProjectCode] = useState('');
   const [createdAt, setCreatedAt] = useState(moment.now());
@@ -157,7 +157,7 @@ const CreateProject = ({navigation, route}) => {
                       reverse
                       name="person"
                       type="MaterialIcons"
-                      color="#3B666F"
+                      color="#025930"
                       size={10}
                     />
                   }
@@ -238,7 +238,7 @@ const CreateProject = ({navigation, route}) => {
                 reverse
                 name="date-range"
                 type="MaterialIcons"
-                color="#3B666F"
+                color="#025930"
                 size={15}
                 onPress={() => {
                   setShowDate(true);
@@ -516,7 +516,7 @@ const CreateProject = ({navigation, route}) => {
             reverse
             name="save"
             type="MaterialIcons"
-            color="#3B666F"
+            color="#025930"
             size={20}
             onPress={() => {
               // TODO Optimizar

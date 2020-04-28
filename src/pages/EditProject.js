@@ -166,7 +166,7 @@ const EditProject = ({navigation, route}) => {
                       reverse
                       name="person"
                       type="MaterialIcons"
-                      color="#3B666F"
+                      color="#025930"
                       size={10}
                     />
                   }
@@ -247,7 +247,7 @@ const EditProject = ({navigation, route}) => {
                 reverse
                 name="date-range"
                 type="MaterialIcons"
-                color="#3B666F"
+                color="#025930"
                 size={15}
                 onPress={() => {
                   setShowDate(true);
@@ -525,7 +525,7 @@ const EditProject = ({navigation, route}) => {
             reverse
             name="save"
             type="MaterialIcons"
-            color="#3B666F"
+            color="#025930"
             size={20}
             onPress={() => {
               // TODO Optimizar

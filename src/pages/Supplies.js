@@ -18,7 +18,7 @@ const Supplies = ({navigation, route}) => {
   const actions = [
     {
       text: 'Agregar insumos',
-      color: '#3B666F',
+      color: '#025930',
       icon: <Icon name="add-circle" size={24} color="white" />,
       name: 'bt_create_project',
       position: 1,
@@ -80,7 +80,7 @@ const Supplies = ({navigation, route}) => {
       </View>
       <FloatingAction
         actions={actions}
-        color="#3B666F"
+        color="#025930"
         onPressItem={async name => {
           navigation.navigate('AddSupplies', data);
           //TODO opciones de ordenado y filtro
