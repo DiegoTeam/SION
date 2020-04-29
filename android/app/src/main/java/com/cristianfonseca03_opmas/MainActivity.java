@@ -1,4 +1,4 @@
-package com.cristianfonseca03_sion;
+package com.cristianfonseca03_opmas;
 
 import com.facebook.react.ReactActivity;
 import org.devio.rn.splashscreen.SplashScreen;
@@ -11,7 +11,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "cristianfonseca03_sion";
+    return "cristianfonseca03_opmas";
   }
   @Override
   protected void onCreate(Bundle savedInstanceState) {

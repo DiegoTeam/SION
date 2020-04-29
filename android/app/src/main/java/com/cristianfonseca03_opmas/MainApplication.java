@@ -1,4 +1,4 @@
-package com.cristianfonseca03_sion;
+package com.cristianfonseca03_opmas;
 
 import android.app.Application;
 import android.content.Context;
