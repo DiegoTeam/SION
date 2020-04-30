@@ -683,26 +683,6 @@ const ProjectDetail = ({route, navigation}) => {
               fontSize: 17,
               color: '#88959E',
             }}>
-            Concepto Técnico socio/operador/Contratista
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.technicalConcept}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
             Representante del consejo/cabildo:
           </Text>
           <Text
