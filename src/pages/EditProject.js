@@ -47,9 +47,6 @@ const EditProject = ({navigation, route}) => {
   );
   const [sustainability, setSustainability] = useState(data.sustainability);
   const [risks, setRisks] = useState(data.risks);
-  const [technicalConcept, setTechnicalConcept] = useState(
-    data.technicalConcept,
-  );
   const [nameRepresentativeCouncil, setNameRepresentativeCouncil] = useState(
     data.RepresentativeCouncil.name,
   );
@@ -441,16 +438,6 @@ const EditProject = ({navigation, route}) => {
             containerStyle={{marginBottom: 20}}
           />
           {/*TODO articulacion*/}
-          <Input
-            value={technicalConcept}
-            label="Concepto técnico socio/operador/contratista"
-            onChangeText={text => {
-              setTechnicalConcept(text);
-            }}
-            errorStyle={{color: '#DC3545'}}
-            errorMessage={error}
-            containerStyle={{marginBottom: 20}}
-          />
           {/*TODO anexo*/}
           <Input
             value={nameRepresentativeCommittee}
@@ -546,7 +533,6 @@ const EditProject = ({navigation, route}) => {
                 environmentalManagement === '' ||
                 sustainability === '' ||
                 risks === '' ||
-                technicalConcept === '' ||
                 nameRepresentativeCouncil === '' ||
                 documentRepresentativeCouncil === '' ||
                 nameRepresentativeCommittee === '' ||
@@ -579,7 +565,6 @@ const EditProject = ({navigation, route}) => {
                   environmentalManagement === '' ||
                   sustainability === '' ||
                   risks === '' ||
-                  technicalConcept === '' ||
                   nameRepresentativeCouncil === '' ||
                   documentRepresentativeCouncil === '' ||
                   nameRepresentativeCommittee === '' ||
@@ -745,7 +730,6 @@ const EditProject = ({navigation, route}) => {
                     environmentalManagement: environmentalManagement,
                     sustainability: sustainability,
                     risks: risks,
-                    technicalConcept: technicalConcept,
                     RepresentativeCouncil: {
                       name: nameRepresentativeCouncil,
                       document: documentRepresentativeCouncil,
@@ -789,7 +773,6 @@ const EditProject = ({navigation, route}) => {
                     environmentalManagement: environmentalManagement,
                     sustainability: sustainability,
                     risks: risks,
-                    technicalConcept: technicalConcept,
                     RepresentativeCouncil: {
                       name: nameRepresentativeCouncil,
                       document: documentRepresentativeCouncil,
