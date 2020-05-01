@@ -46,7 +46,7 @@ const Supplies = ({navigation, route}) => {
       containerStyle={{borderRadius: 25, marginBottom: 5}}
       subtitle={
         <NumberFormat
-          value={item.price * item.count}
+          value={item.price * item.count.count_IRACA}
           renderText={value => <Text>{value}</Text>}
           thousandSeparator={true}
           displayType={'text'}
@@ -54,7 +54,7 @@ const Supplies = ({navigation, route}) => {
         />
       }
       badge={{
-        value: item.count,
+        value: item.count.count_IRACA,
         containerStyle: {marginTop: -20},
         textStyle: {fontSize: 15},
       }}
