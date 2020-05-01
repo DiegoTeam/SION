@@ -19,6 +19,8 @@ const AddSupplies = ({navigation, route}) => {
       return data.insumos_alimentarios;
     } else if (route.params.project_type === 'Fortalecimiento') {
       return data.insumos_comunitarios;
+    } else if (route.params.project_type === 'Financiacion complementaria') {
+      return data.financiacion_complementaria;
     }
   });
   const [suppliesFiltered, setSuppliesFiltered] = useState(supplies);

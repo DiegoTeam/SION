@@ -62,13 +62,16 @@ const CreateProject = ({navigation, route}) => {
   const budget_base_a = 800000;
   const budget_base_p = 1750000;
   const budget_base_f = 180000;
+  const budget_base_f_c = 0;
   const [budgetBase, setBudgetBase] = useState(() => {
     if (selectedValue === 'Productivo') {
       return budget_base_p;
     } else if (selectedValue === 'Alimentario') {
       return budget_base_a;
-    } else {
+    } else if (selectedValue === 'Fortalecimiento') {
       return budget_base_f;
+    } else {
+      return budget_base_f_c;
     }
   });
 
@@ -110,11 +113,17 @@ const CreateProject = ({navigation, route}) => {
                   setBudgetBase(budget_base_a);
                 } else if (itemValue === 'Fortalecimiento') {
                   setBudgetBase(budget_base_f);
+                } else if (itemValue === 'Financiacion complementaria') {
+                  setBudgetBase(budget_base_f_c);
                 }
               }}>
               <Picker.Item label="Productivo" value="Productivo" />
               <Picker.Item label="Alimentario" value="Alimentario" />
               <Picker.Item label="Fortalecimiento" value="Fortalecimiento" />
+              <Picker.Item
+                label="Financiacion complementaria"
+                value="Financiacion complementaria"
+              />
             </Picker>
           </View>
           <View
@@ -312,6 +321,12 @@ const CreateProject = ({navigation, route}) => {
               <Picker.Item label="4 meses" value="4" />
               <Picker.Item label="5 meses" value="5" />
               <Picker.Item label="6 meses" value="6" />
+              <Picker.Item label="7 meses" value="7" />
+              <Picker.Item label="8 meses" value="8" />
+              <Picker.Item label="9 meses" value="9" />
+              <Picker.Item label="10 meses" value="10" />
+              <Picker.Item label="11 meses" value="11" />
+              <Picker.Item label="12 meses" value="12" />
             </Picker>
           </View>
           <Input
