@@ -722,7 +722,6 @@ const EditProject = ({navigation, route}) => {
               onPress={async () => {
                 if (data.project_type !== selectedValue) {
                   const newData = {
-                    id: data.id,
                     creationDate: data.creationDate,
                     isSynchronized: false,
                     managers: homes,
@@ -762,10 +761,12 @@ const EditProject = ({navigation, route}) => {
                     budget_available: budgetBase * homes.length,
                     supplies: [],
                   };
-                  await AsyncStorageAPI.updateElement(data.id, newData);
+                  await AsyncStorageAPI.updateElement(
+                    route.params.index,
+                    newData,
+                  );
                 } else {
                   const newData = {
-                    id: data.id,
                     creationDate: data.creationDate,
                     isSynchronized: false,
                     managers: homes,
@@ -806,10 +807,13 @@ const EditProject = ({navigation, route}) => {
                       budgetBase * homes.length - data.budget_used,
                     supplies: data.supplies,
                   };
-                  await AsyncStorageAPI.updateElement(data.id, newData);
+                  await AsyncStorageAPI.updateElement(
+                    route.params.index,
+                    newData,
+                  );
                 }
                 setIsVisible(false);
-                navigation.navigate('ProjectDetail', data.id);
+                navigation.navigate('ProjectDetail', route.params.index);
               }}
             />
           </View>

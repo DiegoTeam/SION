@@ -31,30 +31,22 @@ class AsyncStorageAPI {
     const data = await this.getData(projectsData);
     return data[data.length - 1].id;
   }
-  async updateElement(id, newData) {
+  async updateElement(i, newData) {
     const data = await this.getData(projectsData);
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].id === id) {
-        data[i] = newData;
-      }
-    }
+    data[i] = newData;
     await this.setData(data);
   }
-  async addToData(id, item) {
+  async addToData(i, item) {
     const data = await this.getData(projectsData);
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].id === id) {
-        item.count = {
-          count_IRACA: 1,
-          count_Community: 0,
-          count_Others: 0,
-        };
-        data[i].supplies.push(item);
-        data[i].budget_used = data[i].budget_used + item.price;
-        data[i].isSynchronized = false;
-        data[i].budget_available = data[i].budget_available - item.price;
-      }
-    }
+    item.count = {
+      count_IRACA: 1,
+      count_Community: 0,
+      count_Others: 0,
+    };
+    data[i].supplies.push(item);
+    data[i].budget_used = data[i].budget_used + item.price;
+    data[i].isSynchronized = false;
+    data[i].budget_available = data[i].budget_available - item.price;
     await this.setData(data);
   }
   async deleteElement(id) {
@@ -66,10 +58,9 @@ class AsyncStorageAPI {
     }
     await this.setData(data);
   }
-  async getProject(id) {
+  async getProject(i) {
     const data = await this.getData(projectsData);
-    const element = data.filter(element => element.id === id);
-    return element[0];
+    return data[i];
   }
   async getUserData() {
     try {

@@ -17,6 +17,7 @@ const Login = ({navigation}) => {
   const [errorDocument, setErrorDocument] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
+
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
@@ -28,6 +29,7 @@ const Login = ({navigation}) => {
       }
       setIsLoading(false);
     }
+
     fetchData();
     return navigation.addListener('focus', () => {
       fetchData();

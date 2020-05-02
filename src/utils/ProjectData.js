@@ -1,5 +1,6 @@
 //Libraries
 import axios from 'axios';
+import NetInfo from '@react-native-community/netinfo';
 //Utils
 import AsyncStorageAPI from './AsyncStorageAPI';
 
@@ -18,22 +19,29 @@ class ProjectData {
     }
   }
 
-  async getProjects(isConnected) {
-    if (isConnected) {
-      try {
-        const userData = await AsyncStorageAPI.getUserData();
-        const query = await axios.get(
-          `${baseApi}/proyectos_api/${userData.document}/`,
-        );
-        const data = [];
-        query.data.forEach(element => data.push(element.json.data));
-        if (await AsyncStorageAPI.isNull()) {
-          await AsyncStorageAPI.setData(data);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
+  async getProjects() {
+    // try {
+    //   const netInfo = await NetInfo.fetch();
+    //   if (netInfo.isInternetReachable) {
+    //     try {
+    //       const userData = await AsyncStorageAPI.getUserData();
+    //       const query = await axios.get(
+    //         `${baseApi}/proyectos_api/${userData.document}/`,
+    //       );
+    //       const data = [];
+    //       query.data.forEach(element => data.push(element.json.data));
+    //       if (await AsyncStorageAPI.isNull()) {
+    //         await AsyncStorageAPI.setData(data);
+    //       } else {
+    //         console.log(data);
+    //       }
+    //     } catch (e) {
+    //       console.log(e);
+    //     }
+    //   }
+    // } catch (e) {
+    //   console.log(e);
+    // }
     return await AsyncStorageAPI.getData();
   }
 }

@@ -838,6 +838,7 @@ const ProjectDetail = ({route, navigation}) => {
               homes: data.managers,
               selectedValue: data.project_type,
               data: data,
+              index: route.params,
             });
           }
           if (name === 'delete_project') {
@@ -862,7 +863,7 @@ const ProjectDetail = ({route, navigation}) => {
             );
           }
           if (name === 'see_supplies') {
-            navigation.navigate('Supplies', data.id);
+            navigation.navigate('Supplies', {index: route.params});
           }
           if (name === 'synchronize_project') {
             if (data.isSynchronized) {
