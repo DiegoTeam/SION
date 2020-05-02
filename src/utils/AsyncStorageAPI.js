@@ -44,7 +44,11 @@ class AsyncStorageAPI {
     const data = await this.getData(projectsData);
     for (let i = 0; i < data.length; i++) {
       if (data[i].id === id) {
-        item.count = 1;
+        item.count = {
+          count_IRACA: 1,
+          count_Community: 0,
+          count_Others: 0,
+        };
         data[i].supplies.push(item);
         data[i].budget_used = data[i].budget_used + item.price;
         data[i].isSynchronized = false;

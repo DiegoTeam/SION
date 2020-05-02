@@ -7,11 +7,21 @@ import NumberFormat from 'react-number-format';
 import AsyncStorageAPI from '../utils/AsyncStorageAPI';
 
 const EditSupplies = ({navigation, route}) => {
-  const [count, setCount] = useState(route.params.supple.count);
-  const [errorCount, setErrorCount] = useState('');
+  const [countIRACA, setCountIRACA] = useState(
+    route.params.supple.count.count_IRACA,
+  );
+  const [countCommunity, setCountCommunity] = useState(
+    route.params.supple.count.count_Community,
+  );
+  const [countOthers, setCountOthers] = useState(
+    route.params.supple.count.count_Others,
+  );
+  const [errorCountIRACA, setErrorCountIRACA] = useState('');
+  const [errorCountCommunity, setErrorCountCommunity] = useState('');
+  const [errorCountOthers, setErrorCountOthers] = useState('');
   const budgetAvailableWithoutSupple =
     route.params.data.budget_available +
-    route.params.supple.price * route.params.supple.count;
+    route.params.supple.price * route.params.supple.count.count_IRACA;
   return (
     <View style={{flex: 1, justifyContent: 'center', marginHorizontal: 20}}>
       <Text
@@ -49,18 +59,48 @@ const EditSupplies = ({navigation, route}) => {
         prefix={'$'}
       />
       <Input
-        value={count.toString()}
-        label="Cantidad"
+        value={countIRACA.toString()}
+        label="Cantidad IRACA"
         keyboardType="number-pad"
         onChangeText={text => {
           const new_text = text.replace(/[,.-]/g, '').trim();
-          if (errorCount !== '') {
-            setErrorCount('');
+          if (errorCountIRACA !== '') {
+            setCountIRACA('');
           }
-          setCount(new_text);
+          setCountIRACA(new_text);
         }}
         errorStyle={{color: '#dc3545'}}
-        errorMessage={errorCount}
+        errorMessage={errorCountIRACA}
+        containerStyle={{marginTop: 10}}
+      />
+      <Input
+        value={countCommunity.toString()}
+        label="Cantidad comunidad"
+        keyboardType="number-pad"
+        onChangeText={text => {
+          const new_text = text.replace(/[,.-]/g, '').trim();
+          if (errorCountCommunity !== '') {
+            setErrorCountCommunity('');
+          }
+          setCountCommunity(new_text);
+        }}
+        errorStyle={{color: '#dc3545'}}
+        errorMessage={errorCountCommunity}
+        containerStyle={{marginTop: 10}}
+      />
+      <Input
+        value={countOthers.toString()}
+        label="Cantidad otros"
+        keyboardType="number-pad"
+        onChangeText={text => {
+          if (errorCountOthers !== '') {
+            setErrorCountOthers('');
+          }
+          const new_text = text.replace(/[,.-]/g, '').trim();
+          setCountOthers(new_text);
+        }}
+        errorStyle={{color: '#dc3545'}}
+        errorMessage={errorCountOthers}
         containerStyle={{marginTop: 10}}
       />
       <Text
@@ -84,7 +124,7 @@ const EditSupplies = ({navigation, route}) => {
             {text}
           </Text>
         )}
-        value={route.params.supple.price * count}
+        value={route.params.supple.price * countIRACA}
         displayType={'text'}
         thousandSeparator={true}
         prefix={'$'}
@@ -111,7 +151,9 @@ const EditSupplies = ({navigation, route}) => {
             {text}
           </Text>
         )}
-        value={budgetAvailableWithoutSupple - route.params.supple.price * count}
+        value={
+          budgetAvailableWithoutSupple - route.params.supple.price * countIRACA
+        }
         displayType={'text'}
         thousandSeparator={true}
         prefix={'$'}
@@ -167,10 +209,23 @@ const EditSupplies = ({navigation, route}) => {
           color="#3B666F"
           size={20}
           onPress={() => {
-            if (count === '0' || count === '') {
-              setErrorCount('INGRESE UNA CANTIDAD VALIDA');
+            if (
+              countIRACA === '0' ||
+              countIRACA === '' ||
+              countOthers === '' ||
+              countCommunity === ''
+            ) {
+              if (countIRACA === '0' || countIRACA === '') {
+                setErrorCountIRACA('INGRESE UNA CANTIDAD VALIDA');
+              }
+              if (countCommunity === '') {
+                setErrorCountCommunity('VALOR MINIMO ES 0');
+              }
+              if (countOthers === '') {
+                setErrorCountOthers('VALOR MINIMO ES 0');
+              }
             } else {
-              if (count === route.params.supple.count) {
+              if (countIRACA === route.params.supple.count_IRACA) {
                 Alert.alert(
                   'ALERTA',
                   'La cantidad del insumo no ha cambiado',
@@ -179,7 +234,7 @@ const EditSupplies = ({navigation, route}) => {
                 );
               } else {
                 if (
-                  route.params.supple.price * count >
+                  route.params.supple.price * countIRACA >
                   budgetAvailableWithoutSupple
                 ) {
                   Alert.alert(
@@ -200,7 +255,7 @@ const EditSupplies = ({navigation, route}) => {
                           const data = route.params.data;
                           data.budget_available =
                             budgetAvailableWithoutSupple -
-                            route.params.supple.price * count;
+                            route.params.supple.price * countIRACA;
                           data.budget_used =
                             data.budget - data.budget_available;
                           data.isSynchronized = false;
@@ -208,7 +263,11 @@ const EditSupplies = ({navigation, route}) => {
                             if (
                               data.supplies[i].id === route.params.supple.id
                             ) {
-                              data.supplies[i].count = count;
+                              data.supplies[i].count = {
+                                count_IRACA: countIRACA,
+                                count_Community: countCommunity,
+                                count_Others: countOthers,
+                              };
                             }
                           }
                           await AsyncStorageAPI.updateElement(data.id, data);

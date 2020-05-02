@@ -2706,4 +2706,5 @@ export const data = {
       price: 4500000,
     },
   ],
+  financiacion_complementaria: [],
 };
