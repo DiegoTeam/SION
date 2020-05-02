@@ -813,7 +813,9 @@ const EditProject = ({navigation, route}) => {
                   );
                 }
                 setIsVisible(false);
-                navigation.navigate('ProjectDetail', route.params.index);
+                navigation.navigate('ProjectDetail', {
+                  index: route.params.index,
+                });
               }}
             />
           </View>

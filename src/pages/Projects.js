@@ -72,7 +72,7 @@ const Projects = ({navigation}) => {
               leftIcon={setIcon(item)}
               chevron
               onPress={() => {
-                navigation.navigate('ProjectDetail', i);
+                navigation.navigate('ProjectDetail', {index: i});
               }}
             />
           ))
