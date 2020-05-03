@@ -13,7 +13,7 @@ import AsyncStorageAPI from '../utils/AsyncStorageAPI';
 
 const Supplies = ({navigation, route}) => {
   const [data, setData] = useState([]);
-  const [supples, setSupples] = useState([]);
+  const [supplies, setSupplies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const actions = [
     {
@@ -27,9 +27,9 @@ const Supplies = ({navigation, route}) => {
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const response = await AsyncStorageAPI.getProject(route.params);
+      const response = await AsyncStorageAPI.getProject(route.params.index);
       setData(response);
-      setSupples(response.supplies);
+      setSupplies(response.supplies);
       setIsLoading(false);
     }
     fetchData();
@@ -62,6 +62,7 @@ const Supplies = ({navigation, route}) => {
         navigation.navigate('EditSupplies', {
           data: data,
           supple: item,
+          index: route.params.index,
         });
       }}
     />
@@ -73,7 +74,7 @@ const Supplies = ({navigation, route}) => {
       <View style={{flex: 1, margin: 5}}>
         <FlatList
           keyExtractor={item => item.id.toString()}
-          data={supples}
+          data={supplies}
           renderItem={renderItem}
           ListEmptyComponent={<Empty text="No hay insumos agregados." />}
         />
@@ -82,7 +83,10 @@ const Supplies = ({navigation, route}) => {
         actions={actions}
         color="#3B666F"
         onPressItem={async name => {
-          navigation.navigate('AddSupplies', data);
+          navigation.navigate('AddSupplies', {
+            data: data,
+            index: route.params.index,
+          });
           //TODO opciones de ordenado y filtro
         }}
       />

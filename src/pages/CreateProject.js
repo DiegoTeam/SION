@@ -681,7 +681,6 @@ const CreateProject = ({navigation, route}) => {
               size={20}
               onPress={async () => {
                 const data = {
-                  id: 0,
                   creationDate: moment(),
                   isSynchronized: false,
                   managers: homes,
@@ -722,21 +721,16 @@ const CreateProject = ({navigation, route}) => {
                   supplies: [],
                 };
                 if (await AsyncStorageAPI.isNull()) {
-                  data.id = 1;
                   const newData = [];
                   newData.push(data);
                   await AsyncStorageAPI.setData(newData);
-                  setIsVisible(false);
-                  navigation.navigate('Projects');
                 } else {
                   const oldData = await AsyncStorageAPI.getData();
-                  const lastElementId = await AsyncStorageAPI.lastElementId();
-                  data.id = lastElementId + 1;
                   oldData.push(data);
                   await AsyncStorageAPI.setData(oldData);
-                  setIsVisible(false);
-                  navigation.navigate('Projects');
                 }
+                setIsVisible(false);
+                navigation.navigate('Projects');
               }}
             />
           </View>

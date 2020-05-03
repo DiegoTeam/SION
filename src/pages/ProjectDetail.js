@@ -55,7 +55,7 @@ const ProjectDetail = ({route, navigation}) => {
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const response = await AsyncStorageAPI.getProject(route.params);
+      const response = await AsyncStorageAPI.getProject(route.params.index);
       setData(response);
       setIsLoading(false);
     }
@@ -838,6 +838,7 @@ const ProjectDetail = ({route, navigation}) => {
               homes: data.managers,
               selectedValue: data.project_type,
               data: data,
+              index: route.params.index,
             });
           }
           if (name === 'delete_project') {
@@ -862,7 +863,7 @@ const ProjectDetail = ({route, navigation}) => {
             );
           }
           if (name === 'see_supplies') {
-            navigation.navigate('Supplies', data.id);
+            navigation.navigate('Supplies', {index: route.params.index});
           }
           if (name === 'synchronize_project') {
             if (data.isSynchronized) {
@@ -889,6 +890,7 @@ const ProjectDetail = ({route, navigation}) => {
                   {
                     text: 'Sincronizar',
                     onPress: async () => {
+                      setIsLoading(true);
                       const userData = await AsyncStorageAPI.getUserData();
                       data.isSynchronized = true;
                       const projectData = {
@@ -899,8 +901,14 @@ const ProjectDetail = ({route, navigation}) => {
                         },
                       };
                       await ProjectData.synchronizeProject(projectData);
-                      await AsyncStorageAPI.updateElement(data.id, data);
-                      navigation.navigate('ProjectDetail', data.id);
+                      await AsyncStorageAPI.updateElement(
+                        route.params.index,
+                        data,
+                      );
+                      setIsLoading(false);
+                      navigation.navigate('ProjectDetail', {
+                        index: route.params.index,
+                      });
                     },
                     style: 'OK',
                   },

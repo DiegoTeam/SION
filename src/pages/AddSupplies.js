@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {View, FlatList, Alert} from 'react-native';
 //Libraries
 import {SearchBar, Text, ListItem} from 'react-native-elements';
@@ -13,26 +13,29 @@ import {data} from '../data/data';
 const AddSupplies = ({navigation, route}) => {
   //TODO cambiar a constante unica
   const [supplies, setSupplies] = useState(() => {
-    if (route.params.project_type === 'Productivo') {
+    if (route.params.data.project_type === 'Productivo') {
       return data.insumos_productivos;
-    } else if (route.params.project_type === 'Alimentario') {
+    } else if (route.params.data.project_type === 'Alimentario') {
       return data.insumos_alimentarios;
-    } else if (route.params.project_type === 'Fortalecimiento') {
+    } else if (route.params.data.project_type === 'Fortalecimiento') {
       return data.insumos_comunitarios;
-    } else if (route.params.project_type === 'Financiacion complementaria') {
+    } else if (
+      route.params.data.project_type === 'Financiacion complementaria'
+    ) {
       return data.financiacion_complementaria;
     }
   });
   const [suppliesFiltered, setSuppliesFiltered] = useState(supplies);
   const [search, setSearch] = useState('');
   const isDisabled = item => {
-    for (let i = 0; i < route.params.supplies.length; i++) {
-      if (route.params.supplies[i].id === item.id) {
+    for (let i = 0; i < route.params.data.supplies.length; i++) {
+      if (route.params.data.supplies[i].id === item.id) {
         return true;
       }
     }
-    return item.price > route.params.budget_available;
+    return item.price > route.params.data.budget_available;
   };
+
   const renderItem = ({item}) => (
     <ListItem
       title={item.name}
@@ -59,8 +62,8 @@ const AddSupplies = ({navigation, route}) => {
             {
               text: 'Agregar',
               onPress: async () => {
-                await AsyncStorageAPI.addToData(route.params.id, item);
-                navigation.navigate('Supplies', route.params.id);
+                await AsyncStorageAPI.addToData(route.params.index, item);
+                navigation.navigate('Supplies', {index: route.params.index});
               },
             },
           ],

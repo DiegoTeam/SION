@@ -192,8 +192,13 @@ const EditSupplies = ({navigation, route}) => {
                         data.supplies.splice(i, 1);
                       }
                     }
-                    await AsyncStorageAPI.updateElement(data.id, data);
-                    navigation.navigate('Supplies', route.params.id);
+                    await AsyncStorageAPI.updateElement(
+                      route.params.index,
+                      data,
+                    );
+                    navigation.navigate('Supplies', {
+                      index: route.params.index,
+                    });
                   },
                 },
               ],
@@ -270,8 +275,13 @@ const EditSupplies = ({navigation, route}) => {
                               };
                             }
                           }
-                          await AsyncStorageAPI.updateElement(data.id, data);
-                          navigation.navigate('Supplies', route.params.id);
+                          await AsyncStorageAPI.updateElement(
+                            route.params.index,
+                            data,
+                          );
+                          navigation.navigate('Supplies', {
+                            index: route.params.index,
+                          });
                         },
                       },
                     ],
