@@ -38,6 +38,14 @@ const Supplies = ({navigation, route}) => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation]);
+
+  const getTotalCount = item => {
+    return (
+      parseInt(item.count.count_IRACA) +
+      parseInt(item.count.count_Community) +
+      parseInt(item.count.count_Others)
+    );
+  };
   const renderItem = ({item}) => (
     <ListItem
       title={item.name}
@@ -46,7 +54,7 @@ const Supplies = ({navigation, route}) => {
       containerStyle={{borderRadius: 25, marginBottom: 5}}
       subtitle={
         <NumberFormat
-          value={item.price * item.count.count_IRACA}
+          value={item.price * getTotalCount(item)}
           renderText={value => <Text>{value}</Text>}
           thousandSeparator={true}
           displayType={'text'}
@@ -54,7 +62,7 @@ const Supplies = ({navigation, route}) => {
         />
       }
       badge={{
-        value: item.count.count_IRACA,
+        value: getTotalCount(item),
         containerStyle: {marginTop: -20},
         textStyle: {fontSize: 15},
       }}

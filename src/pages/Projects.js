@@ -39,7 +39,7 @@ const Projects = ({navigation}) => {
 
   const setIcon = item => {
     if (item.isSynchronized) {
-      return {name: 'backup', color: '#28A745'};
+      return {name: 'cloud-done', color: '#28A745'};
     } else {
       return {name: 'backup', color: '#DC3545'};
     }
@@ -62,7 +62,11 @@ const Projects = ({navigation}) => {
               title={item.projectName}
               subtitle={
                 <NumberFormat
-                  value={item.budget_used}
+                  value={
+                    item.budgetIRACAUsed +
+                    item.budgedCommunity +
+                    item.budgedOthers
+                  }
                   renderText={value => <Text>{value}</Text>}
                   thousandSeparator={true}
                   displayType={'text'}

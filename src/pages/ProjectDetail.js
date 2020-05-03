@@ -71,7 +71,7 @@ const ProjectDetail = ({route, navigation}) => {
   ) : (
     <>
       <ScrollView>
-        <View style={{marginHorizontal: 20, marginTop: 20}}>
+        <View style={{marginHorizontal: 20}}>
           <Text
             style={{
               marginLeft: 10,
@@ -102,6 +102,50 @@ const ProjectDetail = ({route, navigation}) => {
               }
             />
           ))}
+          <Text
+            style={{
+              marginLeft: 10,
+              marginTop: 10,
+              fontWeight: 'bold',
+              fontSize: 17,
+              color: '#88959E',
+            }}>
+            Codigo:
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginLeft: 10,
+              marginTop: 10,
+              alignItems: 'center',
+            }}>
+            <Icon name="code" size={30} color="black" />
+            <Text style={{fontSize: 17, marginLeft: 15}}>
+              {data.projectCode}
+            </Text>
+          </View>
+          <Text
+            style={{
+              marginLeft: 10,
+              marginTop: 10,
+              fontWeight: 'bold',
+              fontSize: 17,
+              color: '#88959E',
+            }}>
+            Nombre del proyecto:
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginLeft: 10,
+              marginTop: 10,
+              alignItems: 'center',
+            }}>
+            <Icon name="code" size={30} color="black" />
+            <Text style={{fontSize: 17, marginLeft: 15}}>
+              {data.projectName}
+            </Text>
+          </View>
           <Text
             style={{
               marginLeft: 10,
@@ -155,7 +199,7 @@ const ProjectDetail = ({route, navigation}) => {
                     fontSize: 17,
                     color: '#88959E',
                   }}>
-                  Presupuesto:
+                  Presupuesto maximo IRACA:
                 </Text>
                 <View
                   style={{
@@ -185,7 +229,7 @@ const ProjectDetail = ({route, navigation}) => {
                     fontSize: 17,
                     color: '#88959E',
                   }}>
-                  Presupuesto gastado:
+                  Valor actual aporte de IRACA:
                 </Text>
                 <View
                   style={{
@@ -215,7 +259,7 @@ const ProjectDetail = ({route, navigation}) => {
                     fontSize: 17,
                     color: '#88959E',
                   }}>
-                  Presupuesto disponible:
+                  Valor actual aporte de comunidades:
                 </Text>
                 <View
                   style={{
@@ -229,7 +273,69 @@ const ProjectDetail = ({route, navigation}) => {
                 </View>
               </>
             )}
-            value={data.budgetAvailable}
+            value={data.budgedCommunity}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'$'}
+          />
+          <NumberFormat
+            renderText={text => (
+              <>
+                <Text
+                  style={{
+                    marginLeft: 10,
+                    marginTop: 10,
+                    fontWeight: 'bold',
+                    fontSize: 17,
+                    color: '#88959E',
+                  }}>
+                  Valor actual aporte de otros:
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginLeft: 10,
+                    marginTop: 10,
+                    alignItems: 'center',
+                  }}>
+                  <Icon name="monetization-on" size={30} color="black" />
+                  <Text style={{fontSize: 17, marginLeft: 15}}>{text}</Text>
+                </View>
+              </>
+            )}
+            value={data.budgedOthers}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'$'}
+          />
+          <NumberFormat
+            renderText={text => (
+              <>
+                <Text
+                  style={{
+                    marginLeft: 10,
+                    marginTop: 10,
+                    fontWeight: 'bold',
+                    fontSize: 17,
+                    color: '#88959E',
+                  }}>
+                  Total:
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginLeft: 10,
+                    marginTop: 10,
+                    alignItems: 'center',
+                  }}>
+                  <Icon name="monetization-on" size={30} color="black" />
+                  <Text style={{fontSize: 17, marginLeft: 15}}>{text}</Text>
+                </View>
+              </>
+            )}
+            value={
+              data.budgetIRACAUsed + data.budgedCommunity + data.budgedOthers
+            }
             displayType={'text'}
             thousandSeparator={true}
             prefix={'$'}
@@ -239,10 +345,11 @@ const ProjectDetail = ({route, navigation}) => {
               flexDirection: 'row',
               marginLeft: 10,
               marginTop: 10,
+              marginBottom: 20,
               alignItems: 'center',
             }}>
             <Icon
-              name="backup"
+              name={data.isSynchronized ? 'cloud-done' : 'backup'}
               size={30}
               color={data.isSynchronized ? '#28A745' : '#DC3545'}
             />
@@ -252,581 +359,6 @@ const ProjectDetail = ({route, navigation}) => {
                 : 'Proyecto no sincronizado'}
             </Text>
           </View>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Descripción del proyecto:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Convenio:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.agreement}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Código:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.projectCode}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Fecha de elaboración:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {moment(data.createdAt).format('DD/MM/YYYY')}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Representante legal:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.legalRepresentative}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Nombre del proyecto:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.projectName}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Linea:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.line}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Duración:
-          </Text>
-          {data.duration === '1' ? (
-            <Text
-              style={{
-                marginLeft: 30,
-                marginBottom: 10,
-                fontWeight: 'bold',
-                fontSize: 17,
-              }}>
-              {data.duration} Mes
-            </Text>
-          ) : (
-            <Text
-              style={{
-                marginLeft: 30,
-                marginBottom: 10,
-                fontWeight: 'bold',
-                fontSize: 17,
-              }}>
-              {data.duration} Meses
-            </Text>
-          )}
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Ubicación del proyecto:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.projectLocation}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Producto/Servicio:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.productService}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Problema:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.problem}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Justificación:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.justification}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Criterios Socioculturales y técnicos:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.criterion}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Objetivo General:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.objective}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Objetivos Especificos:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Objetivo 1:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 60,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.specificObjectives[0]}
-          </Text>
-          {data.specificObjectives[1] !== '' && (
-            <>
-              <Text
-                style={{
-                  marginLeft: 30,
-                  marginTop: 10,
-                  marginBottom: 10,
-                  fontWeight: 'bold',
-                  fontSize: 17,
-                  color: '#88959E',
-                }}>
-                Objetivo 2:
-              </Text>
-              <Text
-                style={{
-                  marginLeft: 60,
-                  marginBottom: 10,
-                  fontWeight: 'bold',
-                  fontSize: 17,
-                }}>
-                {data.specificObjectives[1]}
-              </Text>
-            </>
-          )}
-          {data.specificObjectives[2] !== '' && (
-            <>
-              <Text
-                style={{
-                  marginLeft: 30,
-                  marginTop: 10,
-                  marginBottom: 10,
-                  fontWeight: 'bold',
-                  fontSize: 17,
-                  color: '#88959E',
-                }}>
-                Objetivo 3:
-              </Text>
-              <Text
-                style={{
-                  marginLeft: 60,
-                  marginBottom: 10,
-                  fontWeight: 'bold',
-                  fontSize: 17,
-                }}>
-                {data.specificObjectives[2]}
-              </Text>
-            </>
-          )}
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Conservación y manejo ambiental:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.environmentalManagement}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Sustentabilidad:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.sustainability}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Riesgos y Acciones de tratamiento:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.risks}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Representante del consejo/cabildo:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Nombre:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 60,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.RepresentativeCouncil.name}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Cedula:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 60,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.RepresentativeCouncil.document}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Representante del comité de control social:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Nombre:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 60,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.RepresentativeCommittee.name}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Cedula:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 60,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.RepresentativeCommittee.document}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Funcionario entidad implementadora:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Nombre:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 60,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.Official.name}
-          </Text>
-          <Text
-            style={{
-              marginLeft: 30,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Cedula:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 60,
-              marginBottom: 40,
-              fontWeight: 'bold',
-              fontSize: 17,
-            }}>
-            {data.Official.document}
-          </Text>
         </View>
       </ScrollView>
       <FloatingAction
