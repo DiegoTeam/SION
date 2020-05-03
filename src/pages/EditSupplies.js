@@ -20,7 +20,7 @@ const EditSupplies = ({navigation, route}) => {
   const [errorCountCommunity, setErrorCountCommunity] = useState('');
   const [errorCountOthers, setErrorCountOthers] = useState('');
   const budgetAvailableWithoutSupple =
-    route.params.data.budget_available +
+    route.params.data.budgetAvailable +
     route.params.supple.price * route.params.supple.count.count_IRACA;
   return (
     <View style={{flex: 1, justifyContent: 'center', marginHorizontal: 20}}>
@@ -184,8 +184,9 @@ const EditSupplies = ({navigation, route}) => {
                   text: 'Eliminar',
                   onPress: async () => {
                     const data = route.params.data;
-                    data.budget_available = budgetAvailableWithoutSupple;
-                    data.budget_used = data.budget - data.budget_available;
+                    data.budgetAvailable = budgetAvailableWithoutSupple;
+                    data.budgetIRACAUsed =
+                      data.budgetIRACA - data.budgetAvailable;
                     data.isSynchronized = false;
                     for (let i = 0; i < data.supplies.length; i++) {
                       if (data.supplies[i].id === route.params.supple.id) {
@@ -258,11 +259,11 @@ const EditSupplies = ({navigation, route}) => {
                         text: 'Guardar',
                         onPress: async () => {
                           const data = route.params.data;
-                          data.budget_available =
+                          data.budgetAvailable =
                             budgetAvailableWithoutSupple -
                             route.params.supple.price * countIRACA;
-                          data.budget_used =
-                            data.budget - data.budget_available;
+                          data.budgetIRACAUsed =
+                            data.budgetIRACA - data.budgetAvailable;
                           data.isSynchronized = false;
                           for (let i = 0; i < data.supplies.length; i++) {
                             if (

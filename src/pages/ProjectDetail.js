@@ -169,7 +169,7 @@ const ProjectDetail = ({route, navigation}) => {
                 </View>
               </>
             )}
-            value={data.budget}
+            value={data.budgetIRACA}
             displayType={'text'}
             thousandSeparator={true}
             prefix={'$'}
@@ -199,7 +199,7 @@ const ProjectDetail = ({route, navigation}) => {
                 </View>
               </>
             )}
-            value={data.budget_used}
+            value={data.budgetIRACAUsed}
             displayType={'text'}
             thousandSeparator={true}
             prefix={'$'}
@@ -229,7 +229,7 @@ const ProjectDetail = ({route, navigation}) => {
                 </View>
               </>
             )}
-            value={data.budget_available}
+            value={data.budgetAvailable}
             displayType={'text'}
             thousandSeparator={true}
             prefix={'$'}

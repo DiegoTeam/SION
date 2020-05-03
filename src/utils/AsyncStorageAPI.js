@@ -40,9 +40,9 @@ class AsyncStorageAPI {
       count_Others: 0,
     };
     data[i].supplies.push(item);
-    data[i].budget_used = data[i].budget_used + item.price;
+    data[i].budgetIRACAUsed = data[i].budgetIRACAUsed + item.price;
     data[i].isSynchronized = false;
-    data[i].budget_available = data[i].budget_available - item.price;
+    data[i].budgetAvailable = data[i].budgetAvailable - item.price;
     await this.setData(data);
   }
   async deleteElement(id) {

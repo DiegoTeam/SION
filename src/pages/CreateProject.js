@@ -715,9 +715,11 @@ const CreateProject = ({navigation, route}) => {
                     name: nameOfficial,
                     document: documentOfficial,
                   },
-                  budget: budgetBase * homes.length,
-                  budget_used: 0,
-                  budget_available: budgetBase * homes.length,
+                  budgetIRACA: budgetBase * homes.length,
+                  budgetAvailable: budgetBase * homes.length,
+                  budgetIRACAUsed: 0,
+                  budgedCommunity: 0,
+                  budgedOthers: 0,
                   supplies: [],
                 };
                 if (await AsyncStorageAPI.isNull()) {

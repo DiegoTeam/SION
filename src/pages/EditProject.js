@@ -598,7 +598,7 @@ const EditProject = ({navigation, route}) => {
               } else {
                 const new_budget = budgetBase * homes.length;
                 if (
-                  data.budget_used > new_budget &&
+                  data.budgetIRACAUsed > new_budget &&
                   data.project_type === selectedValue
                 ) {
                   Alert.alert(
@@ -756,9 +756,11 @@ const EditProject = ({navigation, route}) => {
                       name: nameOfficial,
                       document: documentOfficial,
                     },
-                    budget: budgetBase * homes.length,
-                    budget_used: 0,
-                    budget_available: budgetBase * homes.length,
+                    budgetIRACA: budgetBase * homes.length,
+                    budgetAvailable: budgetBase * homes.length,
+                    budgetIRACAUsed: 0,
+                    budgedCommunity: 0,
+                    budgedOthers: 0,
                     supplies: [],
                   };
                   await AsyncStorageAPI.updateElement(
@@ -801,10 +803,12 @@ const EditProject = ({navigation, route}) => {
                       name: nameOfficial,
                       document: documentOfficial,
                     },
-                    budget: budgetBase * homes.length,
-                    budget_used: data.budget_used,
-                    budget_available:
-                      budgetBase * homes.length - data.budget_used,
+                    budgetIRACA: budgetBase * homes.length,
+                    budgetAvailable:
+                      budgetBase * homes.length - data.budgetIRACAUsed,
+                    budgetIRACAUsed: data.budgetIRACAUsed,
+                    budgedCommunity: data.budgedCommunity,
+                    budgedOthers: data.budgedOthers,
                     supplies: data.supplies,
                   };
                   await AsyncStorageAPI.updateElement(
