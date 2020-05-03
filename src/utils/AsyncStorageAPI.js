@@ -27,10 +27,6 @@ class AsyncStorageAPI {
       return data.length === 0;
     }
   }
-  async lastElementId() {
-    const data = await this.getData(projectsData);
-    return data[data.length - 1].id;
-  }
   async updateElement(i, newData) {
     const data = await this.getData(projectsData);
     data[i] = newData;

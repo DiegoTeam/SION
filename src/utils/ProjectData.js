@@ -20,29 +20,33 @@ class ProjectData {
   }
 
   async getProjects() {
-    // try {
-    //   const netInfo = await NetInfo.fetch();
-    //   if (netInfo.isInternetReachable) {
-    //     try {
-    //       const userData = await AsyncStorageAPI.getUserData();
-    //       const query = await axios.get(
-    //         `${baseApi}/proyectos_api/${userData.document}/`,
-    //       );
-    //       const data = [];
-    //       query.data.forEach(element => data.push(element.json.data));
-    //       if (await AsyncStorageAPI.isNull()) {
-    //         await AsyncStorageAPI.setData(data);
-    //       } else {
-    //         console.log(data);
-    //       }
-    //     } catch (e) {
-    //       console.log(e);
-    //     }
-    //   }
-    // } catch (e) {
-    //   console.log(e);
-    // }
-    return await AsyncStorageAPI.getData();
+    try {
+      const netInfo = await NetInfo.fetch();
+      if (netInfo.isInternetReachable) {
+        try {
+          const userData = await AsyncStorageAPI.getUserData();
+          const query = await axios.get(
+            `${baseApi}/proyectos_api/${userData.document}/`,
+          );
+          const data = [];
+          query.data.forEach(element => data.push(element.json.data));
+          if (await AsyncStorageAPI.isNull()) {
+            if (!(data === [])) {
+              await AsyncStorageAPI.setData(data);
+            }
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    if (await AsyncStorageAPI.isNull()) {
+      return [];
+    } else {
+      return await AsyncStorageAPI.getData();
+    }
   }
 }
 
