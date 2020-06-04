@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Alert, ScrollView, View} from 'react-native';
 //Libraries
-import {Icon as IconRNE, ListItem, Text} from 'react-native-elements';
+import {Text} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {FloatingAction} from 'react-native-floating-action';
 //Utils
@@ -14,7 +14,6 @@ import Loading from '../components/Loading';
 
 const ProjectDetail = ({route, navigation}) => {
   const [data, setData] = useState({
-    managers: [{}],
     specificObjectives: [],
     RepresentativeCouncil: {name: '', document: ''},
     RepresentativeCommittee: {name: '', document: ''},
@@ -43,13 +42,6 @@ const ProjectDetail = ({route, navigation}) => {
       name: 'synchronize_project',
       position: 3,
     },
-    // {
-    //   text: 'Eliminar proyecto',
-    //   color: '#DC3545',
-    //   icon: <Icon name="delete" size={24} color="white" />,
-    //   name: 'delete_project',
-    //   position: 4,
-    // },
   ];
 
   useEffect(() => {
@@ -83,25 +75,6 @@ const ProjectDetail = ({route, navigation}) => {
             }}>
             Integrantes:
           </Text>
-          {data.managers.map((item, i) => (
-            <ListItem
-              key={i}
-              title={item.name}
-              subtitle={item.document}
-              bottomDivider
-              leftIcon={
-                <IconRNE
-                  containerStyle={{alignSelf: 'center'}}
-                  raised
-                  reverse
-                  name="person"
-                  type="MaterialIcons"
-                  color="#3B666F"
-                  size={10}
-                />
-              }
-            />
-          ))}
           <Text
             style={{
               marginLeft: 10,
@@ -835,32 +808,10 @@ const ProjectDetail = ({route, navigation}) => {
         onPressItem={name => {
           if (name === 'edit_project') {
             navigation.navigate('EditProject', {
-              homes: data.managers,
               selectedValue: data.project_type,
               data: data,
               index: route.params.index,
             });
-          }
-          if (name === 'delete_project') {
-            Alert.alert(
-              'ALERTA',
-              'Esta seguro de eliminar este proyecto?',
-              [
-                {
-                  text: 'Cancelar',
-                  style: 'cancel',
-                },
-                {
-                  text: 'Eliminar',
-                  onPress: async () => {
-                    await AsyncStorageAPI.deleteElement(data.id);
-                    navigation.navigate('Projects');
-                  },
-                  style: 'OK',
-                },
-              ],
-              {cancelable: false},
-            );
           }
           if (name === 'see_supplies') {
             navigation.navigate('Supplies', {index: route.params.index});

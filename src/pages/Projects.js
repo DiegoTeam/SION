@@ -82,10 +82,7 @@ const Projects = ({navigation}) => {
         actions={actions}
         color="#3B666F"
         onPressItem={async name => {
-          navigation.navigate('CreateProject', {
-            homes: [],
-            selectedValue: 'Productivo',
-          });
+          navigation.navigate('CreateProject');
           //TODO opciones de ordenado y filtro
         }}
       />
