@@ -1,13 +1,7 @@
 import React, {useState} from 'react';
 import {View, Picker, Alert, Platform, ScrollView} from 'react-native';
 //Libraries
-import {
-  Text,
-  Icon as IconRNE,
-  ListItem,
-  Overlay,
-  Input,
-} from 'react-native-elements';
+import {Text, Icon as IconRNE, Overlay, Input} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
@@ -16,11 +10,9 @@ import AsyncStorageAPI from '../utils/AsyncStorageAPI';
 import NumberFormat from 'react-number-format';
 
 const CreateProject = ({navigation, route}) => {
-  const [homes, setHomes] = useState(route.params.homes);
+  const [homes, setHomes] = useState('1');
   const [isVisible, setIsVisible] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(
-    route.params.selectedValue,
-  );
+  const [selectedValue, setSelectedValue] = useState('Productivo');
   const [agreement, setAgreement] = useState('213-19');
   const [error, setError] = useState('');
   const [projectCode, setProjectCode] = useState('');
@@ -126,72 +118,17 @@ const CreateProject = ({navigation, route}) => {
               />
             </Picker>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginBottom: 10,
-            }}>
-            <IconRNE
-              containerStyle={{alignSelf: 'center'}}
-              raised
-              reverse
-              name="add"
-              type="MaterialIcons"
-              color="#28A745"
-              size={15}
-              onPress={() => {
-                navigation.navigate('AddHomes', {
-                  selectedValue: selectedValue,
-                  homes: homes,
-                  route: 'CreateProject',
-                });
-              }}
-            />
-            <Text>Agregar hogar</Text>
-          </View>
-          <View style={{marginHorizontal: 10, marginBottom: 20}}>
-            {homes.length > 0 ? (
-              homes.map((item, i) => (
-                <ListItem
-                  key={i}
-                  title={item.name}
-                  subtitle={item.document}
-                  bottomDivider
-                  leftIcon={
-                    <IconRNE
-                      containerStyle={{alignSelf: 'center'}}
-                      raised
-                      reverse
-                      name="person"
-                      type="MaterialIcons"
-                      color="#3B666F"
-                      size={10}
-                    />
-                  }
-                  rightIcon={
-                    <IconRNE
-                      containerStyle={{alignSelf: 'center'}}
-                      raised
-                      reverse
-                      name="clear"
-                      type="MaterialIcons"
-                      color="#DC3545"
-                      size={10}
-                      onPress={() => {
-                        const newHomes = homes.filter(
-                          element => element !== item,
-                        );
-                        setHomes(newHomes);
-                      }}
-                    />
-                  }
-                />
-              ))
-            ) : (
-              <ListItem title={'No hay hogares en este proyecto'} />
-            )}
-          </View>
+          <Input
+            value={homes}
+            label="Hogares"
+            keyboardType="numeric"
+            onChangeText={text => {
+              setHomes(text.replace(/[,.-]/g, '').trim());
+            }}
+            errorStyle={{color: '#DC3545'}}
+            errorMessage={error}
+            containerStyle={{marginBottom: 20}}
+          />
           <Input
             value={agreement}
             label="Convenio:"
@@ -525,7 +462,8 @@ const CreateProject = ({navigation, route}) => {
             onPress={() => {
               // TODO Optimizar
               if (
-                homes.length === 0 ||
+                homes === '0' ||
+                homes === '' ||
                 agreement === '' ||
                 projectCode === '' ||
                 createdAt === '' ||
@@ -548,7 +486,7 @@ const CreateProject = ({navigation, route}) => {
                 nameOfficial === '' ||
                 documentOfficial === ''
               ) {
-                if (homes.length === 0) {
+                if (homes === '0' || homes === '') {
                   Alert.alert(
                     'Alerta',
                     'Debe agregar al menos un hogar para este proyecto',
@@ -650,7 +588,7 @@ const CreateProject = ({navigation, route}) => {
                 </View>
               </>
             )}
-            value={homes.length * budgetBase}
+            value={homes * budgetBase}
             displayType={'text'}
             thousandSeparator={true}
             prefix={'$'}
@@ -683,9 +621,9 @@ const CreateProject = ({navigation, route}) => {
                 const data = {
                   creationDate: moment(),
                   isSynchronized: false,
-                  managers: homes,
+                  managers: [],
                   project_type: selectedValue,
-                  homes: homes.length,
+                  homes: homes,
                   agreement: agreement,
                   projectCode: projectCode,
                   createdAt: createdAt,
@@ -715,9 +653,9 @@ const CreateProject = ({navigation, route}) => {
                     name: nameOfficial,
                     document: documentOfficial,
                   },
-                  budget: budgetBase * homes.length,
+                  budget: budgetBase * homes,
                   budget_used: 0,
-                  budget_available: budgetBase * homes.length,
+                  budget_available: budgetBase * homes,
                   supplies: [],
                 };
                 if (await AsyncStorageAPI.isNull()) {
