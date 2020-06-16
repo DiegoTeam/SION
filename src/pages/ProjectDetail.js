@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Alert, ScrollView, View} from 'react-native';
 //Libraries
-import {Text} from 'react-native-elements';
+import {Icon as IconRNE, ListItem, Text} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {FloatingAction} from 'react-native-floating-action';
 //Utils
@@ -15,19 +15,13 @@ import Loading from '../components/Loading';
 const ProjectDetail = ({route, navigation}) => {
   const [data, setData] = useState({
     specificObjectives: [],
+    lines: [],
     RepresentativeCouncil: {name: '', document: ''},
     RepresentativeCommittee: {name: '', document: ''},
     Official: {name: '', document: ''},
   });
   const [isLoading, setIsLoading] = useState(false);
   const actions = [
-    {
-      text: 'Ver Insumos',
-      color: '#3B666F',
-      icon: <Icon name="remove-red-eye" size={24} color="white" />,
-      name: 'see_supplies',
-      position: 1,
-    },
     {
       text: 'Editar proyecto',
       color: '#3B666F',
@@ -68,17 +62,6 @@ const ProjectDetail = ({route, navigation}) => {
             style={{
               marginLeft: 10,
               marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              fontSize: 17,
-              color: '#88959E',
-            }}>
-            Integrantes:
-          </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginTop: 10,
               fontWeight: 'bold',
               fontSize: 17,
               color: '#88959E',
@@ -105,108 +88,39 @@ const ProjectDetail = ({route, navigation}) => {
               fontSize: 17,
               color: '#88959E',
             }}>
-            Numero de hogares:
+            Lineas:
           </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              marginLeft: 10,
-              marginTop: 10,
-              alignItems: 'center',
-            }}>
-            <Icon name="home" size={30} color="black" />
-            <Text style={{fontSize: 17, marginLeft: 15}}>{data.homes}</Text>
+          <View style={{marginTop: 10}}>
+            {data.lines.map((item, i) => {
+              return (
+                <ListItem
+                  key={i}
+                  title={item.name}
+                  subtitle={
+                    <NumberFormat
+                      value={item.budgetIRACAAvailable}
+                      renderText={value => <Text>{value}</Text>}
+                      thousandSeparator={true}
+                      displayType={'text'}
+                      prefix={'$'}
+                    />
+                  }
+                  bottomDivider
+                  leftIcon={
+                    <IconRNE
+                      containerStyle={{alignSelf: 'center'}}
+                      raised
+                      reverse
+                      name="assignment"
+                      type="MaterialIcons"
+                      color="#3B666F"
+                      size={10}
+                    />
+                  }
+                />
+              );
+            })}
           </View>
-          <NumberFormat
-            renderText={text => (
-              <>
-                <Text
-                  style={{
-                    marginLeft: 10,
-                    marginTop: 10,
-                    fontWeight: 'bold',
-                    fontSize: 17,
-                    color: '#88959E',
-                  }}>
-                  Presupuesto:
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginLeft: 10,
-                    marginTop: 10,
-                    alignItems: 'center',
-                  }}>
-                  <Icon name="monetization-on" size={30} color="black" />
-                  <Text style={{fontSize: 17, marginLeft: 15}}>{text}</Text>
-                </View>
-              </>
-            )}
-            value={data.budget}
-            displayType={'text'}
-            thousandSeparator={true}
-            prefix={'$'}
-          />
-          <NumberFormat
-            renderText={text => (
-              <>
-                <Text
-                  style={{
-                    marginLeft: 10,
-                    marginTop: 10,
-                    fontWeight: 'bold',
-                    fontSize: 17,
-                    color: '#88959E',
-                  }}>
-                  Presupuesto gastado:
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginLeft: 10,
-                    marginTop: 10,
-                    alignItems: 'center',
-                  }}>
-                  <Icon name="monetization-on" size={30} color="black" />
-                  <Text style={{fontSize: 17, marginLeft: 15}}>{text}</Text>
-                </View>
-              </>
-            )}
-            value={data.budget_used}
-            displayType={'text'}
-            thousandSeparator={true}
-            prefix={'$'}
-          />
-          <NumberFormat
-            renderText={text => (
-              <>
-                <Text
-                  style={{
-                    marginLeft: 10,
-                    marginTop: 10,
-                    fontWeight: 'bold',
-                    fontSize: 17,
-                    color: '#88959E',
-                  }}>
-                  Presupuesto disponible:
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginLeft: 10,
-                    marginTop: 10,
-                    alignItems: 'center',
-                  }}>
-                  <Icon name="monetization-on" size={30} color="black" />
-                  <Text style={{fontSize: 17, marginLeft: 15}}>{text}</Text>
-                </View>
-              </>
-            )}
-            value={data.budget_available}
-            displayType={'text'}
-            thousandSeparator={true}
-            prefix={'$'}
-          />
           <View
             style={{
               flexDirection: 'row',
@@ -811,6 +725,7 @@ const ProjectDetail = ({route, navigation}) => {
               selectedValue: data.project_type,
               data: data,
               index: route.params.index,
+              lines: data.lines,
             });
           }
           if (name === 'see_supplies') {

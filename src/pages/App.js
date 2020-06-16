@@ -13,6 +13,7 @@ import EditProject from './EditProject';
 import Supplies from './Supplies';
 import AddSupplies from './AddSupplies';
 import EditSupplies from './EditSupplies';
+import CreateLine from './CreateLine';
 //Images
 import logo from '../images/logo_SPA.png';
 
@@ -63,6 +64,21 @@ const App = () => {
             component={CreateProject}
             options={{
               title: 'Crear proyecto',
+              headerTitleAlign: 'center',
+              headerStyle: {
+                backgroundColor: '#3B666F',
+              },
+              headerTintColor: 'white',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+          />
+          <Stack.Screen
+            name="CreateLine"
+            component={CreateLine}
+            options={{
+              title: 'Crear linea',
               headerTitleAlign: 'center',
               headerStyle: {
                 backgroundColor: '#3B666F',
