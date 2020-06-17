@@ -2,9 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 //Libraries
 import {FloatingAction} from 'react-native-floating-action';
-import {ListItem, Text} from 'react-native-elements';
+import {ListItem} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import NumberFormat from 'react-number-format';
 //Utils
 import ProjectData from '../utils/ProjectData';
 //Components
@@ -60,15 +59,6 @@ const Projects = ({navigation}) => {
               activeOpacity={0.5}
               containerStyle={{borderRadius: 50, marginBottom: 5}}
               title={item.projectName}
-              subtitle={
-                <NumberFormat
-                  value={item.budget_used}
-                  renderText={value => <Text>{value}</Text>}
-                  thousandSeparator={true}
-                  displayType={'text'}
-                  prefix={'$'}
-                />
-              }
               leftIcon={setIcon(item)}
               chevron
               onPress={() => {
@@ -81,8 +71,11 @@ const Projects = ({navigation}) => {
       <FloatingAction
         actions={actions}
         color="#3B666F"
-        onPressItem={async name => {
-          navigation.navigate('CreateProject');
+        onPressItem={() => {
+          navigation.navigate('CreateProject', {
+            lines: [],
+            selectedValue: 'Productivo',
+          });
           //TODO opciones de ordenado y filtro
         }}
       />

@@ -1,18 +1,26 @@
 import React, {useState} from 'react';
-import {View, Picker, Alert, Platform, ScrollView} from 'react-native';
 //Libraries
-import {Text, Icon as IconRNE, Overlay, Input} from 'react-native-elements';
+import {View, Picker, Alert, Platform, ScrollView} from 'react-native';
+import {
+  Text,
+  Icon as IconRNE,
+  Overlay,
+  Input,
+  ListItem,
+} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
+import NumberFormat from 'react-number-format';
 //Utils
 import AsyncStorageAPI from '../utils/AsyncStorageAPI';
-import NumberFormat from 'react-number-format';
 
 const CreateProject = ({navigation, route}) => {
-  const [homes, setHomes] = useState('1');
+  const [lines, setLines] = useState(route.params.lines);
   const [isVisible, setIsVisible] = useState(false);
-  const [selectedValue, setSelectedValue] = useState('Productivo');
+  const [selectedValue, setSelectedValue] = useState(
+    route.params.selectedValue,
+  );
   const [agreement, setAgreement] = useState('213-19');
   const [error, setError] = useState('');
   const [projectCode, setProjectCode] = useState('');
@@ -101,12 +109,16 @@ const CreateProject = ({navigation, route}) => {
                 setSelectedValue(itemValue);
                 if (itemValue === 'Productivo') {
                   setBudgetBase(budget_base_p);
+                  setLines([]);
                 } else if (itemValue === 'Alimentario') {
                   setBudgetBase(budget_base_a);
+                  setLines([]);
                 } else if (itemValue === 'Fortalecimiento') {
                   setBudgetBase(budget_base_f);
+                  setLines([]);
                 } else if (itemValue === 'Financiacion complementaria') {
                   setBudgetBase(budget_base_f_c);
+                  setLines([]);
                 }
               }}>
               <Picker.Item label="Productivo" value="Productivo" />
@@ -118,25 +130,86 @@ const CreateProject = ({navigation, route}) => {
               />
             </Picker>
           </View>
-          <Input
-            value={homes}
-            label="Hogares"
-            keyboardType="numeric"
-            onChangeText={text => {
-              setHomes(text.replace(/[,.-]/g, '').trim());
-            }}
-            errorStyle={{color: '#DC3545'}}
-            errorMessage={error}
-            containerStyle={{marginBottom: 20}}
-          />
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginBottom: 10,
+            }}>
+            <IconRNE
+              containerStyle={{alignSelf: 'center'}}
+              raised
+              reverse
+              name="add"
+              type="MaterialIcons"
+              color="#28A745"
+              size={15}
+              onPress={() => {
+                navigation.navigate('CreateLine', {
+                  selectedValue: selectedValue,
+                  lines: lines,
+                  route: 'CreateProject',
+                });
+              }}
+            />
+            <Text>Agregar linea</Text>
+          </View>
+          <View style={{marginHorizontal: 10, marginBottom: 20}}>
+            {lines.length > 0 ? (
+              lines.map((item, i) => (
+                <ListItem
+                  key={i}
+                  title={item.name}
+                  subtitle={
+                    <NumberFormat
+                      value={item.budgetIRACA}
+                      renderText={value => <Text>{value}</Text>}
+                      thousandSeparator={true}
+                      displayType={'text'}
+                      prefix={'$'}
+                    />
+                  }
+                  bottomDivider
+                  leftIcon={
+                    <IconRNE
+                      containerStyle={{alignSelf: 'center'}}
+                      raised
+                      reverse
+                      name="assignment"
+                      type="MaterialIcons"
+                      color="#3B666F"
+                      size={15}
+                    />
+                  }
+                  rightIcon={
+                    <IconRNE
+                      containerStyle={{alignSelf: 'center'}}
+                      raised
+                      reverse
+                      name="clear"
+                      type="MaterialIcons"
+                      color="#DC3545"
+                      size={10}
+                      onPress={() => {
+                        const newLines = lines.filter(
+                          element => element !== item,
+                        );
+                        setLines(newLines);
+                      }}
+                    />
+                  }
+                />
+              ))
+            ) : (
+              <ListItem title={'No hay lineas en este proyecto'} />
+            )}
+          </View>
           <Input
             value={agreement}
             label="Convenio:"
             onChangeText={text => {
               setAgreement(text);
             }}
-            errorStyle={{color: '#DC3545'}}
-            errorMessage={error}
             containerStyle={{marginBottom: 20}}
             editable={false}
           />
@@ -462,8 +535,7 @@ const CreateProject = ({navigation, route}) => {
             onPress={() => {
               // TODO Optimizar
               if (
-                homes === '0' ||
-                homes === '' ||
+                lines.length === 0 ||
                 agreement === '' ||
                 projectCode === '' ||
                 createdAt === '' ||
@@ -486,10 +558,10 @@ const CreateProject = ({navigation, route}) => {
                 nameOfficial === '' ||
                 documentOfficial === ''
               ) {
-                if (homes === '0' || homes === '') {
+                if (lines.length === 0) {
                   Alert.alert(
                     'Alerta',
-                    'Debe agregar al menos un hogar para este proyecto',
+                    'Debe agregar al menos una linea para este proyecto',
                     [{text: 'Aceptar'}],
                     {cancelable: false},
                   );
@@ -563,36 +635,47 @@ const CreateProject = ({navigation, route}) => {
             <Icon name="card-travel" size={30} color="black" />
             <Text style={{fontSize: 17, marginLeft: 15}}>{selectedValue}</Text>
           </View>
-          <NumberFormat
-            renderText={text => (
-              <>
-                <Text
-                  style={{
-                    marginLeft: 10,
-                    marginTop: 10,
-                    fontWeight: 'bold',
-                    fontSize: 17,
-                    color: '#88959E',
-                  }}>
-                  Presupuesto:
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginLeft: 10,
-                    marginTop: 10,
-                    alignItems: 'center',
-                  }}>
-                  <Icon name="monetization-on" size={30} color="black" />
-                  <Text style={{fontSize: 17, marginLeft: 15}}>{text}</Text>
-                </View>
-              </>
-            )}
-            value={homes * budgetBase}
-            displayType={'text'}
-            thousandSeparator={true}
-            prefix={'$'}
-          />
+          <Text
+            style={{
+              marginLeft: 10,
+              marginTop: 10,
+              fontWeight: 'bold',
+              fontSize: 17,
+              color: '#88959E',
+            }}>
+            Lineas:
+          </Text>
+          <View>
+            {lines.map((item, i) => {
+              return (
+                <ListItem
+                  key={i}
+                  title={item.name}
+                  subtitle={
+                    <NumberFormat
+                      value={item.budgetIRACA}
+                      renderText={value => <Text>{value}</Text>}
+                      thousandSeparator={true}
+                      displayType={'text'}
+                      prefix={'$'}
+                    />
+                  }
+                  bottomDivider
+                  leftIcon={
+                    <IconRNE
+                      containerStyle={{alignSelf: 'center'}}
+                      raised
+                      reverse
+                      name="assignment"
+                      type="MaterialIcons"
+                      color="#3B666F"
+                      size={10}
+                    />
+                  }
+                />
+              );
+            })}
+          </View>
           <View
             style={{
               flexDirection: 'row',
@@ -623,7 +706,7 @@ const CreateProject = ({navigation, route}) => {
                   isSynchronized: false,
                   managers: [],
                   project_type: selectedValue,
-                  homes: homes,
+                  lines: lines,
                   agreement: agreement,
                   projectCode: projectCode,
                   createdAt: createdAt,
@@ -653,10 +736,6 @@ const CreateProject = ({navigation, route}) => {
                     name: nameOfficial,
                     document: documentOfficial,
                   },
-                  budget: budgetBase * homes,
-                  budget_used: 0,
-                  budget_available: budgetBase * homes,
-                  supplies: [],
                 };
                 if (await AsyncStorageAPI.isNull()) {
                   const newData = [];

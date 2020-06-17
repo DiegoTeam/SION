@@ -10,9 +10,10 @@ import Projects from './Projects';
 import CreateProject from './CreateProject';
 import ProjectDetail from './ProjectDetail';
 import EditProject from './EditProject';
-import Supplies from './Supplies';
 import AddSupplies from './AddSupplies';
 import EditSupplies from './EditSupplies';
+import CreateLine from './CreateLine';
+import LineDetail from './LineDetail';
 //Images
 import logo from '../images/logo_SPA.png';
 
@@ -74,6 +75,21 @@ const App = () => {
             }}
           />
           <Stack.Screen
+            name="CreateLine"
+            component={CreateLine}
+            options={{
+              title: 'Crear linea',
+              headerTitleAlign: 'center',
+              headerStyle: {
+                backgroundColor: '#3B666F',
+              },
+              headerTintColor: 'white',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+          />
+          <Stack.Screen
             name="ProjectDetail"
             component={ProjectDetail}
             options={{
@@ -104,10 +120,10 @@ const App = () => {
             }}
           />
           <Stack.Screen
-            name="Supplies"
-            component={Supplies}
+            name="LineDetail"
+            component={LineDetail}
             options={{
-              title: 'Insumos',
+              title: 'Detalles de linea',
               headerTitleAlign: 'center',
               headerStyle: {
                 backgroundColor: '#3B666F',
