@@ -7,21 +7,18 @@ import NumberFormat from 'react-number-format';
 import AsyncStorageAPI from '../utils/AsyncStorageAPI';
 
 const EditSupplies = ({navigation, route}) => {
-  const [countIRACA, setCountIRACA] = useState(
-    route.params.supple.count.count_IRACA,
-  );
+  const line = route.params.line;
+  const supple = route.params.supple;
+  const [countIRACA, setCountIRACA] = useState(supple.count.countIRACA);
   const [countCommunity, setCountCommunity] = useState(
-    route.params.supple.count.count_Community,
+    supple.count.countCommunity,
   );
-  const [countOthers, setCountOthers] = useState(
-    route.params.supple.count.count_Others,
-  );
+  const [countOthers, setCountOthers] = useState(supple.count.countOthers);
   const [errorCountIRACA, setErrorCountIRACA] = useState('');
   const [errorCountCommunity, setErrorCountCommunity] = useState('');
   const [errorCountOthers, setErrorCountOthers] = useState('');
   const budgetAvailableWithoutSupple =
-    route.params.data.budget_available +
-    route.params.supple.price * route.params.supple.count.count_IRACA;
+    line.budgetIRACAAvailable + supple.price * supple.count.countIRACA;
   return (
     <View style={{flex: 1, justifyContent: 'center', marginHorizontal: 20}}>
       <Text
@@ -35,7 +32,7 @@ const EditSupplies = ({navigation, route}) => {
         Nombre:
       </Text>
       <Text style={{marginLeft: 10, marginTop: 10, fontSize: 17}}>
-        {route.params.supple.name}
+        {supple.name}
       </Text>
       <Text
         style={{
@@ -53,7 +50,7 @@ const EditSupplies = ({navigation, route}) => {
             {text}
           </Text>
         )}
-        value={route.params.supple.price}
+        value={supple.price}
         displayType={'text'}
         thousandSeparator={true}
         prefix={'$'}
@@ -124,7 +121,7 @@ const EditSupplies = ({navigation, route}) => {
             {text}
           </Text>
         )}
-        value={route.params.supple.price * countIRACA}
+        value={supple.price * countIRACA}
         displayType={'text'}
         thousandSeparator={true}
         prefix={'$'}
@@ -151,9 +148,7 @@ const EditSupplies = ({navigation, route}) => {
             {text}
           </Text>
         )}
-        value={
-          budgetAvailableWithoutSupple - route.params.supple.price * countIRACA
-        }
+        value={budgetAvailableWithoutSupple - supple.price * countIRACA}
         displayType={'text'}
         thousandSeparator={true}
         prefix={'$'}
@@ -183,21 +178,15 @@ const EditSupplies = ({navigation, route}) => {
                 {
                   text: 'Eliminar',
                   onPress: async () => {
-                    const data = route.params.data;
-                    data.budget_available = budgetAvailableWithoutSupple;
-                    data.budget_used = data.budget - data.budget_available;
-                    data.isSynchronized = false;
-                    for (let i = 0; i < data.supplies.length; i++) {
-                      if (data.supplies[i].id === route.params.supple.id) {
-                        data.supplies.splice(i, 1);
-                      }
-                    }
-                    await AsyncStorageAPI.updateElement(
+                    await AsyncStorageAPI.deleteSupple(
                       route.params.index,
-                      data,
+                      route.params.indexLine,
+                      route.params.indexSupple,
                     );
-                    navigation.navigate('Supplies', {
+                    navigation.navigate('LineDetail', {
                       index: route.params.index,
+                      indexLine: route.params.indexLine,
+                      projectType: route.params.projectType,
                     });
                   },
                 },
@@ -230,64 +219,44 @@ const EditSupplies = ({navigation, route}) => {
                 setErrorCountOthers('VALOR MINIMO ES 0');
               }
             } else {
-              if (countIRACA === route.params.supple.count_IRACA) {
+              if (supple.price * countIRACA > budgetAvailableWithoutSupple) {
                 Alert.alert(
                   'ALERTA',
-                  'La cantidad del insumo no ha cambiado',
+                  'Este insumo supera el presupuesto disponible para este proyecto',
                   [{text: 'Aceptar'}],
                   {cancelable: false},
                 );
               } else {
-                if (
-                  route.params.supple.price * countIRACA >
-                  budgetAvailableWithoutSupple
-                ) {
-                  Alert.alert(
-                    'ALERTA',
-                    'Este insumo supera el presupuesto disponible para este proyecto',
-                    [{text: 'Aceptar'}],
-                    {cancelable: false},
-                  );
-                } else {
-                  Alert.alert(
-                    'ALERTA',
-                    'Desea guardar este insumo?',
-                    [
-                      {text: 'Cancelar'},
-                      {
-                        text: 'Guardar',
-                        onPress: async () => {
-                          const data = route.params.data;
-                          data.budget_available =
-                            budgetAvailableWithoutSupple -
-                            route.params.supple.price * countIRACA;
-                          data.budget_used =
-                            data.budget - data.budget_available;
-                          data.isSynchronized = false;
-                          for (let i = 0; i < data.supplies.length; i++) {
-                            if (
-                              data.supplies[i].id === route.params.supple.id
-                            ) {
-                              data.supplies[i].count = {
-                                count_IRACA: countIRACA,
-                                count_Community: countCommunity,
-                                count_Others: countOthers,
-                              };
-                            }
-                          }
-                          await AsyncStorageAPI.updateElement(
-                            route.params.index,
-                            data,
-                          );
-                          navigation.navigate('Supplies', {
-                            index: route.params.index,
-                          });
-                        },
+                Alert.alert(
+                  'ALERTA',
+                  'Desea guardar este insumo?',
+                  [
+                    {text: 'Cancelar'},
+                    {
+                      text: 'Guardar',
+                      onPress: async () => {
+                        await AsyncStorageAPI.editSupple(
+                          route.params.index,
+                          route.params.indexLine,
+                          route.params.indexSupple,
+                          {
+                            countIRACA: countIRACA,
+                            countCommunity: countCommunity,
+                            countOthers: countOthers,
+                          },
+                          budgetAvailableWithoutSupple -
+                            supple.price * countIRACA,
+                        );
+                        navigation.navigate('LineDetail', {
+                          index: route.params.index,
+                          indexLine: route.params.indexLine,
+                          projectType: route.params.projectType,
+                        });
                       },
-                    ],
-                    {cancelable: false},
-                  );
-                }
+                    },
+                  ],
+                  {cancelable: false},
+                );
               }
             }
           }}

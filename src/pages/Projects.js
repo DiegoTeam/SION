@@ -2,9 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 //Libraries
 import {FloatingAction} from 'react-native-floating-action';
-import {ListItem, Text} from 'react-native-elements';
+import {ListItem} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import NumberFormat from 'react-number-format';
 //Utils
 import ProjectData from '../utils/ProjectData';
 //Components

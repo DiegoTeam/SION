@@ -1,13 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 //Libraries
 import {View, Text} from 'react-native';
 import {Input, Icon} from 'react-native-elements';
 import NumberFormat from 'react-number-format';
 
 const CreateLine = ({navigation, route}) => {
-  useEffect(() => {
-    console.log(route.params);
-  });
   const [name, setName] = useState('');
   const [errorName, setErrorName] = useState('');
   const [homes, setHomes] = useState('1');

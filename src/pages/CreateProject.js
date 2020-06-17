@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {View, Picker, Alert, Platform, ScrollView} from 'react-native';
 //Libraries
+import {View, Picker, Alert, Platform, ScrollView} from 'react-native';
 import {
   Text,
   Icon as IconRNE,
@@ -11,9 +11,9 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
+import NumberFormat from 'react-number-format';
 //Utils
 import AsyncStorageAPI from '../utils/AsyncStorageAPI';
-import NumberFormat from 'react-number-format';
 
 const CreateProject = ({navigation, route}) => {
   const [lines, setLines] = useState(route.params.lines);
@@ -178,7 +178,7 @@ const CreateProject = ({navigation, route}) => {
                       name="assignment"
                       type="MaterialIcons"
                       color="#3B666F"
-                      size={10}
+                      size={15}
                     />
                   }
                   rightIcon={

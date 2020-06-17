@@ -11,29 +11,27 @@ import Empty from '../components/Empty';
 import {data} from '../data/data';
 
 const AddSupplies = ({navigation, route}) => {
-  //TODO cambiar a constante unica
   const [supplies, setSupplies] = useState(() => {
-    if (route.params.data.project_type === 'Productivo') {
+    if (route.params.projectType === 'Productivo') {
       return data.insumos_productivos;
-    } else if (route.params.data.project_type === 'Alimentario') {
+    } else if (route.params.projectType === 'Alimentario') {
       return data.insumos_alimentarios;
-    } else if (route.params.data.project_type === 'Fortalecimiento') {
+    } else if (route.params.projectType === 'Fortalecimiento') {
       return data.insumos_comunitarios;
-    } else if (
-      route.params.data.project_type === 'Financiacion complementaria'
-    ) {
+    } else if (route.params.projectType === 'Financiacion complementaria') {
       return data.financiacion_complementaria;
     }
   });
   const [suppliesFiltered, setSuppliesFiltered] = useState(supplies);
   const [search, setSearch] = useState('');
+  const line = route.params.line;
   const isDisabled = item => {
-    for (let i = 0; i < route.params.data.supplies.length; i++) {
-      if (route.params.data.supplies[i].id === item.id) {
+    for (let i = 0; i < line.supplies.length; i++) {
+      if (line.supplies[i].id === item.id) {
         return true;
       }
     }
-    return item.price > route.params.data.budget_available;
+    return item.price > line.budgetIRACAAvailable;
   };
 
   const renderItem = ({item}) => (
@@ -62,8 +60,16 @@ const AddSupplies = ({navigation, route}) => {
             {
               text: 'Agregar',
               onPress: async () => {
-                await AsyncStorageAPI.addToData(route.params.index, item);
-                navigation.navigate('Supplies', {index: route.params.index});
+                await AsyncStorageAPI.addToLine(
+                  route.params.index,
+                  route.params.indexLine,
+                  item,
+                );
+                navigation.navigate('LineDetail', {
+                  index: route.params.index,
+                  indexLine: route.params.indexLine,
+                  projectType: route.params.projectType,
+                });
               },
             },
           ],
@@ -73,13 +79,13 @@ const AddSupplies = ({navigation, route}) => {
       bottomDivider
     />
   );
-  const onSearchChange = search => {
+  const onSearchChange = searchWord => {
     setSuppliesFiltered(
       supplies.filter(element =>
-        element.name.toLowerCase().includes(search.toLowerCase()),
+        element.name.toLowerCase().includes(searchWord.toLowerCase()),
       ),
     );
-    setSearch(search);
+    setSearch(searchWord);
   };
   return (
     <View>

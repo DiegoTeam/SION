@@ -217,10 +217,28 @@ const EditProject = ({navigation, route}) => {
                       color="#DC3545"
                       size={10}
                       onPress={() => {
-                        const newLines = lines.filter(
-                          element => element !== item,
+                        Alert.alert(
+                          'ALERTA',
+                          'Esta seguro de eliminar esta linea?',
+                          [
+                            {
+                              text: 'Aceptar',
+                              onPress: () => {
+                                const newLines = lines.filter(
+                                  element => element !== item,
+                                );
+                                setLines(newLines);
+                              },
+                            },
+                            {
+                              text: 'Cancelar',
+                              style: 'cancel',
+                            },
+                          ],
+                          {
+                            cancelable: false,
+                          },
                         );
-                        setLines(newLines);
                       }}
                     />
                   }

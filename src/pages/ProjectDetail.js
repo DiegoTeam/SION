@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, ScrollView, View} from 'react-native';
 //Libraries
+import {Alert, ScrollView, View} from 'react-native';
 import {Icon as IconRNE, ListItem, Text} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {FloatingAction} from 'react-native-floating-action';
@@ -27,14 +27,14 @@ const ProjectDetail = ({route, navigation}) => {
       color: '#3B666F',
       icon: <Icon name="edit" size={24} color="white" />,
       name: 'edit_project',
-      position: 2,
+      position: 1,
     },
     {
       text: 'Sincronizar proyecto',
       color: '#3B666F',
       icon: <Icon name="backup" size={24} color="white" />,
       name: 'synchronize_project',
-      position: 3,
+      position: 2,
     },
   ];
 
@@ -114,7 +114,25 @@ const ProjectDetail = ({route, navigation}) => {
                       name="assignment"
                       type="MaterialIcons"
                       color="#3B666F"
-                      size={10}
+                      size={15}
+                    />
+                  }
+                  rightIcon={
+                    <IconRNE
+                      containerStyle={{alignSelf: 'center'}}
+                      raised
+                      reverse
+                      name="remove-red-eye"
+                      type="MaterialIcons"
+                      color="#3B666F"
+                      size={15}
+                      onPress={() => {
+                        navigation.navigate('LineDetail', {
+                          index: route.params.index,
+                          indexLine: i,
+                          projectType: data.project_type,
+                        });
+                      }}
                     />
                   }
                 />
@@ -727,9 +745,6 @@ const ProjectDetail = ({route, navigation}) => {
               index: route.params.index,
               lines: data.lines,
             });
-          }
-          if (name === 'see_supplies') {
-            navigation.navigate('Supplies', {index: route.params.index});
           }
           if (name === 'synchronize_project') {
             if (data.isSynchronized) {

@@ -32,17 +32,58 @@ class AsyncStorageAPI {
     data[i] = newData;
     await this.setData(data);
   }
-  async addToData(i, item) {
+  async addToLine(i, line, item) {
     const data = await this.getData(projectsData);
     item.count = {
-      count_IRACA: 1,
-      count_Community: 0,
-      count_Others: 0,
+      countIRACA: 1,
+      countCommunity: 0,
+      countOthers: 0,
     };
-    data[i].supplies.push(item);
-    data[i].budget_used = data[i].budget_used + item.price;
+    data[i].lines[line].supplies.push(item);
+    data[i].lines[line].budgetIRACAUsed =
+      data[i].lines[line].budgetIRACAUsed + item.price;
     data[i].isSynchronized = false;
-    data[i].budget_available = data[i].budget_available - item.price;
+    data[i].lines[line].budgetIRACAAvailable =
+      data[i].lines[line].budgetIRACAAvailable - item.price;
+    data[i].isSynchronized = false;
+    await this.setData(data);
+  }
+  async getLine(index, lineIndex) {
+    const data = await this.getData(projectsData);
+    return data[index].lines[lineIndex];
+  }
+  async editSupple(
+    index,
+    lineIndex,
+    indexSupple,
+    count,
+    newBudgetIRACAAvailable,
+  ) {
+    const data = await this.getData(projectsData);
+    data[index].lines[lineIndex].supplies[indexSupple].count.countIRACA =
+      count.countIRACA;
+    data[index].lines[lineIndex].supplies[indexSupple].count.countCommunity =
+      count.countCommunity;
+    data[index].lines[lineIndex].supplies[indexSupple].count.countOthers =
+      count.countOthers;
+    data[index].lines[lineIndex].budgetIRACAAvailable = newBudgetIRACAAvailable;
+    data[index].lines[lineIndex].budgetIRACAUsed =
+      data[index].lines[lineIndex].budgetIRACA -
+      data[index].lines[lineIndex].budgetIRACAAvailable;
+    data[index].isSynchronized = false;
+    await this.setData(data);
+  }
+  async deleteSupple(index, lineIndex, indexSupple) {
+    const data = await this.getData(projectsData);
+    data[index].lines[lineIndex].budgetIRACAUsed =
+      data[index].lines[lineIndex].budgetIRACAUsed -
+      data[index].lines[lineIndex].supplies[indexSupple].price *
+        data[index].lines[lineIndex].supplies[indexSupple].count.countIRACA;
+    data[index].lines[lineIndex].budgetIRACAAvailable =
+      data[index].lines[lineIndex].budgetIRACA -
+      data[index].lines[lineIndex].budgetIRACAUsed;
+    data[index].lines[lineIndex].supplies.splice(indexSupple, 1);
+    data[index].isSynchronized = false;
     await this.setData(data);
   }
   async deleteElement(id) {
