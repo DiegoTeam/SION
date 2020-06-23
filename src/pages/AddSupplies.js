@@ -276,7 +276,7 @@ const AddSupplies = ({navigation, route}) => {
                   Alert.alert(
                     'ALERTA',
                     'Ingrese un valor para almenos una cantidad',
-                    [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+                    [{text: 'OK'}],
                     {cancelable: false},
                   );
                 } else {
@@ -290,7 +290,7 @@ const AddSupplies = ({navigation, route}) => {
                         parseInt(
                           line.budgetIRACAAvailable / selectedItem.price,
                         ),
-                      [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+                      [{text: 'OK'}],
                       {cancelable: false},
                     );
                   } else {
