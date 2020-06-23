@@ -48,7 +48,6 @@ const LineDetail = ({navigation, route}) => {
             style={{
               marginLeft: 10,
               marginTop: 10,
-              marginBottom: 10,
               fontWeight: 'bold',
               fontSize: 17,
               color: '#88959E',
@@ -58,7 +57,7 @@ const LineDetail = ({navigation, route}) => {
           <Text
             style={{
               marginLeft: 30,
-              marginBottom: 10,
+              marginTop: 10,
               fontWeight: 'bold',
               fontSize: 17,
             }}>
@@ -68,7 +67,6 @@ const LineDetail = ({navigation, route}) => {
             style={{
               marginLeft: 10,
               marginTop: 10,
-              marginBottom: 10,
               fontWeight: 'bold',
               fontSize: 17,
               color: '#88959E',
@@ -78,7 +76,7 @@ const LineDetail = ({navigation, route}) => {
           <Text
             style={{
               marginLeft: 30,
-              marginBottom: 10,
+              marginTop: 10,
               fontWeight: 'bold',
               fontSize: 17,
             }}>
@@ -125,6 +123,36 @@ const LineDetail = ({navigation, route}) => {
                     fontSize: 17,
                     color: '#88959E',
                   }}>
+                  Presupuesto IRACA disponible:
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginLeft: 10,
+                    marginTop: 10,
+                    alignItems: 'center',
+                  }}>
+                  <Icon name="monetization-on" size={30} color="black" />
+                  <Text style={{fontSize: 17, marginLeft: 15}}>{text}</Text>
+                </View>
+              </>
+            )}
+            value={line.budgetIRACAAvailable}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'$'}
+          />
+          <NumberFormat
+            renderText={text => (
+              <>
+                <Text
+                  style={{
+                    marginLeft: 10,
+                    marginTop: 10,
+                    fontWeight: 'bold',
+                    fontSize: 17,
+                    color: '#88959E',
+                  }}>
                   Presupuesto IRACA utilizado:
                 </Text>
                 <View
@@ -155,7 +183,7 @@ const LineDetail = ({navigation, route}) => {
                     fontSize: 17,
                     color: '#88959E',
                   }}>
-                  Presupuesto IRACA disponible:
+                  Presupuesto de comunidad utilizado:
                 </Text>
                 <View
                   style={{
@@ -169,7 +197,37 @@ const LineDetail = ({navigation, route}) => {
                 </View>
               </>
             )}
-            value={line.budgetIRACAAvailable}
+            value={line.budgetCommunityUsed}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'$'}
+          />
+          <NumberFormat
+            renderText={text => (
+              <>
+                <Text
+                  style={{
+                    marginLeft: 10,
+                    marginTop: 10,
+                    fontWeight: 'bold',
+                    fontSize: 17,
+                    color: '#88959E',
+                  }}>
+                  Presupuesto de otros utilizado:
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginLeft: 10,
+                    marginTop: 10,
+                    alignItems: 'center',
+                  }}>
+                  <Icon name="monetization-on" size={30} color="black" />
+                  <Text style={{fontSize: 17, marginLeft: 15}}>{text}</Text>
+                </View>
+              </>
+            )}
+            value={line.budgetOthersUsed}
             displayType={'text'}
             thousandSeparator={true}
             prefix={'$'}
@@ -185,7 +243,7 @@ const LineDetail = ({navigation, route}) => {
             }}>
             Insumos:
           </Text>
-          <View style={{marginHorizontal: 10}}>
+          <View style={{marginHorizontal: 10, marginBottom: 100}}>
             {line.supplies.length > 0 ? (
               line.supplies.map((item, i) => {
                 return (

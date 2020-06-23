@@ -32,20 +32,20 @@ class AsyncStorageAPI {
     data[i] = newData;
     await this.setData(data);
   }
-  async addToLine(i, line, item) {
+  async addToLine(i, line, item, count) {
     const data = await this.getData(projectsData);
-    item.count = {
-      countIRACA: 1,
-      countCommunity: 0,
-      countOthers: 0,
-    };
+    item.count = count;
     data[i].lines[line].supplies.push(item);
     data[i].lines[line].budgetIRACAUsed =
-      data[i].lines[line].budgetIRACAUsed + item.price;
+      data[i].lines[line].budgetIRACAUsed + item.price * count.countIRACA;
+    data[i].lines[line].budgetCommunityUsed =
+      data[i].lines[line].budgetCommunityUsed +
+      item.price * count.countCommunity;
+    data[i].lines[line].budgetOthersUsed =
+      data[i].lines[line].budgetOthersUsed + item.price * count.countOthers;
     data[i].isSynchronized = false;
     data[i].lines[line].budgetIRACAAvailable =
-      data[i].lines[line].budgetIRACAAvailable - item.price;
-    data[i].isSynchronized = false;
+      data[i].lines[line].budgetIRACAAvailable - item.price * count.countIRACA;
     await this.setData(data);
   }
   async getLine(index, lineIndex) {
