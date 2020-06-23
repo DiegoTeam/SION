@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, FlatList, Alert, ScrollView} from 'react-native';
+import {View, Alert, ScrollView} from 'react-native';
 //Libraries
 import {
   SearchBar,
@@ -21,13 +21,13 @@ import {data} from '../data/data';
 const AddSupplies = ({navigation, route}) => {
   const [supplies, setSupplies] = useState(() => {
     if (route.params.projectType === 'Productivo') {
-      return data.insumos_productivos;
+      return data.productiveProject;
     } else if (route.params.projectType === 'Alimentario') {
-      return data.insumos_alimentarios;
+      return data.foodProject;
     } else if (route.params.projectType === 'Fortalecimiento') {
-      return data.insumos_comunitarios;
+      return data.communityProject;
     } else if (route.params.projectType === 'Financiacion complementaria') {
-      return data.financiacion_complementaria;
+      return data.supplementaryFinancingProject;
     }
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -61,28 +61,6 @@ const AddSupplies = ({navigation, route}) => {
     setErrorCountCommunity('');
     setErrorCountOthers('');
   };
-
-  const renderItem = ({item}) => (
-    <ListItem
-      title={item.name}
-      subtitle={
-        <NumberFormat
-          value={item.price}
-          renderText={value => <Text>{value}</Text>}
-          thousandSeparator={true}
-          displayType={'text'}
-          prefix={'$'}
-        />
-      }
-      disabledStyle={{backgroundColor: '#A8A8A8'}}
-      disabled={isDisabled(item)}
-      onPress={() => {
-        setSelectedItem(item);
-        setVisible(true);
-      }}
-      bottomDivider
-    />
-  );
   const onSearchChange = searchWord => {
     setSuppliesFiltered(
       supplies.filter(element =>
@@ -95,7 +73,7 @@ const AddSupplies = ({navigation, route}) => {
     return <Loading />;
   }
   return (
-    <View>
+    <ScrollView>
       <SearchBar
         placeholder="Buscar un insumo"
         onChangeText={onSearchChange}
@@ -106,12 +84,34 @@ const AddSupplies = ({navigation, route}) => {
           borderBottomWidth: 0,
         }}
       />
-      <FlatList
-        keyExtractor={item => item.id.toString()}
-        data={suppliesFiltered}
-        renderItem={renderItem}
-        ListEmptyComponent={<Empty text="No hay insumos disponibles." />}
-      />
+      {suppliesFiltered.length > 0 ? (
+        suppliesFiltered.map((e, i) => {
+          return (
+            <ListItem
+              key={i}
+              title={e.name}
+              subtitle={
+                <NumberFormat
+                  value={e.price}
+                  renderText={value => <Text>{value}</Text>}
+                  thousandSeparator={true}
+                  displayType={'text'}
+                  prefix={'$'}
+                />
+              }
+              disabledStyle={{backgroundColor: '#A8A8A8'}}
+              disabled={isDisabled(e)}
+              onPress={() => {
+                setSelectedItem(e);
+                setVisible(true);
+              }}
+              bottomDivider
+            />
+          );
+        })
+      ) : (
+        <Empty text="No hay insumos disponibles." />
+      )}
       <Overlay isVisible={visible} onBackdropPress={clearSelectedItem}>
         <ScrollView>
           <Text
@@ -318,7 +318,7 @@ const AddSupplies = ({navigation, route}) => {
           </View>
         </ScrollView>
       </Overlay>
-    </View>
+    </ScrollView>
   );
 };
 
