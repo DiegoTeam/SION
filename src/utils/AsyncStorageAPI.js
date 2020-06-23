@@ -60,17 +60,33 @@ class AsyncStorageAPI {
     newBudgetIRACAAvailable,
   ) {
     const data = await this.getData(projectsData);
+    data[index].lines[lineIndex].budgetIRACAAvailable = newBudgetIRACAAvailable;
+    data[index].lines[lineIndex].budgetIRACAUsed =
+      data[index].lines[lineIndex].budgetIRACA -
+      data[index].lines[lineIndex].budgetIRACAAvailable;
+    data[index].isSynchronized = false;
+    data[index].lines[lineIndex].budgetCommunityUsed =
+      data[index].lines[lineIndex].budgetCommunityUsed -
+      data[index].lines[lineIndex].supplies[indexSupple].count.countCommunity *
+        data[index].lines[lineIndex].supplies[indexSupple].price;
+    data[index].lines[lineIndex].budgetOthersUsed =
+      data[index].lines[lineIndex].budgetOthersUsed -
+      data[index].lines[lineIndex].supplies[indexSupple].count.countOthers *
+        data[index].lines[lineIndex].supplies[indexSupple].price;
+    data[index].lines[lineIndex].budgetCommunityUsed =
+      data[index].lines[lineIndex].budgetCommunityUsed +
+      count.countCommunity *
+        data[index].lines[lineIndex].supplies[indexSupple].price;
+    data[index].lines[lineIndex].budgetOthersUsed =
+      data[index].lines[lineIndex].budgetOthersUsed +
+      count.countOthers *
+        data[index].lines[lineIndex].supplies[indexSupple].price;
     data[index].lines[lineIndex].supplies[indexSupple].count.countIRACA =
       count.countIRACA;
     data[index].lines[lineIndex].supplies[indexSupple].count.countCommunity =
       count.countCommunity;
     data[index].lines[lineIndex].supplies[indexSupple].count.countOthers =
       count.countOthers;
-    data[index].lines[lineIndex].budgetIRACAAvailable = newBudgetIRACAAvailable;
-    data[index].lines[lineIndex].budgetIRACAUsed =
-      data[index].lines[lineIndex].budgetIRACA -
-      data[index].lines[lineIndex].budgetIRACAAvailable;
-    data[index].isSynchronized = false;
     await this.setData(data);
   }
   async deleteSupple(index, lineIndex, indexSupple) {
