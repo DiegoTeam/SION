@@ -79,6 +79,14 @@ class AsyncStorageAPI {
       data[index].lines[lineIndex].budgetIRACAUsed -
       data[index].lines[lineIndex].supplies[indexSupple].price *
         data[index].lines[lineIndex].supplies[indexSupple].count.countIRACA;
+    data[index].lines[lineIndex].budgetCommunityUsed =
+      data[index].lines[lineIndex].budgetCommunityUsed -
+      data[index].lines[lineIndex].supplies[indexSupple].price *
+        data[index].lines[lineIndex].supplies[indexSupple].count.countCommunity;
+    data[index].lines[lineIndex].budgetOthersUsed =
+      data[index].lines[lineIndex].budgetOthersUsed -
+      data[index].lines[lineIndex].supplies[indexSupple].price *
+        data[index].lines[lineIndex].supplies[indexSupple].count.countOthers;
     data[index].lines[lineIndex].budgetIRACAAvailable =
       data[index].lines[lineIndex].budgetIRACA -
       data[index].lines[lineIndex].budgetIRACAUsed;
