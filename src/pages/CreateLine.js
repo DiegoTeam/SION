@@ -119,6 +119,8 @@ const CreateLine = ({navigation, route}) => {
                 homes: homes,
                 budgetIRACA: budgetBase * homes,
                 budgetIRACAUsed: 0,
+                budgetCommunityUsed: 0,
+                budgetOthersUsed: 0,
                 budgetIRACAAvailable: budgetBase * homes,
                 supplies: [],
               });
