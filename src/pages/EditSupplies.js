@@ -9,11 +9,15 @@ import AsyncStorageAPI from '../utils/AsyncStorageAPI';
 const EditSupplies = ({navigation, route}) => {
   const line = route.params.line;
   const supple = route.params.supple;
-  const [countIRACA, setCountIRACA] = useState(supple.count.countIRACA);
-  const [countCommunity, setCountCommunity] = useState(
-    supple.count.countCommunity,
+  const [countIRACA, setCountIRACA] = useState(
+    parseInt(supple.count.countIRACA, 10),
   );
-  const [countOthers, setCountOthers] = useState(supple.count.countOthers);
+  const [countCommunity, setCountCommunity] = useState(
+    parseInt(supple.count.countCommunity, 10),
+  );
+  const [countOthers, setCountOthers] = useState(
+    parseInt(supple.count.countOthers, 10),
+  );
   const [errorCountIRACA, setErrorCountIRACA] = useState('');
   const [errorCountCommunity, setErrorCountCommunity] = useState('');
   const [errorCountOthers, setErrorCountOthers] = useState('');
@@ -219,9 +223,9 @@ const EditSupplies = ({navigation, route}) => {
                 setErrorCountOthers('VALOR MINIMO ES 0');
               }
             } else if (
-              countIRACA === '0' &&
-              countCommunity === '0' &&
-              countOthers === '0'
+              parseInt(countIRACA, 10) === 0 &&
+              parseInt(countCommunity, 10) === 0 &&
+              parseInt(countOthers, 10) === 0
             ) {
               Alert.alert(
                 'ALERTA',
