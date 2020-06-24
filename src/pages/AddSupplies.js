@@ -269,9 +269,9 @@ const AddSupplies = ({navigation, route}) => {
                     setErrorCountOthers('INGRESE UN VALOR VALIDO');
                   }
                 } else if (
-                  countIRACA === 0 &&
-                  countCommunity === 0 &&
-                  countOthers === 0
+                  parseInt(countIRACA, 10) === 0 &&
+                  parseInt(countCommunity, 10) === 0 &&
+                  parseInt(countOthers, 10) === 0
                 ) {
                   Alert.alert(
                     'ALERTA',
