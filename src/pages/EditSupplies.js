@@ -204,13 +204,13 @@ const EditSupplies = ({navigation, route}) => {
           size={20}
           onPress={() => {
             if (
-              countIRACA === '0' ||
+              countIRACA === '' ||
               countIRACA === '' ||
               countOthers === '' ||
               countCommunity === ''
             ) {
-              if (countIRACA === '0' || countIRACA === '') {
-                setErrorCountIRACA('INGRESE UNA CANTIDAD VALIDA');
+              if (countIRACA === '') {
+                setErrorCountIRACA('VALOR MINIMO ES 0');
               }
               if (countCommunity === '') {
                 setErrorCountCommunity('VALOR MINIMO ES 0');
@@ -218,6 +218,17 @@ const EditSupplies = ({navigation, route}) => {
               if (countOthers === '') {
                 setErrorCountOthers('VALOR MINIMO ES 0');
               }
+            } else if (
+              countIRACA === '0' &&
+              countCommunity === '0' &&
+              countOthers === '0'
+            ) {
+              Alert.alert(
+                'ALERTA',
+                'Ingrese un valor para almenos una cantidad',
+                [{text: 'OK'}],
+                {cancelable: false},
+              );
             } else {
               if (supple.price * countIRACA > budgetAvailableWithoutSupple) {
                 Alert.alert(
